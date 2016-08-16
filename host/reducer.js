@@ -1,5 +1,3 @@
-import { nextPage, prevPage } from './actions'
-
 const initialState = {
   rounds: 1,
   page: "waiting",
@@ -13,6 +11,12 @@ function reducer(state = initialState, action) {
     case 'update contents': return action.payload
     case 'change page': return Object.assign({}, state, {
       page: action.payload
+    })
+    case 'change rounds': return Object.assign({}, state, {
+      rounds: action.payload
+    })
+    case 'change gamemode': return Object.assign({}, state, {
+      gamemode: action.payload
     })
     default: return state
   }

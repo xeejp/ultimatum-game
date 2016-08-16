@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import TextField from 'material-ui/TextField';
-import { ExperimentSetting } from './'
+import ExperimentSetting from './ExpermentSetting.js'
 import { getPageName } from 'util/index'
 import { prevPage, nextPage } from './actions'
 
@@ -33,7 +33,7 @@ class PageSteps extends React.Component {
 
   dummyAsync = (cb) => {
     this.setState({loading: true}, () => {
-      this.asyncTimer = setTimeout(cb, 500);
+      this.asyncTimer = setTimeout(cb, 10);
     });
   };
 
@@ -62,9 +62,12 @@ class PageSteps extends React.Component {
     switch (page) {
       case 0:
         return (
-          <p>
-            現在の参加者は{this.props.memberLength}です.
-          </p>
+          <div>
+            <p>
+              現在の参加者は{this.props.memberLength}人です.
+            </p>
+            <ExperimentSetting />
+          </div>
         );
       case 1:
         return (

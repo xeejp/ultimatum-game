@@ -6,3 +6,9 @@ export function getPageName(page) {
     case 'result':      return "結果"
   }
 }
+export function getGamemodeName(gamemode) {
+  switch(gamemode) {
+    case 'ultimatum': return "最後通牒ゲーム"
+    case 'dictator' : return "独裁者ゲーム"
+  }
+}

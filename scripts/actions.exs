@@ -7,6 +7,16 @@ defmodule Ultimatum.Actions do
     format(data, action, dispatch_to_all(data, action))
   end
 
+  def change_rounds(data, rounds) do
+    action = get_action("change rounds", rounds)
+    format(data, action, dispatch_to_all(data, action))
+  end
+
+  def change_gamemode(data, gamemode) do
+    action = get_action("change gamemode", gamemode)
+    format(data, action, dispatch_to_all(data, action))
+  end
+
   def join(data, id, participant) do
     action = get_action("join", %{id: id, participant: participant})
     format(data, action)

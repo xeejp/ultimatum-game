@@ -9,6 +9,9 @@ defmodule UltimatumGame do
 
   alias Ultimatum.Host
   alias Ultimatum.Participant
+  alias Ultimatum.Main
+  alias Ultimatum.Actions
+
   @pages ["waiting", "description", "experiment", "result"]
   @gamemodes ["ultimatum", "dictator"]
   
@@ -69,9 +72,11 @@ defmodule UltimatumGame do
   def handle_received(data, %{"action" => action, "params" => params}) do
     Logger.debug("[Ultimatum Game] #{action} #{params}")
     result = case {action, params} do
-      {"fetch contents", _} -> Host.fetch_contents(data)
+      {"FETCH_CONTENTS", _} -> Host.fetch_contents(data)
       {"PREV_PAGE", _} -> Host.prev_page(data)
       {"NEXT_PAGE", _} -> Host.next_page(data)
+      {"CHANGE_ROUNDS", rounds} -> Host.change_rounds(data, rounds)
+      {"CHANGE_GAMEMODE", gamemode} -> Host.change_gamemode(data, gamemode)
       # {"match", _} -> Host.match(data)
       _ -> {:ok, %{"data" => data}}
     end

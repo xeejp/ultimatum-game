@@ -24,6 +24,16 @@ defmodule Ultimatum.Host do
     |> Actions.change_page(next)
   end
 
+  def change_rounds(data, rounds) do
+    %{data | rounds: rounds}
+    |> Actions.change_rounds(rounds)
+  end
+
+  def change_gamemode(data, gamemode) do
+    %{data | gamemode: gamemode }
+    |> Actions.change_gamemode(gamemode)
+  end
+
   #   def match(data) do
   #     %{participants: participants, money: money} = data
   #     group_size = 2

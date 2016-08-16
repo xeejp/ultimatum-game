@@ -1,11 +1,19 @@
 import { put, take, call, select, fork } from 'redux-saga/effects'
 
-import { fetchContents, prevPage, nextPage } from './actions.js'
+import {
+  fetchContents,
+  prevPage,
+  nextPage,
+  submitRounds,
+  changeRounds,
+  submitGameMode,
+  changeGameMode,
+} from './actions.js'
 
 function* fetchContentsSaga() {
   while(true) {
     yield take(`${fetchContents}`)
-    sendData('fetch contents')
+    sendData('FETCH_CONTENTS')
   }
 }
 
@@ -23,10 +31,28 @@ function* prevPageSaga() {
   }
 }
 
+function* changeRoundsSaga() {
+  while(true) {
+    const { payload } = yield take(`${submitRounds}`)
+    sendData('CHANGE_ROUNDS', payload)
+    yield put(changeRounds(payload))
+  }
+}
+
+function* changeGameModeSaga() {
+  while(true) {
+    const { payload } = yield take(`${submitGameMode}`)
+    sendData('CHANGE_GAMEMODE', payload)
+    yield put(changeGameMode(payload))
+  }
+}
+
 function* saga() {
   yield fork(nextPageSaga)
   yield fork(prevPageSaga)
   yield fork(fetchContentsSaga)
+  yield fork(changeRoundsSaga)
+  yield fork(changeGameModeSaga)
 }
 
 export default saga
