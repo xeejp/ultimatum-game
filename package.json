@@ -31,12 +31,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/m42m0/ultimatum_game.git"
+    "url": "git+https://github.com/xeejp/ultimatum_game.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/m42m0/ultimatum_game/issues"
+    "url": "https://github.com/xeejp/ultimatum_game/issues"
   },
-  "homepage": "https://github.com/m42m0/ultimatum_game#readme",
+  "homepage": "https://github.com/xeejp/ultimatum_game#readme",
   "description": ""
 }
