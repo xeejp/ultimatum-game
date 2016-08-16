@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import FlatButton from 'material-ui/FlatButton';
+import PageSteps from './PageSteps.js'
+import { fetchContents } from './actions.js'
+import ExperimentKey from './ExpermentKey.js'
 
-const mapStateToProps = ({}) => ({
+const mapStateToProps = ({ dispatch }) => ({
+  dispatch
 })
 
 class App extends Component {
@@ -11,10 +16,14 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(fetchContents())
   }
 
   render() {
     return <div>
+      <ExperimentKey />
+      <PageSteps />
     </div>
   }
 }
