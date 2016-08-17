@@ -12,3 +12,12 @@ export function getGamemodeName(gamemode) {
     case 'dictator' : return "独裁者ゲーム"
   }
 }
+
+export function getRoleName(role) {
+  switch(role) {
+    case "proposer":  return "提案者"
+    case "dictator":  return "独裁者"
+    case "responder": return "受け手"
+    default:          return "不参加"
+  }
+}

@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({}) => ({
+import Pages from './Pages.js'
+import {
+  fetchContents,
+} from './actions.js'
+
+const mapStateToProps = ({ dispatch }) => ({
+  dispatch,
 })
 
 class App extends Component {
@@ -11,12 +17,15 @@ class App extends Component {
   }
 
   componentDidMount() {
+   const { dispatch } = this.props
+   dispatch(fetchContents())
   }
 
   render() {
     return <div>
+      <Pages />
     </div>
   }
 }
 
-export default connect()(App)
+export default connect(mapStateToProps)(App)

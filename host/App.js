@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import FlatButton from 'material-ui/FlatButton';
-import PageSteps from './PageSteps.js'
+
 import { fetchContents } from './actions.js'
+
+import FlatButton from 'material-ui/FlatButton';
+
 import ExperimentKey from './ExpermentKey.js'
+import PageSteps from './PageSteps.js'
+import Users from './Users.js'
 
 const mapStateToProps = ({ dispatch }) => ({
   dispatch
@@ -24,6 +28,7 @@ class App extends Component {
     return <div>
       <ExperimentKey />
       <PageSteps />
+      <Users />
     </div>
   }
 }

@@ -22,7 +22,7 @@ defmodule Ultimatum.Actions do
     format(data, action)
   end
 
-  def matched(%{participants: participants, paris: pairs} = data) do
+  def matched(%{participants: participants, pairs: pairs} = data) do
     host = get_action("matched", %{participants: participants, pairs: pairs})
     participant = Enum.map(participants, fn {id, p} ->
       payload = Map.merge(Participant.format_participant(p), Participant.format_pair(Map.get(pairs, p.pair)))

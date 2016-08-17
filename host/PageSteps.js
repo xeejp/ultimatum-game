@@ -10,8 +10,9 @@ import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import TextField from 'material-ui/TextField';
 import ExperimentSetting from './ExpermentSetting.js'
+import MatchingButton from './MatchingButton.js'
 import { getPageName } from 'util/index'
-import { prevPage, nextPage } from './actions'
+import { submitPage, prevPage, nextPage } from './actions'
 
 const pages = ["waiting", "description", "experiment", "result"]
 
@@ -21,7 +22,7 @@ const style = {
 
 const mapStateToProps = ({ page, participants }) => ({
   page,
-  memberLength: Object.keys(participants).length
+  participantsLength: Object.keys(participants).length
 })
 
 class PageSteps extends React.Component {
@@ -39,7 +40,7 @@ class PageSteps extends React.Component {
 
   handleNext = () => {
     const { dispatch, page } = this.props
-    dispatch(nextPage())
+    dispatch(submitPage(pages[pages.indexOf(page)+1]))
     if (!this.state.loading) {
       this.dummyAsync(() => this.setState({
         loading: false,
@@ -64,7 +65,7 @@ class PageSteps extends React.Component {
         return (
           <div>
             <p>
-              現在の参加者は{this.props.memberLength}人です.
+              現在の参加者は{this.props.participantsLength}人です。
             </p>
             <ExperimentSetting />
           </div>
@@ -73,14 +74,14 @@ class PageSteps extends React.Component {
         return (
           <div>
             <p>
-              参加者側に説明を表示しています.
+              参加者側に説明を表示しています。
             </p>
           </div>
         );
       case 2:
         return (
           <p>
-            実験中です
+            実験中です。
           </p>
         );
       case 3:

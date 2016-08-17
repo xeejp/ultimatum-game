@@ -2,6 +2,9 @@ import { createAction } from 'redux-actions'
 
 export const fetchContents = createAction('FETCH_CONTENTS')
 
+export const match = createAction('MATCH')
+
+export const submitPage = createAction('SUBMIT_PAGE', page => page)
 export const prevPage = createAction('PREV_PAGE')
 export const nextPage = createAction('NEXT_PAGE')
 

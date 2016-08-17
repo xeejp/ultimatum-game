@@ -50,7 +50,7 @@ class ExperimentSetting extends Component {
               onChange={this.handleSlider.bind(this)}
             />
             <p>ゲームモード: {getGamemodeName(gamemode)}</p>
-            <RadioButtonGroup name="gamemodes" defaultSelected={gamemode} onChange={this.handleRadioButton.bind(this)}>
+            <RadioButtonGroup name="gamemodes" valueSelected={gamemode} onChange={this.handleRadioButton.bind(this)}>
               <RadioButton
                 value="ultimatum"
                 label="最後通牒ゲーム"

@@ -2,6 +2,8 @@ import { put, take, call, select, fork } from 'redux-saga/effects'
 
 import {
   fetchContents,
+  match,
+  submitPage,
   prevPage,
   nextPage,
   submitRounds,
@@ -17,10 +19,20 @@ function* fetchContentsSaga() {
   }
 }
 
+function* matchSaga() {
+  while (true) {
+    yield take(`${match}`)
+    yield call(sendData, 'MATCH')
+  }
+}
+
 function* nextPageSaga() {
   while(true) {
-    yield take(`${nextPage}`)
+    const { payload } = yield take(`${submitPage}`)
     sendData('NEXT_PAGE')
+    if (payload == 'description') {
+      yield put(match())
+    }
   }
 }
 
@@ -48,6 +60,7 @@ function* changeGameModeSaga() {
 }
 
 function* saga() {
+  yield fork(matchSaga)
   yield fork(nextPageSaga)
   yield fork(prevPageSaga)
   yield fork(fetchContentsSaga)
