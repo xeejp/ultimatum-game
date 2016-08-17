@@ -8,8 +8,8 @@ export const submitPage = createAction('SUBMIT_PAGE', page => page)
 export const prevPage = createAction('PREV_PAGE')
 export const nextPage = createAction('NEXT_PAGE')
 
-export const changeRounds = createAction('CHANGE_ROUNDS', rounds => rounds)
-export const submitRounds = createAction('SUBMIT_ROUNDS', rounds => rounds)
+export const changeGameRound = createAction('CHANGE_ROUNDS', game_round => game_round)
+export const submitGameRound = createAction('SUBMIT_ROUNDS', game_round => game_round)
 
-export const changeGameMode = createAction('CHANGE_GAMEMODE', gamemode => gamemode)
-export const submitGameMode = createAction('SUBMIT_GAMEMODE', gamemode => gamemode)
+export const changeGameMode = createAction('CHANGE_GAMEMODE', game_mode => game_mode)
+export const submitGameMode = createAction('SUBMIT_GAMEMODE', game_mode => game_mode)

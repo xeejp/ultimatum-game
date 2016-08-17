@@ -7,13 +7,13 @@ defmodule Ultimatum.Actions do
     format(data, action, dispatch_to_all(data, action))
   end
 
-  def change_rounds(data, rounds) do
-    action = get_action("change rounds", rounds)
+  def change_game_round(data, game_round) do
+    action = get_action("change game_round", game_round)
     format(data, action, dispatch_to_all(data, action))
   end
 
-  def change_gamemode(data, gamemode) do
-    action = get_action("change gamemode", gamemode)
+  def change_game_mode(data, game_mode) do
+    action = get_action("change game_mode", game_mode)
     format(data, action, dispatch_to_all(data, action))
   end
 

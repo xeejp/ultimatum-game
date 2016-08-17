@@ -12,9 +12,6 @@ defmodule UltimatumGame do
   alias Ultimatum.Main
   alias Ultimatum.Actions
 
-  @pages ["waiting", "description", "experiment", "result"]
-  @gamemodes ["ultimatum", "dictator"]
-
   # Callbacks
   def script_type do
     :message
@@ -24,14 +21,18 @@ defmodule UltimatumGame do
 
   def init do
     {:ok, %{"data" => %{
-       page: "waiting",
-       gamemode: "ultimatum",
-       rounds: 1,
-       givepoint: nil,
-       participants: %{},
-       pairs: %{}
-    }}}
+        page: "waiting",
+        game_mode: "ultimatum",
+        game_round: 1,
+        give_point: 1000,
+        participants: %{},
+        pairs: %{},
+      }
+    }}
   end
+
+  def wrap_result({:ok, _} = result), do: result
+  def wrap_result(result), do: Main.wrap(result)
 
   def join(data, id) do
     result = unless Map.has_key?(data.participants, id) do
@@ -44,13 +45,6 @@ defmodule UltimatumGame do
     wrap_result(result)
   end
   
-  def wrap_result({:ok, _} = result), do: result
-  def wrap_result(result), do: Main.wrap(result)
-
-  def wrap(data) do
-    {:ok, %{"data" => data}}
-  end
-
   # Host router
   def handle_received(data, %{"action" => action, "params" => params}) do
     Logger.debug("[Ultimatum Game] #{action} #{params}")
@@ -59,9 +53,8 @@ defmodule UltimatumGame do
       {"MATCH", _} -> Host.match(data)
       {"PREV_PAGE", _} -> Host.prev_page(data)
       {"NEXT_PAGE", _} -> Host.next_page(data)
-      {"CHANGE_ROUNDS", rounds} -> Host.change_rounds(data, rounds)
-      {"CHANGE_GAMEMODE", gamemode} -> Host.change_gamemode(data, gamemode)
-      # {"match", _} -> Host.match(data)
+      {"CHANGE_GAME_ROUND", game_round} -> Host.change_game_round(data, game_round)
+      {"CHANGE_GAME_MODE", game_mode} -> Host.change_game_mode(data, game_mode)
       _ -> {:ok, %{"data" => data}}
     end
     wrap_result(result)

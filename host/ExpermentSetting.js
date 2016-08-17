@@ -5,11 +5,12 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import Slider from 'material-ui/Slider'
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
-import { submitRounds, submitGameMode } from './actions.js'
+import { submitGameRound, submitGameMode } from './actions.js'
 import { getGamemodeName } from 'util/index'
-const mapStateToProps = ({ gamemode, rounds}) => ({
-  gamemode,
-  rounds
+
+const mapStateToProps = ({ game_mode, game_round}) => ({
+  game_mode,
+  game_round
 })
 
 const styles = {
@@ -24,7 +25,7 @@ class ExperimentSetting extends Component {
 
   handleSlider = (event, value) => {
     const { dispatch } = this.props
-    dispatch(submitRounds(value))
+    dispatch(submitGameRound(value))
   }
 
   handleRadioButton = (event, value) => {
@@ -32,7 +33,7 @@ class ExperimentSetting extends Component {
     dispatch(submitGameMode(value))
   }
   render() {
-    const { rounds, gamemode } = this.props
+    const { game_round, game_mode } = this.props
     return (
       <div style={styles.block}>
         <Card>
@@ -40,17 +41,17 @@ class ExperimentSetting extends Component {
             title="実験の設定"
           />
           <CardText>
-            <p>ゲームのラウンド数: {rounds}回 (役割交換回数: {rounds-1}回)</p>
+            <p>ゲームのラウンド数: {game_round}回 (役割交換回数: {game_round-1}回)</p>
             <Slider
               min={1}
               max={10}
               step={1}
               defaultValue={1}
-              value={rounds}
+              value={game_round}
               onChange={this.handleSlider.bind(this)}
             />
-            <p>ゲームモード: {getGamemodeName(gamemode)}</p>
-            <RadioButtonGroup name="gamemodes" valueSelected={gamemode} onChange={this.handleRadioButton.bind(this)}>
+            <p>ゲームモード: {getGamemodeName(game_mode)}</p>
+            <RadioButtonGroup name="game_modes" valueSelected={game_mode} onChange={this.handleRadioButton.bind(this)}>
               <RadioButton
                 value="ultimatum"
                 label="最後通牒ゲーム"

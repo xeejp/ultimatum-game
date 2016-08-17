@@ -6,8 +6,8 @@ import {
   submitPage,
   prevPage,
   nextPage,
-  submitRounds,
-  changeRounds,
+  submitGameRound,
+  changeGameRound,
   submitGameMode,
   changeGameMode,
 } from './actions.js'
@@ -43,18 +43,18 @@ function* prevPageSaga() {
   }
 }
 
-function* changeRoundsSaga() {
+function* changeGameRoundSaga() {
   while(true) {
-    const { payload } = yield take(`${submitRounds}`)
-    sendData('CHANGE_ROUNDS', payload)
-    yield put(changeRounds(payload))
+    const { payload } = yield take(`${submitGameRound}`)
+    sendData('CHANGE_GAME_ROUND', payload)
+    yield put(changeGameRound(payload))
   }
 }
 
 function* changeGameModeSaga() {
   while(true) {
     const { payload } = yield take(`${submitGameMode}`)
-    sendData('CHANGE_GAMEMODE', payload)
+    sendData('CHANGE_GAME_MODE', payload)
     yield put(changeGameMode(payload))
   }
 }
@@ -64,7 +64,7 @@ function* saga() {
   yield fork(nextPageSaga)
   yield fork(prevPageSaga)
   yield fork(fetchContentsSaga)
-  yield fork(changeRoundsSaga)
+  yield fork(changeGameRoundSaga)
   yield fork(changeGameModeSaga)
 }
 

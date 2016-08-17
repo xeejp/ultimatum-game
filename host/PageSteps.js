@@ -14,7 +14,7 @@ import MatchingButton from './MatchingButton.js'
 import { getPageName } from 'util/index'
 import { submitPage, prevPage, nextPage } from './actions'
 
-const pages = ["waiting", "description", "experiment", "result"]
+import { pages } from '../util/index.js'
 
 const style = {
   margin: 12,
@@ -22,7 +22,7 @@ const style = {
 
 const mapStateToProps = ({ page, participants }) => ({
   page,
-  participantsLength: Object.keys(participants).length
+  participants_length: Object.keys(participants).length
 })
 
 class PageSteps extends React.Component {
@@ -65,7 +65,7 @@ class PageSteps extends React.Component {
         return (
           <div>
             <p>
-              現在の参加者は{this.props.participantsLength}人です。
+              現在の参加者は{this.props.participants_length}人です。
             </p>
             <ExperimentSetting />
           </div>

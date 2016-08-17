@@ -24,14 +24,14 @@ defmodule Ultimatum.Host do
     |> Actions.change_page(next)
   end
 
-  def change_rounds(data, rounds) do
-    %{data | rounds: rounds}
-    |> Actions.change_rounds(rounds)
+  def change_game_round(data, game_round) do
+    %{data | game_round: game_round}
+    |> Actions.change_game_round(game_round)
   end
 
-  def change_gamemode(data, gamemode) do
-    %{data | gamemode: gamemode }
-    |> Actions.change_gamemode(gamemode)
+  def change_game_mode(data, game_mode) do
+    %{data | game_mode: game_mode }
+    |> Actions.change_game_mode(game_mode)
   end
 
   def match(data) do
@@ -49,7 +49,7 @@ defmodule Ultimatum.Host do
       %{ participant |
         pair: group,
         role: participant.role,
-        money: participant.money
+        money: participant.point
       }
     end
     reducer = fn {group, ids}, {participants, pair} ->

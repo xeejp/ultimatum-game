@@ -5,8 +5,8 @@ import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card'
 import MatchingButton from './MatchingButton.js'
 import { getRoleName } from '../util/index.js'
 
-const User = ({ id, role, money }) => (
-  <tr><td>{id}</td><td>{role}</td><td>{money}</td></tr>
+const User = ({ id, role, point }) => (
+  <tr><td>{id}</td><td>{role}</td><td>{point}</td></tr>
 )
 
 const UsersList = ({participants}) => (
@@ -19,7 +19,7 @@ const UsersList = ({participants}) => (
             key={id}
             id={id}
             role={getRoleName(participants[id].role)}
-            money={participants[id].money}
+            point={participants[id].point}
           />
         ))
       }
