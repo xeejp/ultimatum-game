@@ -109,6 +109,7 @@ class PageSteps extends React.Component {
             secondary={pages[3] === page ? true : false}
             onTouchTap={this.handleNext}
           />
+          <MatchingButton />
         </div>
       </div>
     );

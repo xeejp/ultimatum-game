@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card'
-import MatchingButton from './MatchingButton.js'
+import { Card, CardHeader, CardText } from 'material-ui/Card'
 import { getRoleName } from '../util/index.js'
 
 const User = ({ id, role, point }) => (
@@ -81,9 +80,6 @@ const Users = ({ pairs, participants }) => (
           participants={participants}
         />
       </CardText>
-      <CardActions>
-        <MatchingButton />
-      </CardActions>
     </Card>
   </div>
 )
