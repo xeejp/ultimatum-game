@@ -6,6 +6,15 @@ defmodule Ultimatum.Participant do
     Actions.update_participant_contents(data, id)
   end
 
+  def change_allo_temp(data, id, allo_temp) do
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    "allocating" = get_in(data, [:pairs, pair_id, :state])
+    Actions.change_allo_temp(data, id, allo_temp)
+  end
+
+  def finish_allocating(data, id, allo_temp) do
+    Actions.finish_allocating(data, id, allo_temp)
+  end
 
   def format_participant(participant), do: participant
 
@@ -20,10 +29,28 @@ defmodule Ultimatum.Participant do
     }
   end
 
+  def format_pair(pair) do
+    %{
+      members: pair.members,
+      now_round: pair.now_round,
+      allo_temp: pair.allo_temp,
+      state: pair.state,
+      results: pair.results
+    }
+  end
+
   def format_contents(data, id) do
     %{participants: participants} = data
     participant = Map.get(participants, id)
-    format_participant(participant)
-    |> Map.merge(format_data(data))
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    unless is_nil(pair_id) do
+      pair = get_in(data, [:pairs, pair_id])
+      format_participant(participant)
+      |> Map.merge(format_data(data))
+      |> Map.merge(format_pair(pair))
+    else
+      format_participant(participant)
+      |> Map.merge(format_data(data))
+    end
   end
 end

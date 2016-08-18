@@ -21,6 +21,7 @@ defmodule Ultimatum.Main do
     %{
       point: 0,
       role: "visitor",
+      pair_id: nil,
     }
   end
 
@@ -28,17 +29,9 @@ defmodule Ultimatum.Main do
     %{
       members: members,
       now_round: 1,
+      allo_temp: 0,
       state: "allocating",
       results: [],
-    }
-  end
-
-  def format_pair(pair) do
-    %{
-      members: pair.members,
-      now_round: pair.now_round,
-      state: pair.state,
-      results: pair.results
     }
   end
 end

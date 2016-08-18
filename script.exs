@@ -51,8 +51,7 @@ defmodule UltimatumGame do
     result = case {action, params} do
       {"FETCH_CONTENTS", _} -> Host.fetch_contents(data)
       {"MATCH", _} -> Host.match(data)
-      {"PREV_PAGE", _} -> Host.prev_page(data)
-      {"NEXT_PAGE", _} -> Host.next_page(data)
+      {"CHANGE_PAGE", page} -> Host.change_page(data, page)
       {"CHANGE_GAME_ROUND", game_round} -> Host.change_game_round(data, game_round)
       {"CHANGE_GAME_MODE", game_mode} -> Host.change_game_mode(data, game_mode)
       _ -> {:ok, %{"data" => data}}
@@ -65,6 +64,8 @@ defmodule UltimatumGame do
     Logger.debug("[Ultimatum Game] #{action} #{params}")
     result = case {action, params} do
       {"FETCH_CONTENTS", _} -> Participant.fetch_contents(data, id)
+      {"FINISH_ALLOCATING", allo_temp} -> Participant.finish_allocating(data, id, allo_temp)
+      {"CHANGE_ALLO_TEMP", allo_temp} -> Participant.change_allo_temp(data, id, allo_temp)
       _ -> {:ok, %{"data" => data}}
     end
     wrap_result(result)

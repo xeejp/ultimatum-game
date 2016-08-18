@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {
   Step,
   Stepper,
+  StepButton,
   StepLabel,
 } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -38,9 +39,14 @@ class PageSteps extends React.Component {
     });
   };
 
+  changePage = (page) => {
+    const { dispatch } = this.props
+    dispatch(submitPage(page))
+  }
+
   handleNext = () => {
     const { dispatch, page } = this.props
-    dispatch(submitPage(pages[pages.indexOf(page)+1]))
+    dispatch(nextPage())
     if (!this.state.loading) {
       this.dummyAsync(() => this.setState({
         loading: false,
@@ -64,31 +70,21 @@ class PageSteps extends React.Component {
       case 0:
         return (
           <div>
-            <p>
-              現在の参加者は{this.props.participants_length}人です。
-            </p>
+            <p>参加者側に待機画面を表示しています。</p>
             <ExperimentSetting />
           </div>
         );
       case 1:
         return (
-          <div>
-            <p>
-              参加者側に説明を表示しています。
-            </p>
-          </div>
+            <p>参加者側に説明を表示しています。</p>
         );
       case 2:
         return (
-          <p>
-            実験中です。
-          </p>
+          <p>参加者側に実験画面を表示しています。</p>
         );
       case 3:
         return (
-          <p>
-            結果を表示しています。
-          </p>
+          <p>参加者側に結果を表示しています。</p>
         );
     }
   }
@@ -121,19 +117,24 @@ class PageSteps extends React.Component {
   render() {
     const { loading } = this.state
     const { page } = this.props
-
+    const buttons = []
+    for (let i = 0; i < pages.length; i ++) {
+      buttons[i] = (
+        <Step key={i}>
+        <StepButton
+        onClick={this.changePage.bind(this, pages[i])}
+        >{getPageName(pages[i])}</StepButton>
+        </Step>
+      )
+    }
     return (
       <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
-        <Stepper activeStep={pages.indexOf(page)}>
-        {pages.map( (page, i) => (
-            <Step key={i}>
-              <StepLabel>{getPageName(page)}</StepLabel>
-            </Step>
-        ))}
-        </Stepper>
-        <ExpandTransition loading={loading} open={true}>
-          {this.renderContent()}
-        </ExpandTransition>
+      <Stepper activeStep={pages.indexOf(page)} linear={false}>
+        {buttons}
+      </Stepper>
+      <ExpandTransition loading={loading} open={true}>
+        {this.renderContent()}
+      </ExpandTransition>
       </div>
     );
   }

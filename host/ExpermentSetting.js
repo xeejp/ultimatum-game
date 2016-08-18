@@ -3,9 +3,11 @@ import { connect } from 'react-redux'
 
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import Slider from 'material-ui/Slider'
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import {RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
-import { submitGameRound, submitGameMode } from './actions.js'
+
+import { incGameRound, decGameRound, submitGameMode } from './actions.js'
 import { getGamemodeName } from 'util/index'
 
 const mapStateToProps = ({ game_mode, game_round}) => ({
@@ -19,13 +21,21 @@ const styles = {
   },
   radioButton: {
     marginBottom: 8,
-  }
+  },
+  risedButton: {
+    margin: 12,
+  },
 };
 class ExperimentSetting extends Component {
 
-  handleSlider = (event, value) => {
+  handleRoundInc = (event) => {
     const { dispatch } = this.props
-    dispatch(submitGameRound(value))
+    dispatch(incGameRound())
+  }
+
+  handleRoundDec = (event) => {
+    const { dispatch } = this.props
+    dispatch(decGameRound())
   }
 
   handleRadioButton = (event, value) => {
@@ -42,13 +52,17 @@ class ExperimentSetting extends Component {
           />
           <CardText>
             <p>ゲームのラウンド数: {game_round}回 (役割交換回数: {game_round-1}回)</p>
-            <Slider
-              min={1}
-              max={10}
-              step={1}
-              defaultValue={1}
-              value={game_round}
-              onChange={this.handleSlider.bind(this)}
+            <RaisedButton
+              label="-"
+              secondary={true}
+              style={styles.risedButton}
+              onClick={this.handleRoundDec.bind(this)}
+            />
+            <RaisedButton
+              label="+"
+              primary={true}
+              style={styles.risedButton}
+              onClick={this.handleRoundInc.bind(this)}
             />
             <p>ゲームモード: {getGamemodeName(game_mode)}</p>
             <RadioButtonGroup name="game_modes" valueSelected={game_mode} onChange={this.handleRadioButton.bind(this)}>

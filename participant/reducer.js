@@ -8,12 +8,18 @@ import {
   states,
 } from '../util/index.js'
 
+import {
+  submitAlloTemp,
+  finishAllocating,
+} from './actions.js'
+
 const initialState = {
   game_round: 1,
   page: pages[0],
   game_mode: game_modes[0],
-  participants: {},
-  pairs: {}
+  now_round: 1,
+  allo_temp: 500,
+  state: states[0],
 }
 
 const reducer = concatenateReducers([
@@ -24,9 +30,17 @@ const reducer = concatenateReducers([
         [id]: participant
       })
     }),
-    'matched': (_, { payload: { participants, pairs } }) => ({
-      participants, pairs
+    'matched': (_, { payload: {
+      allo_temp, members, now_round, pair_id,
+      point, result, role, state
+    } }) => ({
+      allo_temp, members, now_round, pair_id,
+      point, result, role, state
     }),
+    [submitAlloTemp]: (_, { payload }) => ({ allo_temp: payload}),
+    'change allo_temp': (_, { payload })=> ({ allo_temp: payload}), 
+    [finishAllocating]: (_, { payload }) => ({ state: "judging", allo_temp: payload}),
+    'finish allocating': (_, { payload }) => ({ state: "judging", allo_temp: payload}),
     'change page': (_, { payload }) => ({ page: payload }),
     'change game_round': (_, { payload }) => ({ game_round: payload }),
     'change game_mode': (_, { payload }) => ({ game_mode: payload }),

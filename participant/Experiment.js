@@ -6,19 +6,22 @@ import Respond from './Respond.js'
 
 import { fetchContents } from './actions'
 
-const mapStateToProps = ({ gamemode, role, money}) => ({
-  gamemode,
+const mapStateToProps = ({ game_mode, role}) => ({
+  game_mode,
   role,
-  money
 })
-const Experiment = ({ gamemode, role, money }) => (() => {
+const Experiment = ({ game_mode, role }) => (() => {
   switch(role) {
     case "proposer":
       return <Propose />
     case "responder":
       return <Respond />
-    default:
+    case "dictator":
       return <Propose />
+    case "visitor":
+      return <p>参加できませんでした。終了をお待ち下さい。</p>
+    default:
+      return <span></span>
   }
 })()
 

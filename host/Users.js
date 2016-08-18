@@ -29,7 +29,11 @@ const UsersList = ({participants}) => (
 
 const Pair = ({ pair, participants }) => (
   <UsersList
-    participants={pair.members.reduce((res, id) => Object.assign(res, {[id]: participants[id]}), {})}
+    participants={pair.members.reduce((res, id) =>
+      Object.assign(res, {
+        [id]: participants[id]
+      }),
+    {})}
   />
 )
 

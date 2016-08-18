@@ -17,6 +17,28 @@ defmodule Ultimatum.Actions do
     format(data, action, dispatch_to_all(data, action))
   end
 
+  def change_allo_temp(data, id, allo_temp) do
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    members = get_in(data, [:pairs, pair_id, :members])
+    target_id = case members do
+      [^id, target_id] -> target_id
+      [target_id, ^id] -> target_id
+    end
+    action = get_action("change allo_temp", allo_temp)
+    format(data, nil, dispatch_to(target_id, action))
+  end
+
+  def finish_allocating(data, id, allo_temp) do
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    members = get_in(data, [:pairs, pair_id, :members])
+    target_id = case members do
+      [^id, target_id] -> target_id
+      [target_id, ^id] -> target_id
+    end
+    action = get_action("finish allocating", allo_temp)
+    format(data, nil, dispatch_to(target_id, action))
+  end
+
   def join(data, id, participant) do
     action = get_action("join", %{id: id, participant: participant})
     format(data, action)
@@ -25,7 +47,9 @@ defmodule Ultimatum.Actions do
   def matched(%{participants: participants, pairs: pairs} = data) do
     host = get_action("matched", %{participants: participants, pairs: pairs})
     participant = Enum.map(participants, fn {id, p} ->
-      payload = Map.merge(Participant.format_participant(p), Participant.format_pair(Map.get(pairs, p.pair)))
+      unless p.pair_id == nil do
+        payload = Map.merge(Participant.format_participant(p), Participant.format_pair(Map.get(pairs, p.pair_id)))
+      end
       {id, %{action: get_action("matched", payload)}}
     end) |> Enum.into(%{})
     format(data, host, participant)
