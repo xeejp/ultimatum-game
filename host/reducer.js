@@ -11,6 +11,8 @@ import {
 const initialState = {
   participants: {},
   pairs: {},
+  ultimatum_results: [],
+  dictator_results: [],
 }
 
 const reducer = concatenateReducers([
