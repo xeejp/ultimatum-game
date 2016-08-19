@@ -29,9 +29,8 @@ defmodule Ultimatum.Main do
     %{
       members: members,
       now_round: 1,
-      allo_temp: 0,
+      allo_temp: 500,
       state: "allocating",
-      results: [],
     }
   end
 end

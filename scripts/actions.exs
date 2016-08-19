@@ -39,6 +39,32 @@ defmodule Ultimatum.Actions do
     format(data, nil, dispatch_to(target_id, action))
   end
 
+  # TODO hostにpair_idをstateを変更すように送信, idとtarget_idをrole, pointを変更するように送信
+  def response_ok(data, id, allo_temp) do
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    members = get_in(data, [:pairs, pair_id, :members])
+    target_id = case members do
+      [^id, target_id] -> target_id
+      [target_id, ^id] -> target_id
+    end
+    host_action = get_action("push results", allo_temp)
+    target_action = get_action("response ok", allo_temp)
+    format(data, host_action, dispatch_to(target_id, target_action)) 
+  end
+
+  # TODO hostにpair_idをstateを変更すように送信, idとtarget_idをrole, pointを変更するように送信
+  def response_ng(data, id) do
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    members = get_in(data, [:pairs, pair_id, :members])
+    target_id = case members do
+      [^id, target_id] -> target_id
+      [target_id, ^id] -> target_id
+    end
+    host_action = get_action("push results", 0)
+    target_action = get_action("response ng", nil)
+    format(data, host_action, dispatch_to(target_id, target_action))
+  end
+
   def join(data, id, participant) do
     action = get_action("join", %{id: id, participant: participant})
     format(data, action)
@@ -67,22 +93,22 @@ defmodule Ultimatum.Actions do
 
   # Utilities
 
-  defp get_action(type, params) do
+  def get_action(type, params) do
     %{
       type: type,
       payload: params
     }
   end
 
-  defp dispatch_to(map \\ %{}, id, action) do
+  def dispatch_to(map \\ %{}, id, action) do
     Map.put(map, id, %{action: action})
   end
 
-  defp dispatch_to_all(%{participants: participants}, action) do
+  def dispatch_to_all(%{participants: participants}, action) do
     Enum.reduce(participants, %{}, fn {id, _}, acc -> dispatch_to(acc, id, action) end)
   end
 
-  defp format(data, host, participants \\ nil) do
+  def format(data, host, participants \\ nil) do
     result = %{"data" => data}
     unless is_nil(host) do
       result = Map.put(result, "host", %{action: host})

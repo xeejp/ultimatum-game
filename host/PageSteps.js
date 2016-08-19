@@ -21,9 +21,8 @@ const style = {
   margin: 12,
 };
 
-const mapStateToProps = ({ page, participants }) => ({
-  page,
-  participants_length: Object.keys(participants).length
+const mapStateToProps = ({ page }) => ({
+  page
 })
 
 class PageSteps extends React.Component {
@@ -109,7 +108,9 @@ class PageSteps extends React.Component {
             secondary={pages[3] === page ? true : false}
             onTouchTap={this.handleNext}
           />
-          <MatchingButton />
+          <MatchingButton
+            style={{float:"right"}}
+          />
         </div>
       </div>
     );

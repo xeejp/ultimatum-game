@@ -16,6 +16,14 @@ defmodule Ultimatum.Participant do
     Actions.finish_allocating(data, id, allo_temp)
   end
 
+  def response_ok(data, id, allo_temp) do
+    Actions.response_ok(data, id, allo_temp)
+  end
+
+  def response_ng(data, id) do
+    Actions.response_ng(data, id)
+  end
+
   def format_participant(participant), do: participant
 
   def format_data(data) do
@@ -23,9 +31,6 @@ defmodule Ultimatum.Participant do
       page: data.page,
       game_mode: data.game_mode,
       game_round: data.game_round,
-      give_point: data.give_point,
-      participants: data.participants,
-      pairs: data.pairs
     }
   end
 
@@ -35,7 +40,6 @@ defmodule Ultimatum.Participant do
       now_round: pair.now_round,
       allo_temp: pair.allo_temp,
       state: pair.state,
-      results: pair.results
     }
   end
 

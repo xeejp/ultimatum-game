@@ -54,13 +54,12 @@ class ExperimentSetting extends Component {
             <p>ゲームのラウンド数: {game_round}回 (役割交換回数: {game_round-1}回)</p>
             <RaisedButton
               label="-"
-              secondary={true}
               style={styles.risedButton}
               onClick={this.handleRoundDec.bind(this)}
+              disabled={game_round == 1}
             />
             <RaisedButton
               label="+"
-              primary={true}
               style={styles.risedButton}
               onClick={this.handleRoundInc.bind(this)}
             />

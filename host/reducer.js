@@ -9,11 +9,8 @@ import {
 } from '../util/index.js'
 
 const initialState = {
-  game_round: 1,
-  page: pages[0],
-  game_mode: game_modes[0],
   participants: {},
-  pairs: {}
+  pairs: {},
 }
 
 const reducer = concatenateReducers([
@@ -30,6 +27,10 @@ const reducer = concatenateReducers([
     'change page': (_, { payload }) => ({ page: payload }),
     'change game_round': (_, { payload }) => ({ game_round: payload }),
     'change game_mode': (_, { payload }) => ({ game_mode: payload }),
+    'push results': ({ game_mode, ultimatum_results, dictator_results }, { payload }) => ({
+      ultimatum_results: (game_mode == "ultimatum")? ultimatum_results.concat(payload) : ultimatum_results,
+      dictator_results: (game_mode == "dictator")? dictator_results.concat(payload) : dictator_results,
+    }),
   }, initialState),
   handleAction('update contents', () => ({ loading: false }), { loading: true })
 ])

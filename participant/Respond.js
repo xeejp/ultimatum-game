@@ -5,6 +5,7 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import Slider from 'material-ui/Slider'
 import RaisedButton from 'material-ui/RaisedButton';
 
+import Finished from './componets/Finished.js'
 import {
   getRoleName,
 } from '../util/index.js'
@@ -26,14 +27,18 @@ class Respond extends Component {
 
   constructor() {
     super()
+    this.handleOK = this.handleOK.bind(this)
+    this.handleNG = this.handleNG.bind(this)
   }
 
   handleOK = () => {
-    const { dispatch } = this.props
+    const { dispatch, allo_temp } = this.props
+    dispatch(responseOK(allo_temp))
   }
 
   handleNG = () => {
     const { dispatch } = this.props
+    dispatch(responseNG())
   }
 
   render() {
@@ -52,18 +57,12 @@ class Respond extends Component {
                 subtitle={proposer + "が配分中。しばらくお待ちください。"}
               />
               <CardText>
-                <p>あなたへの配分: {1000-allo_temp}  受け手への配分: {allo_temp}</p>
+                <p>あなたへの配分: {1000-allo_temp}  {proposer}への配分: {allo_temp}</p>
                 <Slider
                   min={0}
                   max={1000}
                   step={100}
                   value={1000-allo_temp}
-                  disabled={true}
-                />
-                <RaisedButton
-                  label="送信"
-                  primary={true}
-                  style={style}
                   disabled={true}
                 />
               </CardText>
@@ -84,11 +83,13 @@ class Respond extends Component {
                 <RaisedButton
                   label="承認"
                   primary={true}
+                  onClick={this.handleOK}
                 />
                 <RaisedButton
                   label="拒否"
                   secondary={true}
                   disabled={game_mode=="dictator"}
+                  onClick={this.handleNG}
                 />
               </CardText>
             </Card>
@@ -97,15 +98,7 @@ class Respond extends Component {
       case "finished":
         return (
           <div>
-            <Card>
-              <CardHeader
-                title={getRoleName(role) + "側"}
-                subtitle="終了待ち"
-              />
-              <CardText>
-                <p>このペアの実験は終了しました。他のペアが終了するまでお待ち下さい。</p>
-              </CardText>
-            </Card>
+            <Finished />
           </div>
         )
       default:

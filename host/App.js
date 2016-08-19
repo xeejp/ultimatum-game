@@ -25,11 +25,22 @@ class App extends Component {
   }
 
   render() {
-    return <div>
-      <ExperimentKey />
-      <PageSteps />
-      <Users />
-    </div>
+    const { loading } = this.props
+    if ( !loading ) {
+      return (
+        <div>
+          <ExperimentKey />
+          <PageSteps />
+          <Users />
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <p>Loading</p>
+        </div>
+      )
+    }
   }
 }
 

@@ -24,6 +24,20 @@ function* finishAllocatingSaga() {
   }
 }
 
+function* responseOKSaga() {
+  while(true) {
+    const { payload } = yield take(`${responseOK}`)
+    sendData('RESPONSE_OK', payload)
+  }
+}
+
+function* responseNGSaga() {
+  while(true) {
+    yield take(`${responseNG}`)
+    sendData('RESPONSE_NG')
+  }
+}
+
 function* changeAlloTempSaga() {
   while(true) {
     const { payload } = yield take(`${submitAlloTemp}`)
@@ -35,6 +49,8 @@ function* saga() {
   yield fork(fetchContentsSaga)
   yield fork(finishAllocatingSaga)
   yield fork(changeAlloTempSaga)
+  yield fork(responseOKSaga)
+  yield fork(responseNGSaga)
 }
 
 export default saga

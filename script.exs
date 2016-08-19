@@ -24,9 +24,10 @@ defmodule UltimatumGame do
         page: "waiting",
         game_mode: "ultimatum",
         game_round: 1,
-        give_point: 1000,
         participants: %{},
         pairs: %{},
+        ultimatum_results: [],
+        dictator_results: [],
       }
     }}
   end
@@ -66,6 +67,8 @@ defmodule UltimatumGame do
       {"FETCH_CONTENTS", _} -> Participant.fetch_contents(data, id)
       {"FINISH_ALLOCATING", allo_temp} -> Participant.finish_allocating(data, id, allo_temp)
       {"CHANGE_ALLO_TEMP", allo_temp} -> Participant.change_allo_temp(data, id, allo_temp)
+      {"RESPONSE_OK", allo_temp} -> Participant.response_ok(data, id, allo_temp)
+      {"RESPONSE_NG", _} -> Participant.response_ng(data, id)
       _ -> {:ok, %{"data" => data}}
     end
     wrap_result(result)

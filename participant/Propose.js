@@ -5,13 +5,14 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import Slider from 'material-ui/Slider'
 import RaisedButton from 'material-ui/RaisedButton';
 
+import Finished from './componets/Finished.js'
+
 import { getRoleName } from '../util/index.js'
 
 import {
   submitAlloTemp,
   finishAllocating,
 } from './actions.js'
-
 
 const mapStateToProps = ({ point, role, allo_temp, state }) => ({
   point,
@@ -50,7 +51,7 @@ class Propose extends Component {
             <Card>
               <CardHeader
                 title={getRoleName(role) + "側"}
-                subtitle="配分中"
+                subtitle="配分してください。"
               />
               <CardText>
                 <p>あなたへの配分: {allo_temp}  受け手への配分: {1000 - allo_temp}</p>
@@ -98,15 +99,7 @@ class Propose extends Component {
       case "finished":
         return (
           <div>
-            <Card>
-              <CardHeader
-                title={getRoleName(role) + "側"}
-                subtitle="終了待ち"
-              />
-              <CardText>
-                <p>このペアの実験は終了しました。他のペアが終了するまでお待ち下さい。</p>
-              </CardText>
-            </Card>
+            <Finished />
           </div>
         )
       default:
