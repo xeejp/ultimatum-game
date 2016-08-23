@@ -25,10 +25,6 @@ const styles = {
     margin: 4,
     float: "right"
   },
-  chip3: {
-    margin: 4,
-    float: "right"
-  },
   contents: {
     margin: 16,
     clear: "both"
@@ -55,7 +51,7 @@ class Respond extends Component {
         <div>
           <Chip style={styles.chip1}>ラウンド: {now_round} / {game_round}</Chip>
           <Chip style={styles.chip2}>参加者全体の進捗: {Math.round(game_progress)} %</Chip>
-          <Chip style={styles.chip3}>ポイント: {point}</Chip>
+          <Chip style={styles.chip2}>ポイント: {point}</Chip>
           <div style={styles.contents}>{this.renderContents()}</div>
         </div>
       :

@@ -7,7 +7,7 @@ import {RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
-import { incGameRound, decGameRound, submitGameMode } from './actions.js'
+import { changeGameMode, changeGameRound } from './actions.js'
 import { getGamemodeName } from 'util/index'
 
 const mapStateToProps = ({ game_mode, game_round}) => ({
@@ -29,18 +29,18 @@ const styles = {
 class ExperimentSetting extends Component {
 
   handleRoundInc = (event) => {
-    const { dispatch } = this.props
-    dispatch(incGameRound())
+    const { dispatch, game_round } = this.props
+    dispatch(changeGameRound(game_round + 1))
   }
 
   handleRoundDec = (event) => {
-    const { dispatch } = this.props
-    dispatch(decGameRound())
+    const { dispatch, game_round } = this.props
+    dispatch(changeGameRound(game_round - 1))
   }
 
   handleRadioButton = (event, value) => {
     const { dispatch } = this.props
-    dispatch(submitGameMode(value))
+    dispatch(changeGameMode(value))
   }
   render() {
     const { game_round, game_mode } = this.props

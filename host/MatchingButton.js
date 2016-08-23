@@ -9,6 +9,7 @@ const mapStateToProps = ({}) => ({
 })
 
 const styles = {
+  float: "right",
 }
 
 class MatchingButton extends Component {

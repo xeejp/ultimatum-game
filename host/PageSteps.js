@@ -17,59 +17,76 @@ import MatchingButton from './MatchingButton.js'
 import { getPageName, pages } from 'util/index'
 
 import {
-  submitPage,
-  prevPage,
-  nextPage,
+  changePage,
   reset,
+  intoLoading,
+  exitLoading,
 } from './actions'
 
 
-const mapStateToProps = ({ page, game_round, game_progress, pairs }) => ({
+const mapStateToProps = ({ page, game_round, game_progress, pairs, loading }) => ({
   page,
   game_round,
   game_progress,
-  pairs
+  pairs,
+  loading,
 })
 
 class PageSteps extends React.Component {
-
   state = {
-    loading: false,
     finished: false
   }
-
   dummyAsync = (cb) => {
-    this.setState({loading: true}, () => {
-      this.asyncTimer = setTimeout(cb, 10);
-    });
-  };
-
-  changePage = (page) => {
     const { dispatch } = this.props
-    dispatch(submitPage(page))
+    dispatch(intoLoading())
+    this.asyncTimer = setTimeout(cb, 500)
+  }
+
+  handleChangePage = (page) => {
+    const { dispatch } = this.props
+    dispatch(changePage(page))
+    if (!this.props.loading) {
+      this.dummyAsync(() => {
+        dispatch(exitLoading())
+      })
+    }
   }
 
   handleNext = () => {
     const { dispatch, page } = this.props
-    dispatch(nextPage())
-    if (!this.state.loading) {
-      this.dummyAsync(() => this.setState({
-        loading: false,
-        finished: page == pages[3]
-      }))
+    var next = pages[0]
+    for(let i = 0; i < pages.length - 1; i++){
+      if(page == pages[i]) {
+        next = pages[(i + 1) % pages.length]
+        break
+      }
     }
+    dispatch(changePage(next))
+    if (!this.props.loading) {
+      this.dummyAsync(() => {
+        dispatch(exitLoading())
+      })
+    }
+    this.setState({ finished: page == pages[3] })
     if(pages[3] == page) dispatch(reset())
   };
 
   handlePrev = () => {
-    const { dispatch } = this.props
-    dispatch(prevPage())
-    if (!this.state.loading) {
-      this.dummyAsync(() => this.setState({
-        loading: false,
-      }))
+    const { dispatch, page } = this.props
+    let prev = pages[0]
+    for(let i = 1; i < pages.length - 1; i++){
+      if(page == pages[i]) {
+        prev = pages[(i - 1) % pages.length]
+        break
+      }
     }
-  };
+    dispatch(changePage(prev))
+    if (!this.props.loading) {
+      this.dummyAsync(() => {
+        dispatch(exitLoading())
+      })
+    }
+  }
 
   getStepContent(page) {
     const {game_round, pairs, game_progress } = this.props
@@ -112,23 +129,20 @@ class PageSteps extends React.Component {
             secondary={pages[3] === page ? true : false}
             onTouchTap={this.handleNext}
           />
-          <MatchingButton
-            style={{float:"right"}}
-          />
+          <MatchingButton />
         </div>
       </div>
     );
   }
 
   render() {
-    const { loading } = this.state
-    const { page } = this.props
+    const { page, loading } = this.props
     const buttons = []
     for (let i = 0; i < pages.length; i ++) {
       buttons[i] = (
         <Step key={i}>
         <StepButton
-        onClick={this.changePage.bind(this, pages[i])}
+        onClick={this.handleChangePage.bind(this, pages[i])}
         >{getPageName(pages[i])}</StepButton>
         </Step>
       )
@@ -139,7 +153,7 @@ class PageSteps extends React.Component {
         {buttons}
       </Stepper>
       {this.renderButtons()}
-      <ExpandTransition loading={loading} open={true}>
+      <ExpandTransition loading={loading} open={true} transitionDuration={10}>
         <div style={{margin: '8px 20px'}}>{this.getStepContent(pages.indexOf(page))}</div>
       </ExpandTransition>
       </div>

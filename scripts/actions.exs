@@ -4,7 +4,7 @@ defmodule Ultimatum.Actions do
 
   def change_page(data, page) do
     action = get_action("change page", page)
-    format(data, action, dispatch_to_all(data, action))
+    format(data, nil, dispatch_to_all(data, action))
   end
 
   def sync_game_progress(data, game_progress) do
@@ -14,12 +14,12 @@ defmodule Ultimatum.Actions do
 
   def change_game_round(data, game_round) do
     action = get_action("change game_round", game_round)
-    format(data, action, dispatch_to_all(data, action))
+    format(data, nil, dispatch_to_all(data, action))
   end
 
   def change_game_mode(data, game_mode) do
     action = get_action("change game_mode", game_mode)
-    format(data, action, dispatch_to_all(data, action))
+    format(data, nil, dispatch_to_all(data, action))
   end
 
   def change_allo_temp(data, id, allo_temp) do
