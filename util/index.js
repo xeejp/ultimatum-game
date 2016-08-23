@@ -19,7 +19,14 @@ export function getRoleName(role) {
     case "proposer" : return "提案者"
     case "dictator" : return "独裁者"
     case "responder": return "受け手"
-    default:          return "エラー"
+  }
+}
+
+export function getStateName(state) {
+  switch(state) {
+    case "allocating": return "配分中"
+    case "judging"   : return "判定中"
+    case "finished"  : return "終了"
   }
 }
 

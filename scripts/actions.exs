@@ -35,8 +35,9 @@ defmodule Ultimatum.Actions do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    action = get_action("finish allocating", allo_temp)
-    format(data, nil, dispatch_to(target_id, action))
+    h_action = get_action("finish allocating", pair_id)
+    p_action = get_action("finish allocating", allo_temp)
+    format(data, h_action, dispatch_to(target_id, p_action))
   end
 
   # TODO hostにpair_idをstateを変更すように送信, idとtarget_idをrole, pointを変更するように送信
@@ -47,7 +48,7 @@ defmodule Ultimatum.Actions do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    host_action = get_action("push results", allo_temp)
+    host_action = get_action("push results", %{id: id, target_id: target_id, allo_temp: allo_temp})
     target_action = get_action("response ok", allo_temp)
     format(data, host_action, dispatch_to(target_id, target_action)) 
   end
@@ -60,9 +61,14 @@ defmodule Ultimatum.Actions do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    host_action = get_action("push results", 0)
+    host_action = get_action("push results", %{id: id, target_id: target_id, allo_temp: 0})
     target_action = get_action("response ng", nil)
     format(data, host_action, dispatch_to(target_id, target_action))
+  end
+
+  def show_results(data, results) do
+    action = get_action("show results", results)
+    format(data, nil, dispatch_to_all(data, action))
   end
 
   def join(data, id, participant) do

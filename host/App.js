@@ -8,7 +8,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ExperimentKey from './ExpermentKey.js'
 import PageSteps from './PageSteps.js'
 import Users from './Users.js'
-import Chart from './Chart.js'
+import Chart from '../components/Chart.js'
 
 const mapStateToProps = ({ dispatch }) => ({
   dispatch

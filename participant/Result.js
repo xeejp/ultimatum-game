@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import Chart from '../components/Chart.js'
+
 import { fetchContents } from './actions'
 
 const mapStateToProps = ({}) => ({
@@ -8,7 +10,7 @@ const mapStateToProps = ({}) => ({
 
 const Result = ({}) => (
   <div>
-    <p>実験結果</p>
+    <Chart />
   </div>
 )
 

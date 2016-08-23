@@ -23,11 +23,17 @@ const initialState = {
   now_round: 1,
   allo_temp: 500,
   state: "allocating",
+  ultimatum_results: [],
+  dictator_results: [],
 }
 
 const reducer = concatenateReducers([
   handleActions({
     'update contents': (_, { payload }) => payload,
+    'show results': (_ , { payload: {ultimatum_results, dictator_results} }) => ({
+      ultimatum_results: ultimatum_results,
+      dictator_results: dictator_results
+    }),
     'join': ({ participants }, { payload: { id, participant } }) => ({
       participants: Object.assign({}, participants, {
         [id]: participant

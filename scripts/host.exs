@@ -8,6 +8,10 @@ defmodule Ultimatum.Host do
     |> Actions.update_host_contents()
   end
 
+  def show_results(data, results) do
+    Actions.show_results(data, results)
+  end
+
   def change_page(data, page) do
     if page in Main.pages do
       %{data | page: page}

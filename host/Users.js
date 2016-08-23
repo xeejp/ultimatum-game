@@ -2,23 +2,24 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { Card, CardHeader, CardText } from 'material-ui/Card'
-import { getRoleName } from '../util/index.js'
+import { getRoleName, getStateName } from '../util/index.js'
 
-const User = ({ id, role, point }) => (
-  <tr><td>{id}</td><td>{role}</td><td>{point}</td></tr>
+const User = ({ id, role, point, pair_id}) => (
+  <tr><td>{id}</td><td>{getRoleName(role)}</td><td>{point}</td><td>{pair_id}</td></tr>
 )
 
 const UsersList = ({participants}) => (
   <table>
-    <thead><tr><th>id</th><th>役割</th><td>ポイント</td></tr></thead>
+    <thead><tr><th>ID</th><th>役割</th><td>ポイント</td><td>所属ペアID</td></tr></thead>
     <tbody>
       {
         Object.keys(participants).map(id => (
           <User
             key={id}
             id={id}
-            role={getRoleName(participants[id].role)}
+            role={participants[id].role}
             point={participants[id].point}
+            pair_id={participants[id].pair_id}
           />
         ))
       }
@@ -26,28 +27,26 @@ const UsersList = ({participants}) => (
   </table>
 )
 
-const Pair = ({ pair, participants }) => (
-  <UsersList
-    participants={pair.members.reduce((res, id) =>
-      Object.assign(res, {
-        [id]: participants[id]
-      }),
-    {})}
-  />
+const Pair = ({ id, now_round, state, members }) => (
+  <tr><td>{id}</td><td>{now_round}</td><td>{getStateName(state)}</td></tr>
 )
 
 const Pairs = ({ pairs, participants }) => (
-  <div>
-    {
-      Object.keys(pairs).map(id => (
-        <Pair
-          key={id}
-          pair={pairs[id]}
-          participants={participants}
-        />
-      ))
-    }
-  </div>
+  <table>
+    <thead><tr><th>ID</th><th>ラウンド</th><th>状況</th></tr></thead>
+    <tbody>
+      {
+        Object.keys(pairs).map(id => (
+          <Pair
+            key={id}
+            id={id}
+            now_round={pairs[id].now_round}
+            state={pairs[id].state}
+          />
+        ))
+      }
+    </tbody>
+  </table>
 )
 
 const mapStateToProps = ({ pairs, participants }) => ({
