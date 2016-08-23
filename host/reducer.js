@@ -6,7 +6,11 @@ import {
   pages,
   roles,
   states,
-} from '../util/index.js'
+} from 'util/index'
+
+import {
+  reset,
+} from './actions.js'
 
 const initialState = {
   participants: {},
@@ -31,14 +35,19 @@ const reducer = concatenateReducers([
         [id]: participant
       })
     }),
+    [reset]: ({}) => ({
+      game_progress: 0,
+      pairs: {}
+    }),
     'matched': (_, { payload: { participants, pairs } }) => ({
       participants, pairs
     }),
     'change page': (_, { payload }) => ({ page: payload }),
     'change game_round': (_, { payload }) => ({ game_round: payload }),
     'change game_mode': (_, { payload }) => ({ game_mode: payload }),
-    'push results': ({ game_mode, game_round, ultimatum_results, dictator_results, participants, pairs },
+    'push results': ({ game_progress, game_mode, game_round, ultimatum_results, dictator_results, participants, pairs },
     { payload: {id, target_id, allo_temp} }) => ({
+      game_progress: game_progress + 1,
       ultimatum_results: (game_mode == "ultimatum")? ultimatum_results.concat(allo_temp) : ultimatum_results,
       dictator_results: (game_mode == "dictator")? dictator_results.concat(allo_temp) : dictator_results,
       participants: Object.assign({}, participants, {

@@ -7,18 +7,32 @@ import Allocating from './componets/Allocating.js'
 import Judging from './componets/Judging.js'
 import Finished from './componets/Finished.js'
 
-const mapStateToProps = ({ state, role, game_round, now_round, point }) => ({
+const mapStateToProps = ({ state, role, game_round, now_round, point, game_progress }) => ({
   state,
   role,
   game_round,
   now_round,
   point,
+  game_progress,
 })
 
 const styles = {
-  chip: {
+  chip1: {
     margin: 4,
+    float: "left"
   },
+  chip2: {
+    margin: 4,
+    float: "right"
+  },
+  chip3: {
+    margin: 4,
+    float: "right"
+  },
+  contents: {
+    margin: 16,
+    clear: "both"
+  }
 }
 
 class Respond extends Component {
@@ -35,13 +49,14 @@ class Respond extends Component {
   }
 
   render() {
-    const { role, game_round, now_round, point } = this.props
+    const { role, game_round, now_round, point, game_progress } = this.props
     return (
       role != "visitor"?
         <div>
-          <Chip style={styles.chip}>ラウンド: {now_round} / {game_round}</Chip>
-          <Chip style={styles.chip}>ポイント: {point}</Chip>
-          {this.renderContents()}
+          <Chip style={styles.chip1}>ラウンド: {now_round} / {game_round}</Chip>
+          <Chip style={styles.chip2}>参加者全体の進捗: {Math.round(game_progress)} %</Chip>
+          <Chip style={styles.chip3}>ポイント: {point}</Chip>
+          <div style={styles.contents}>{this.renderContents()}</div>
         </div>
       :
         <p>参加できませんでした。終了をお待ち下さい。</p>

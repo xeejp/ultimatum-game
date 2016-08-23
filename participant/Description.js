@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import {Card, CardText, CardTitle } from 'material-ui/Card'
 import {List, ListItem} from 'material-ui/List'
-import { getGamemodeName } from '../util/index.js'
+import { getGamemodeName } from 'util/index'
 
 const mapStateToProps = ({ game_mode, game_round}) => ({
   game_mode,

@@ -31,6 +31,7 @@ defmodule Ultimatum.Participant do
       page: data.page,
       game_mode: data.game_mode,
       game_round: data.game_round,
+      game_progress: data.game_progress,
     }
   end
 

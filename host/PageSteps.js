@@ -10,19 +10,25 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import TextField from 'material-ui/TextField';
+
 import ExperimentSetting from './ExpermentSetting.js'
 import MatchingButton from './MatchingButton.js'
-import { getPageName } from 'util/index'
-import { submitPage, prevPage, nextPage } from './actions'
 
-import { pages } from '../util/index.js'
+import { getPageName, pages } from 'util/index'
 
-const style = {
-  margin: 12,
-};
+import {
+  submitPage,
+  prevPage,
+  nextPage,
+  reset,
+} from './actions'
 
-const mapStateToProps = ({ page }) => ({
-  page
+
+const mapStateToProps = ({ page, game_round, game_progress, pairs }) => ({
+  page,
+  game_round,
+  game_progress,
+  pairs
 })
 
 class PageSteps extends React.Component {
@@ -52,6 +58,7 @@ class PageSteps extends React.Component {
         finished: page == pages[3]
       }))
     }
+    if(pages[3] == page) dispatch(reset())
   };
 
   handlePrev = () => {
@@ -65,6 +72,7 @@ class PageSteps extends React.Component {
   };
 
   getStepContent(page) {
+    const {game_round, pairs, game_progress } = this.props
     switch (page) {
       case 0:
         return (
@@ -74,28 +82,24 @@ class PageSteps extends React.Component {
           </div>
         );
       case 1:
-        return (
-            <p>参加者側に説明を表示しています。</p>
-        );
+        return <p>参加者側に説明を表示しています。</p>
       case 2:
         return (
-          <p>参加者側に実験画面を表示しています。</p>
-        );
+          <div>
+            <p>参加者側に実験画面を表示しています。</p>
+            <p>現在の進捗: {Math.round(100 * game_progress / game_round * Object.keys(pairs).length)} %</p>
+          </div>
+        )
       case 3:
-        return (
-          <p>参加者側に結果を表示しています。</p>
-        );
+        return <p>参加者側に結果を表示しています。</p>
     }
   }
 
-  renderContent() {
+  renderButtons() {
     const { page } = this.props
-    const contentStyle = {margin: '0 16px', overflow: 'hidden'};
-
     return (
-      <div style={contentStyle}>
-        <div>{this.getStepContent(pages.indexOf(page))}</div>
-        <div style={{marginTop: 24, marginBottom: 12}}>
+      <div>
+        <div style={{margin: '16px 18px'}}>
           <FlatButton
             label="戻る"
             disabled={pages[0] == page}
@@ -130,12 +134,13 @@ class PageSteps extends React.Component {
       )
     }
     return (
-      <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
+      <div style={{width: '100%',  margin: 'auto'}}>
       <Stepper activeStep={pages.indexOf(page)} linear={false}>
         {buttons}
       </Stepper>
+      {this.renderButtons()}
       <ExpandTransition loading={loading} open={true}>
-        {this.renderContent()}
+        <div style={{margin: '8px 20px'}}>{this.getStepContent(pages.indexOf(page))}</div>
       </ExpandTransition>
       </div>
     );

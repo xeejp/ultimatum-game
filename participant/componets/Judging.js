@@ -5,7 +5,7 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import Slider from 'material-ui/Slider'
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { getRoleName } from '../../util/index.js'
+import { getRoleName } from 'util/index'
 
 import {
   submitAlloTemp,

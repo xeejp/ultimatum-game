@@ -30,6 +30,9 @@ const initialState = {
 const reducer = concatenateReducers([
   handleActions({
     'update contents': (_, { payload }) => payload,
+    'sync game progress': (_, { payload }) => ({
+      game_progress: payload
+    }),
     'show results': (_ , { payload: {ultimatum_results, dictator_results} }) => ({
       ultimatum_results: ultimatum_results,
       dictator_results: dictator_results

@@ -79,7 +79,7 @@ class Chart extends Component {
 
     return (
     <div>
-      <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+      <Card style={{margin: '16px 16px'}}expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
         <CardHeader
           title="グラフ"
           actAsExpander={true}

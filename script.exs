@@ -24,6 +24,7 @@ defmodule UltimatumGame do
         page: "waiting",
         game_mode: "ultimatum",
         game_round: 1,
+        game_progress: 0,
         participants: %{},
         pairs: %{},
         ultimatum_results: [],
@@ -51,6 +52,7 @@ defmodule UltimatumGame do
     Logger.debug("[Ultimatum Game] #{action} #{inspect params}")
     result = case {action, params} do
       {"FETCH_CONTENTS", _} -> Host.fetch_contents(data)
+      {"SYNC_GAME_PROGRESS", game_progress} -> Host.sync_game_progress(data, game_progress)
       {"SHOW_RESULTS", results} -> Host.show_results(data, results)
       {"MATCH", _} -> Host.match(data)
       {"CHANGE_PAGE", page} -> Host.change_page(data, page)

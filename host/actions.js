@@ -6,6 +6,8 @@ export const showResults = createAction('SHOW_RESULTS')
 
 export const match = createAction('MATCH')
 
+export const reset = createAction('RESET')
+
 export const submitPage = createAction('SUBMIT_PAGE', page => page)
 export const changePage = createAction('CHANGE_PAGE', page => page)
 export const prevPage = createAction('PREV_PAGE')

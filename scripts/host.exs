@@ -8,6 +8,10 @@ defmodule Ultimatum.Host do
     |> Actions.update_host_contents()
   end
 
+  def sync_game_progress(data, game_progress) do
+    Actions.sync_game_progress(data, game_progress)
+  end
+
   def show_results(data, results) do
     Actions.show_results(data, results)
   end

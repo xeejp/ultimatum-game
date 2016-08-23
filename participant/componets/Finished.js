@@ -5,7 +5,7 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 
 import {
   getRoleName,
-} from '../../util/index.js'
+} from 'util/index'
 
 const mapStateToProps = ({ role }) => ({
   role

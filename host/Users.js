@@ -55,7 +55,7 @@ const mapStateToProps = ({ pairs, participants }) => ({
 
 const Users = ({ pairs, participants }) => (
   <div>
-    <Card>
+    <Card style={{margin: '16px 16px'}}>
       <CardHeader
         title={"Users (" + Object.keys(participants).length + "人)"}
         actAsExpander={true}
@@ -67,7 +67,7 @@ const Users = ({ pairs, participants }) => (
         />
       </CardText>
     </Card>
-    <Card>
+    <Card style={{margin: '16px 16px'}}>
       <CardHeader
         title={"ペア数 (" + Object.keys(pairs).length + ")"}
         actAsExpander={true}

@@ -1,5 +1,7 @@
 import { put, take, call, select, fork } from 'redux-saga/effects'
 
+import { delay } from "redux-saga";
+
 import {
   fetchContents,
   showResults,
@@ -19,6 +21,16 @@ function* fetchContentsSaga() {
   while(true) {
     yield take(`${fetchContents}`)
     sendData('FETCH_CONTENTS')
+  }
+}
+
+function* syncGameProgressSaga() {
+  while(true) {
+    yield call(delay, 2000)
+    const game_progress = yield select(({game_progress}) => game_progress)
+    const game_round = yield select(({game_round}) => game_round)
+    const pairs = yield select(({pairs}) => pairs)
+    sendData('SYNC_GAME_PROGRESS', 100 * game_progress / game_round*Object.keys(pairs).length)
   }
 }
 
@@ -117,6 +129,7 @@ function* changeGameModeSaga() {
 
 function* saga() {
   yield fork(matchSaga)
+  yield fork(syncGameProgressSaga)
   yield fork(showResultsSaga)
   yield fork(changePageSaga)
   yield fork(nextPageSaga)

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import {Card, CardText, CardTitle } from 'material-ui/Card'
 import CircularProgress from 'material-ui/CircularProgress'
 
-import { getGamemodeName } from '../util/index.js'
+import { getGamemodeName } from 'util/index'
 
 const mapStateToProps = ({ game_mode }) => ({
   game_mode,

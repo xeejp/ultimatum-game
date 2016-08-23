@@ -7,6 +7,11 @@ defmodule Ultimatum.Actions do
     format(data, action, dispatch_to_all(data, action))
   end
 
+  def sync_game_progress(data, game_progress) do
+    action = get_action("sync game progress", game_progress)
+    format(data, nil, dispatch_to_all(data, action))
+  end
+
   def change_game_round(data, game_round) do
     action = get_action("change game_round", game_round)
     format(data, action, dispatch_to_all(data, action))
@@ -40,7 +45,6 @@ defmodule Ultimatum.Actions do
     format(data, h_action, dispatch_to(target_id, p_action))
   end
 
-  # TODO hostにpair_idをstateを変更すように送信, idとtarget_idをrole, pointを変更するように送信
   def response_ok(data, id, allo_temp) do
     pair_id = get_in(data, [:participants, id, :pair_id])
     members = get_in(data, [:pairs, pair_id, :members])
@@ -53,7 +57,6 @@ defmodule Ultimatum.Actions do
     format(data, host_action, dispatch_to(target_id, target_action)) 
   end
 
-  # TODO hostにpair_idをstateを変更すように送信, idとtarget_idをrole, pointを変更するように送信
   def response_ng(data, id) do
     pair_id = get_in(data, [:participants, id, :pair_id])
     members = get_in(data, [:pairs, pair_id, :members])
