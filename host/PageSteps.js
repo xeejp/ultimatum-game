@@ -33,27 +33,24 @@ const mapStateToProps = ({ page, game_round, game_progress, pairs, loading }) =>
 })
 
 class PageSteps extends React.Component {
-  state = {
-    finished: false
-  }
-  dummyAsync = (cb) => {
+  Async = (cb) => {
     const { dispatch } = this.props
     dispatch(intoLoading())
-    this.asyncTimer = setTimeout(cb, 500)
+    this.asyncTimer = setTimeout(cb, 200)
   }
 
   handleChangePage = (page) => {
-    const { dispatch } = this.props
+    const { dispatch, loading } = this.props
     dispatch(changePage(page))
-    if (!this.props.loading) {
-      this.dummyAsync(() => {
+    if (!loading) {
+      this.Async(() => {
         dispatch(exitLoading())
       })
     }
   }
 
   handleNext = () => {
-    const { dispatch, page } = this.props
+    const { dispatch, page, loading } = this.props
     var next = pages[0]
     for(let i = 0; i < pages.length - 1; i++){
       if(page == pages[i]) {
@@ -62,27 +59,26 @@ class PageSteps extends React.Component {
       }
     }
     dispatch(changePage(next))
-    if (!this.props.loading) {
-      this.dummyAsync(() => {
+    if (!loading) {
+      this.Async(() => {
         dispatch(exitLoading())
       })
     }
-    this.setState({ finished: page == pages[3] })
     if(pages[3] == page) dispatch(reset())
   };
 
   handlePrev = () => {
-    const { dispatch, page } = this.props
+    const { dispatch, page, loading} = this.props
     let prev = pages[0]
-    for(let i = 1; i < pages.length - 1; i++){
+    for(let i = 1; i < pages.length; i++){
       if(page == pages[i]) {
         prev = pages[(i - 1) % pages.length]
         break
       }
     }
     dispatch(changePage(prev))
-    if (!this.props.loading) {
-      this.dummyAsync(() => {
+    if (!loading) {
+      this.Async(() => {
         dispatch(exitLoading())
       })
     }
@@ -153,7 +149,7 @@ class PageSteps extends React.Component {
         {buttons}
       </Stepper>
       {this.renderButtons()}
-      <ExpandTransition loading={loading} open={true} transitionDuration={10}>
+      <ExpandTransition loading={loading} open={true} transitionDuration={200}>
         <div style={{margin: '8px 20px'}}>{this.getStepContent(pages.indexOf(page))}</div>
       </ExpandTransition>
       </div>

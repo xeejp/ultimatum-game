@@ -10,3 +10,6 @@ export const submitAlloTemp = createAction('SUBMIT_ALLO_TEMP')
 
 export const responseOK = createAction('RESPONSE_OK')
 export const responseNG = createAction('RESPONSE_NG')
+
+export const fallSnackBarFlags = createAction('FALL_SNACK_BAR_FLAGS')
+export const fallSnackBarFlags2 = createAction('FALL_SNACK_BAR_FLAGS2')
