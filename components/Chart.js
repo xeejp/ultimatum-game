@@ -30,23 +30,23 @@ class Chart extends Component {
          type: "column"
       },
       title: {
-        text: "提案者側に分配された金額" // グラフのタイトル
+        text: "提案者側に分配されたポイント"
       },
       xAxis: {
         categories: categories,
-        crosshair: true, // 選択箇所の縦横を強調するか
+        crosshair: true,
         title: {
           text: "ポイント"
         },
         labels: {
-          step: 1 // x軸のメモリ表示間隔。指定しないと自動判定される。
+          step: 1
         }
       },
-      yAxis: { // 2つ以上の縦軸を用意する場合は複数の要素を定義する
+      yAxis: {
         allowDecimals: false,
         min: 0,
         title: {
-          text: "回数" // 縦軸の名前
+          text: "回数"
         },
         labels: {
           step: 1,
@@ -65,8 +65,8 @@ class Chart extends Component {
       },
       series: [
         {
-          name: "最後通牒ゲーム", // 連続値の名前
-          data: Array.from(categories).map(x => ultimatum_results.filter(y => x == y).length), // データの配列
+          name: "最後通牒ゲーム",
+          data: Array.from(categories).map(x => ultimatum_results.filter(y => x == y).length),
           stack: 'graph'
         },
         {
@@ -79,7 +79,11 @@ class Chart extends Component {
 
     return (
     <div>
-      <Card style={{margin: '16px 16px'}}expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+      <Card
+        style={{margin: '16px 16px'}}
+        expanded={this.state.expanded}
+        onExpandChange={this.handleExpandChange}
+      >
         <CardHeader
           title="グラフ"
           actAsExpander={true}

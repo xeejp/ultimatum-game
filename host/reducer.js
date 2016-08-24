@@ -9,18 +9,26 @@ import {
 } from 'util/index'
 
 import {
+  changePage,
+  changeGameRound,
+  changeGameMode,
   reset,
+  intoLoading,
+  exitLoading,
 } from './actions.js'
 
 const initialState = {
   participants: {},
   pairs: {},
+  loading: true,
   ultimatum_results: [],
   dictator_results: [],
 }
 
 const reducer = concatenateReducers([
   handleActions({
+    [intoLoading]: ({}) => ({ loading: true }),
+    [exitLoading]: ({}) => ({ loading: false }),
     'update contents': (_, { payload }) => payload,
     'finish allocating': ( { pairs } , { payload }) => ({
       pairs: Object.assign({}, pairs, {
@@ -42,9 +50,9 @@ const reducer = concatenateReducers([
     'matched': (_, { payload: { participants, pairs } }) => ({
       participants, pairs
     }),
-    'change page': (_, { payload }) => ({ page: payload }),
-    'change game_round': (_, { payload }) => ({ game_round: payload }),
-    'change game_mode': (_, { payload }) => ({ game_mode: payload }),
+    [changePage]: (_, { payload }) => ({ page: payload }),
+    [changeGameRound]: (_, { payload }) => ({ game_round: payload }),
+    [changeGameMode]: (_, { payload }) => ({ game_mode: payload }),
     'push results': ({ game_progress, game_mode, game_round, ultimatum_results, dictator_results, participants, pairs },
     { payload: {id, target_id, allo_temp} }) => ({
       game_progress: game_progress + 1,
@@ -66,7 +74,6 @@ const reducer = concatenateReducers([
       })
     }),
   }, initialState),
-  handleAction('update contents', () => ({ loading: false }), { loading: true })
 ])
 
 export default reducer

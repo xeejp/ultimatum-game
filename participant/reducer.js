@@ -14,6 +14,8 @@ import {
   finishJudging,
   responseOK,
   responseNG,
+  fallSnackBarFlags,
+  fallSnackBarFlags2,
 } from './actions.js'
 
 const initialState = {
@@ -22,9 +24,14 @@ const initialState = {
   pair_id: null,
   now_round: 1,
   allo_temp: 500,
-  state: "allocating",
   ultimatum_results: [],
   dictator_results: [],
+  state: "allocating",
+  responsedOK: false,
+  responseOK: false,
+  responsedNG: false,
+  responseNG: false,
+  changeRole: false,
 }
 
 const reducer = concatenateReducers([
@@ -53,27 +60,43 @@ const reducer = concatenateReducers([
     'change allo_temp': (_, { payload })=> ({ allo_temp: payload}), 
     [finishAllocating]: (_, { payload }) => ({ state: "judging", allo_temp: payload}),
     'finish allocating': (_, { payload }) => ({ state: "judging", allo_temp: payload}),
-    [responseOK]: ( {now_round, game_mode, game_round, state, point, role}, { payload }) => ({
+    [responseOK]: ( {now_round, game_mode, game_round, state, point, role, allo_temp}, { payload }) => ({
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
       role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
       point: point + 1000 - payload,
+      allo_result: allo_temp,
+      responseOK: true,
     }),
-    'response ok': ({now_round, game_mode, game_round, state, point, role}, { payload }) => ({
+    'response ok': ({now_round, game_mode, game_round, state, point, role, allo_temp}, { payload }) => ({
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
       role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
       point: point + payload,
+      allo_result: allo_temp,
+      responsedOK: true,
     }),
     [responseNG]: ({state, now_round, game_round, role, game_mode}, {}) => ({
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
       role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
+      responseNG: true,
     }),
     'response ng': ({state, now_round, game_round, role, game_mode}, {}) => ({
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
       role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
+      responsedNG: true,
+    }),
+    [fallSnackBarFlags]: ({ state }) => ({
+      responsedOK: false,
+      responseOK: false,
+      responsedNG: false,
+      responseNG: false,
+      changeRole: state == "allocating",
+    }),
+    [fallSnackBarFlags2]: ({}) => ({
+      changeRole: false,
     }),
     'change page': (_, { payload }) => ({ page: payload }),
     'change game_round': (_, { payload }) => ({ game_round: payload }),
