@@ -12,6 +12,11 @@ defmodule Ultimatum.Actions do
     format(data, nil, dispatch_to_all(data, action))
   end
 
+  def sync_participants_length(data, participants_length) do
+    action = get_action("sync participants length", participants_length)
+    format(data, nil, dispatch_to_all(data, action))
+  end
+
   def change_game_round(data, game_round) do
     action = get_action("change game_round", game_round)
     format(data, nil, dispatch_to_all(data, action))

@@ -24,11 +24,25 @@ function* fetchContentsSaga() {
 
 function* syncGameProgressSaga() {
   while(true) {
-    yield delay(5000)
-    const game_progress = yield select(({game_progress}) => game_progress)
-    const game_round = yield select(({game_round}) => game_round)
-    const pairs = yield select(({pairs}) => pairs)
-    sendData('SYNC_GAME_PROGRESS', 100 * game_progress / game_round*Object.keys(pairs).length)
+    yield delay(2000)
+    const page = yield select(({ page }) => page )
+    if(page == "experiment"){
+      const game_progress = yield select(({game_progress}) => game_progress)
+      const game_round = yield select(({game_round}) => game_round)
+      const pairs = yield select(({pairs}) => pairs)
+      sendData('SYNC_GAME_PROGRESS', 100 * game_progress / game_round*Object.keys(pairs).length)
+    }
+  }
+}
+
+function* syncParticipantsLengthSaga() {
+  while(true) {
+    yield delay(2000)
+    const page = yield select(({ page }) => page )
+    if(page == "waiting"){
+      const participants = yield select(({participants}) => participants)
+      sendData('SYNC_PARTICIPANTS_LENGTH', Object.keys(participants).length)
+    }
   }
 }
 
@@ -80,6 +94,7 @@ function* changeGameModeSaga() {
 function* saga() {
   yield fork(fetchContentsSaga)
   yield fork(matchSaga)
+  yield fork(syncParticipantsLengthSaga)
   yield fork(syncGameProgressSaga)
   yield fork(showResultsSaga)
   yield fork(changePageSaga)

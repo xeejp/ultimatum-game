@@ -53,6 +53,7 @@ defmodule UltimatumGame do
     result = case {action, params} do
       {"FETCH_CONTENTS", _} -> Host.fetch_contents(data)
       {"SYNC_GAME_PROGRESS", game_progress} -> Host.sync_game_progress(data, game_progress)
+      {"SYNC_PARTICIPANTS_LENGTH", participants_length} -> Host.sync_participants_length(data, participants_length)
       {"SHOW_RESULTS", results} -> Host.show_results(data, results)
       {"MATCH", _} -> Host.match(data)
       {"CHANGE_PAGE", page} -> Host.change_page(data, page)

@@ -32,6 +32,7 @@ const initialState = {
   responsedNG: false,
   responseNG: false,
   changeRole: false,
+  participants_length: 0,
 }
 
 const reducer = concatenateReducers([
@@ -39,6 +40,9 @@ const reducer = concatenateReducers([
     'update contents': (_, { payload }) => payload,
     'sync game progress': (_, { payload }) => ({
       game_progress: payload
+    }),
+    'sync participants length': (_, { payload }) => ({
+      participants_length: payload
     }),
     'show results': (_ , { payload: {ultimatum_results, dictator_results} }) => ({
       ultimatum_results: ultimatum_results,

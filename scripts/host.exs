@@ -12,6 +12,10 @@ defmodule Ultimatum.Host do
     Actions.sync_game_progress(data, game_progress)
   end
 
+  def sync_participants_length(data, participants_length) do
+    Actions.sync_participants_length(data, participants_length)
+  end
+
   def show_results(data, results) do
     Actions.show_results(data, results)
   end
