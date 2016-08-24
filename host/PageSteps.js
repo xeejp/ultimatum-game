@@ -117,7 +117,7 @@ class PageSteps extends React.Component {
             label="戻る"
             disabled={pages[0] == page}
             onTouchTap={this.handlePrev}
-            style={{marginRight: 12}}
+            style={{marginRight: "12px"}}
           />
           <RaisedButton
             label={pages[3] === page ? 'リセット' : '次へ'}

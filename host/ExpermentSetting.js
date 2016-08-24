@@ -19,11 +19,11 @@ const styles = {
   block: {
     margin: '20px 20px'
   },
-  radioButton: {
-    marginBottom: 8,
-  },
-  risedButton: {
+  game_roundButton: {
     margin: 12,
+  },
+  game_modeButton: {
+    margin: 0,
   },
 };
 class ExperimentSetting extends Component {
@@ -65,30 +65,30 @@ class ExperimentSetting extends Component {
             { game_round != 1?
               <RaisedButton
                 label="-"
-                style={styles.risedButton}
+                style={styles.game_roundButton}
                 onClick={this.handleRoundDec}
               />
               :
               <FlatButton
                 label="-"
-                style={styles.risedButton}
+                style={styles.game_roundButton}
               />
             }
             <RaisedButton
               label="+"
-              style={styles.risedButton}
+              style={styles.game_roundButton}
               onClick={this.handleRoundInc}
             />
             <p>ゲームモード: {getGamemodeName(game_mode)}</p>
             <RaisedButton
               label="最後通牒ゲーム"
-              style={styles.risedButton}
+              style={styles.game_modeButton}
               onClick={game_mode == "dictator"? this.handleGameMode : this.handleNothing}
               primary={game_mode == "ultimatum"}
             />
             <RaisedButton
               label="独裁者ゲーム"
-              style={styles.risedButton}
+              style={styles.game_modeButton}
               onClick={game_mode == "ultimatum"? this.handleGameMode : this.handleNothing}
               primary={game_mode == "dictator"}
             />

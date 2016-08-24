@@ -23,7 +23,7 @@ const initialState = {
   role: "visitor",
   pair_id: null,
   now_round: 1,
-  allo_temp: 500,
+  allo_temp: 100 * Math.round(10 * Math.random()),
   ultimatum_results: [],
   dictator_results: [],
   state: "allocating",
@@ -70,6 +70,7 @@ const reducer = concatenateReducers([
       role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
       point: point + 1000 - payload,
       allo_result: allo_temp,
+      allo_temp: 100 * Math.round(10* Math.random()),
       responseOK: true,
     }),
     'response ok': ({now_round, game_mode, game_round, state, point, role, allo_temp}, { payload }) => ({
@@ -78,18 +79,21 @@ const reducer = concatenateReducers([
       role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
       point: point + payload,
       allo_result: allo_temp,
+      allo_temp: 100 * Math.round(10* Math.random()),
       responsedOK: true,
     }),
     [responseNG]: ({state, now_round, game_round, role, game_mode}, {}) => ({
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
       role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
+      allo_temp: 100 * Math.round(10* Math.random()),
       responseNG: true,
     }),
     'response ng': ({state, now_round, game_round, role, game_mode}, {}) => ({
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
       role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
+      allo_temp: 100 * Math.round(10* Math.random()),
       responsedNG: true,
     }),
     [fallSnackBarFlags]: ({ state }) => ({

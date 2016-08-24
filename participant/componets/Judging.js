@@ -64,6 +64,7 @@ class Allocating extends Component {
                   label="承認"
                   primary={true}
                   onClick={this.handleOK}
+                  style={{marginRight: "16px"}}
                 />
                 <RaisedButton
                   label="拒否"
