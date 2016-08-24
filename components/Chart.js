@@ -5,27 +5,17 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 
 import Highcharts from 'react-highcharts'
 
+function compData(categories, results) {
+  const values = Object.keys(results).map(id => results[id].value)
+  return Array.from(categories).map(x => values.filter(y => x == y).length)
+}
+
+const categories = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+
 const mapStateToProps = ({ultimatum_results, dictator_results}) => ({
   ultimatum_results,
-  dictator_results
-})
-
-class Chart extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      expanded: true,
-    }
-  }
-
-  handleExpandChange = (expanded) => {
-    this.setState({expanded: expanded});
-  }
-
-  render() {
-    const { ultimatum_results, dictator_results } = this.props
-    const categories = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-    const config = {
+  dictator_results,
+  config: {
       chart: {
          type: "column"
       },
@@ -66,17 +56,32 @@ class Chart extends Component {
       series: [
         {
           name: "最後通牒ゲーム",
-          data: Array.from(categories).map(x => ultimatum_results.filter(y => x == y).length),
+          data: compData(categories, ultimatum_results),
           stack: 'graph'
         },
         {
           name: "独裁者ゲーム",
-          data: Array.from(categories).map(x => dictator_results.filter(y => x == y).length),
+          data: compData(categories, dictator_results),
           stack: 'graph',
         }
       ]
     }
+})
 
+class Chart extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: true,
+    }
+  }
+
+  handleExpandChange = (expanded) => {
+    this.setState({expanded: expanded});
+  }
+
+  render() {
+    const { ultimatum_results, dictator_results, config } = this.props
     return (
     <div>
       <Card

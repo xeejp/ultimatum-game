@@ -45,31 +45,31 @@ defmodule Ultimatum.Actions do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    h_action = get_action("finish allocating", pair_id)
-    p_action = get_action("finish allocating", allo_temp)
-    format(data, h_action, dispatch_to(target_id, p_action))
+    host_action = get_action("finish allocating", pair_id)
+    target_action = get_action("finish allocating", allo_temp)
+    format(data, host_action, dispatch_to(target_id, target_action))
   end
 
-  def response_ok(data, id, allo_temp) do
+  def response_ok(data, id, result) do
     pair_id = get_in(data, [:participants, id, :pair_id])
     members = get_in(data, [:pairs, pair_id, :members])
     target_id = case members do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    host_action = get_action("push results", %{id: id, target_id: target_id, allo_temp: allo_temp})
-    target_action = get_action("response ok", allo_temp)
+    host_action = get_action("push results", %{id: id, target_id: target_id, result: result})
+    target_action = get_action("response ok", get_in(result, ["value"]))
     format(data, host_action, dispatch_to(target_id, target_action)) 
   end
 
-  def response_ng(data, id) do
+  def response_ng(data, id, result) do
     pair_id = get_in(data, [:participants, id, :pair_id])
     members = get_in(data, [:pairs, pair_id, :members])
     target_id = case members do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    host_action = get_action("push results", %{id: id, target_id: target_id, allo_temp: 0})
+    host_action = get_action("push results", %{id: id, target_id: target_id, result: result })
     target_action = get_action("response ng", nil)
     format(data, host_action, dispatch_to(target_id, target_action))
   end

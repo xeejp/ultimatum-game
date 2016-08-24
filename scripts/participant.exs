@@ -16,12 +16,12 @@ defmodule Ultimatum.Participant do
     Actions.finish_allocating(data, id, allo_temp)
   end
 
-  def response_ok(data, id, allo_temp) do
-    Actions.response_ok(data, id, allo_temp)
+  def response_ok(data, id, result) do
+    Actions.response_ok(data, id, result)
   end
 
-  def response_ng(data, id) do
-    Actions.response_ng(data, id)
+  def response_ng(data, id, result) do
+    Actions.response_ng(data, id, result)
   end
 
   def format_participant(participant), do: participant

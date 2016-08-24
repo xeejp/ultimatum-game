@@ -21,8 +21,8 @@ const initialState = {
   participants: {},
   pairs: {},
   loading: true,
-  ultimatum_results: [],
-  dictator_results: [],
+  ultimatum_results: {},
+  dictator_results: {},
 }
 
 const reducer = concatenateReducers([
@@ -54,16 +54,30 @@ const reducer = concatenateReducers([
     [changeGameRound]: (_, { payload }) => ({ game_round: payload }),
     [changeGameMode]: (_, { payload }) => ({ game_mode: payload }),
     'push results': ({ game_progress, game_mode, game_round, ultimatum_results, dictator_results, participants, pairs },
-    { payload: {id, target_id, allo_temp} }) => ({
+    { payload: {id, target_id, result: {value, change_count}} }) => ({
       game_progress: game_progress + 1,
-      ultimatum_results: (game_mode == "ultimatum")? ultimatum_results.concat(allo_temp) : ultimatum_results,
-      dictator_results: (game_mode == "dictator")? dictator_results.concat(allo_temp) : dictator_results,
+      ultimatum_results: (game_mode == "ultimatum")?
+        Object.assign({}, ultimatum_results, {
+          [Object.keys(ultimatum_results).length]: {
+            value: value,
+            change_count: change_count,
+          }
+        })
+      : ultimatum_results,
+      dictator_results: (game_mode == "dictator")?
+        Object.assign({}, dictator_results, {
+          [Object.keys(dictator_results).length]: {
+            value: value,
+            change_count: change_count,
+          }
+        })
+      : dictator_results,
       participants: Object.assign({}, participants, {
         [id]: Object.assign({}, participants[id], {
-          point: participants[id].point + allo_temp,
+          point: participants[id].point + value,
         }),
         [target_id]: Object.assign({}, participants[target_id], {
-          point: participants[target_id].point + (1000 - allo_temp),
+          point: participants[target_id].point + (1000 - value),
         })
       }),
       pairs: Object.assign({}, pairs, {

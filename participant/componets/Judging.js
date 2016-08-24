@@ -12,8 +12,9 @@ import {
   finishAllocating,
 } from '../actions.js'
 
-const mapStateToProps = ({ allo_temp, role, game_mode }) => ({
+const mapStateToProps = ({ allo_temp, change_count, role, game_mode }) => ({
   allo_temp,
+  change_count,
   role,
   game_mode,
 })
@@ -31,13 +32,21 @@ class Allocating extends Component {
   }
 
   handleOK = () => {
-    const { dispatch, allo_temp } = this.props
-    dispatch(responseOK(allo_temp))
+    const { dispatch, allo_temp, change_count } = this.props
+    const result = {
+      value: allo_temp,
+      change_count: change_count,
+    }
+    dispatch(responseOK(result))
   }
 
   handleNG = () => {
-    const { dispatch } = this.props
-    dispatch(responseNG())
+    const { dispatch, change_count } = this.props
+    const result = {
+      value: 0,
+      change_count: change_count,
+    }
+    dispatch(responseNG(result))
   }
 
   render() {
