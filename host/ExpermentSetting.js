@@ -59,8 +59,10 @@ class ExperimentSetting extends Component {
         <Card>
           <CardHeader
             title="実験の設定"
+            actAsExpander={true}
+            showExpandableButton={true}
           />
-          <CardText>
+          <CardText expandable={true}>
             <p>ゲームのラウンド数: {game_round}回 (役割交換回数: {game_round-1}回)</p>
             { game_round != 1?
               <RaisedButton

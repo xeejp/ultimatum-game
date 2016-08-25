@@ -43,7 +43,6 @@ const styles = {
     float: "right"
   },
   contents: {
-    margin: 16,
     clear: "both"
   }
 }

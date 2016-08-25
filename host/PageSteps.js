@@ -36,7 +36,7 @@ class PageSteps extends React.Component {
   Async = (cb) => {
     const { dispatch } = this.props
     dispatch(intoLoading())
-    this.asyncTimer = setTimeout(cb, 200)
+    this.asyncTimer = setTimeout(cb, 400)
   }
 
   handleChangePage = (page) => {
@@ -90,8 +90,8 @@ class PageSteps extends React.Component {
       case 0:
         return (
           <div>
-            <p>参加者側に待機画面を表示しています。</p>
             <ExperimentSetting />
+            <p>参加者側に待機画面を表示しています。</p>
           </div>
         );
       case 1:
@@ -149,7 +149,7 @@ class PageSteps extends React.Component {
         {buttons}
       </Stepper>
       {this.renderButtons()}
-      <ExpandTransition loading={loading} open={true} transitionDuration={200}>
+      <ExpandTransition loading={loading} open={true} transitionDuration={100}>
         <div style={{margin: '8px 20px'}}>{this.getStepContent(pages.indexOf(page))}</div>
       </ExpandTransition>
       </div>

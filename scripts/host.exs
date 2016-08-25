@@ -17,7 +17,13 @@ defmodule Ultimatum.Host do
   end
 
   def show_results(data, results) do
-    Actions.show_results(data, results)
+    put_in(data, [:ultimatum_results],
+      get_in(results, ["ultimatum_results"])
+    )
+    |> put_in([:dictator_results],
+      get_in(results, ["dictator_results"])
+    )
+    |> Actions.show_results(results)
   end
 
   def change_page(data, page) do
@@ -43,7 +49,6 @@ defmodule Ultimatum.Host do
     %{game_mode: game_mode} = data
     %{participants: participants} = data
     group_size = 2
-    groups_count = div(Map.size(participants), group_size)
     groups = participants
               |> Enum.map(&elem(&1, 0)) # [id...]
               |> Enum.shuffle

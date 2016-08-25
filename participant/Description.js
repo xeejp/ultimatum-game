@@ -22,7 +22,7 @@ class Description extends Component {
             <List>
               <ListItem
                 primaryText="提案者"
-                secondaryText="提案者は始めにポイントが配られ、それを自分と受け手の間でどう分けるか提案できます"
+                secondaryText="提案者はポイントを自分と受け手の間でどう分けるか提案できます"
               />
               <ListItem
                 primaryText="受け手"

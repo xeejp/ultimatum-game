@@ -13,17 +13,149 @@ defmodule Ultimatum.Participant do
   end
 
   def finish_allocating(data, id, allo_temp) do
-    Actions.finish_allocating(data, id, allo_temp)
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    put_in(data, [:pairs, pair_id, :state], "judging")
+    |> Actions.finish_allocating(id, allo_temp)
   end
 
   def response_ok(data, id, result) do
-    Actions.response_ok(data, id, result)
+    value = get_in(result, ["value"])
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    now_round = get_in(data, [:pairs, pair_id, :now_round])
+    game_round = get_in(data, [:game_round])
+    game_mode = get_in(data, [:game_mode])
+    members = get_in(data, [:pairs, pair_id, :members])
+    target_id = case members do
+      [^id, target_id] -> target_id
+      [target_id, ^id] -> target_id
+    end
+    id_role = get_in(data, [:participants, id, :role])
+    target_id_role = get_in(data, [:participants, target_id, :role])
+    id_point = get_in(data, [:participants, id, :point])
+    target_id_point = get_in(data, [:participants, target_id, :point])
+    put_in(data, [:participants, id, :role],
+     case id_role == "responder" do
+       true -> case game_mode == "ultimatum" do
+         true -> "proposer"
+         false -> "dictator"
+       end
+       false -> "responder"
+     end
+    )
+    |> put_in([:participants, target_id, :role],
+     case target_id_role == "responder" do
+       true -> case game_mode == "ultimatum" do
+         true -> "proposer"
+         false -> "dictator"
+       end
+       false -> "responder"
+     end
+    )
+    |> put_in([:participants, target_id, :role],
+     case target_id_role == "responder" do
+       true -> case game_mode == "ultimatum" do
+         true -> "proposer"
+         false -> "dictator"
+       end
+       false -> "responder"
+     end
+    )
+    |> put_in([:participants, id, :point],
+      case id_role == "responder" do
+         true -> id_point + (1000 - value)
+         false -> id_point + value
+      end
+    )
+    |> put_in([:participants, target_id, :point],
+      case target_id_role == "responder" do
+         true -> target_id_point + (1000 - value)
+         false -> target_id_point + value
+      end
+    )
+    |> put_in([:pairs, pair_id, :state],
+     case now_round < game_round do
+       true -> "allocating"
+       false -> "finished"
+     end
+    )
+    |> put_in([:pairs, pair_id, :now_round],
+    case now_round < game_round do
+      true -> now_round + 1
+      false -> now_round
+    end
+  )
+  |> Actions.response_ok(id, result)
   end
 
   def response_ng(data, id, result) do
-    Actions.response_ng(data, id, result)
-  end
+    value = get_in(result, ["value"])
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    now_round = get_in(data, [:pairs, pair_id, :now_round])
+    game_round = get_in(data, [:game_round])
+    game_mode = get_in(data, [:game_mode])
+    members = get_in(data, [:pairs, pair_id, :members])
+    target_id = case members do
+      [^id, target_id] -> target_id
+      [target_id, ^id] -> target_id
+    end
+    id_role = get_in(data, [:participants, id, :role])
+    target_id_role = get_in(data, [:participants, target_id, :role])
+    id_point = get_in(data, [:participants, id, :point])
+    target_id_point = get_in(data, [:participants, target_id, :point])
+    put_in(data, [:participants, id, :role],
+     case id_role == "responder" do
+       true -> case game_mode == "ultimatum" do
+         true -> "proposer"
+         false -> "dictator"
+       end
+       false -> "responder"
+     end
+    )
+    |> put_in([:participants, target_id, :role],
+     case target_id_role == "responder" do
+       true -> case game_mode == "ultimatum" do
+         true -> "proposer"
+         false -> "dictator"
+       end
+       false -> "responder"
+     end
+    )
+    |> put_in([:participants, target_id, :role],
+     case target_id_role == "responder" do
+       true -> case game_mode == "ultimatum" do
+         true -> "proposer"
+         false -> "dictator"
+       end
+       false -> "responder"
+     end
+    )
+    |> put_in([:participants, id, :point],
+      case id_role == "responder" do
+         true -> id_point + (1000 - value)
+         false -> id_point + value
+      end
+    )
+    |> put_in([:participants, target_id, :point],
+      case target_id_role == "responder" do
+         true -> target_id_point + (1000 - value)
+         false -> target_id_point + value
+      end
+    )
+    |> put_in([:pairs, pair_id, :state],
+     case now_round < game_round do
+       true -> "allocating"
+       false -> "finished"
+     end
+    )
+    |> put_in([:pairs, pair_id, :now_round],
+    case now_round < game_round do
+      true -> now_round + 1
+      false -> now_round
+    end
+  )
+  |> Actions.response_ng(id, result)
 
+  end
   def format_participant(participant), do: participant
 
   def format_data(data) do

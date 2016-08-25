@@ -33,8 +33,8 @@ function* responseOKSaga() {
 
 function* responseNGSaga() {
   while(true) {
-    yield take(`${responseNG}`)
-    sendData('RESPONSE_NG')
+    const { payload } = yield take(`${responseNG}`)
+    sendData('RESPONSE_NG', payload)
   }
 }
 
