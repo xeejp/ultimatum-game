@@ -83,8 +83,8 @@ defmodule Ultimatum.Participant do
       true -> now_round + 1
       false -> now_round
     end
-  )
-  |> Actions.response_ok(id, result)
+    )
+    |> Actions.response_ok(id, result)
   end
 
   def response_ng(data, id, result) do

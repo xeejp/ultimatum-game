@@ -4,23 +4,34 @@ import { connect } from 'react-redux'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 
 import Highcharts from 'react-highcharts'
+import ChartSetting from './ChartSetting.js'
 
-function compData(categories, results) {
-  const values = Object.keys(results).map(id => results[id].value)
+function compDataAccept(categories, results, round) {
+  const values = results[round]? Object.keys(results[round]).filter(id =>
+    results[round][id].accept).map(id =>
+      results[round][id].value) : []
+  return Array.from(categories).map(x => values.filter(y => x == y).length)
+}
+
+function compDataRefuse(categories, results, round) {
+  const values = results[round]? Object.keys(results[round]).filter(id =>
+    !results[round][id].accept).map(id =>
+      results[round][id].value) : []
   return Array.from(categories).map(x => values.filter(y => x == y).length)
 }
 
 const categories = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
 
-const mapStateToProps = ({ultimatum_results, dictator_results}) => ({
+const mapStateToProps = ({ultimatum_results, dictator_results, chart_round}) => ({
   ultimatum_results,
   dictator_results,
+  chart_round,
   config: {
       chart: {
          type: "column"
       },
       title: {
-        text: "分配されたポイント"
+        text: "提案者に分配されたポイント"
       },
       xAxis: {
         categories: categories,
@@ -55,13 +66,18 @@ const mapStateToProps = ({ultimatum_results, dictator_results}) => ({
       },
       series: [
         {
-          name: "最後通牒ゲームの提案者",
-          data: compData(categories, ultimatum_results),
+          name: "最後通牒・承認",
+          data: compDataAccept(categories, ultimatum_results, chart_round),
           stack: 'ultimatum'
         },
         {
-          name: "独裁者ゲームの独裁者",
-          data: compData(categories, dictator_results),
+          name: "最後通牒・拒否",
+          data: compDataRefuse(categories, ultimatum_results, chart_round),
+          stack: 'ultimatum'
+        },
+        {
+          name: "独裁者・承認",
+          data: compDataAccept(categories, dictator_results, chart_round),
           stack: 'dictator',
         },
       ]
@@ -73,6 +89,7 @@ class Chart extends Component {
     super(props);
     this.state = {
       expanded: true,
+      round: 1,
     }
   }
 
@@ -96,6 +113,7 @@ class Chart extends Component {
         />
         <CardText expandable={true}>
           <Highcharts config={config} ref="chart"></Highcharts>
+          <ChartSetting />
         </CardText>
       </Card>
     </div>

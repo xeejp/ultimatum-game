@@ -9,6 +9,7 @@ import {
 } from 'util/index'
 
 import {
+  changeChartRound,
   changePage,
   changeGameRound,
   changeGameMode,
@@ -23,6 +24,7 @@ const initialState = {
   loading: true,
   ultimatum_results: {},
   dictator_results: {},
+  chart_round: 1,
 }
 
 const reducer = concatenateReducers([
@@ -50,25 +52,32 @@ const reducer = concatenateReducers([
     'matched': (_, { payload: { participants, pairs } }) => ({
       participants, pairs
     }),
+    [changeChartRound]: (_, { payload }) => ({ chart_round: payload }),
     [changePage]: (_, { payload }) => ({ page: payload }),
     [changeGameRound]: (_, { payload }) => ({ game_round: payload }),
     [changeGameMode]: (_, { payload }) => ({ game_mode: payload }),
     'push results': ({ game_progress, game_mode, game_round, ultimatum_results, dictator_results, participants, pairs },
-    { payload: {id, target_id, result: {value, change_count}} }) => ({
+    { payload: {id, target_id, pair_id, result: {value, change_count, accept, now_round}} }) => ({
       game_progress: game_progress + 1,
       ultimatum_results: (game_mode == "ultimatum")?
         Object.assign({}, ultimatum_results, {
-          [Object.keys(ultimatum_results).length]: {
-            value: value,
-            change_count: change_count,
+          [now_round]: {
+            [pair_id]: {
+              value: value,
+              change_count: change_count,
+              accept: accept,
+            }
           }
         })
       : ultimatum_results,
       dictator_results: (game_mode == "dictator")?
         Object.assign({}, dictator_results, {
-          [Object.keys(dictator_results).length]: {
-            value: value,
-            change_count: change_count,
+          [now_round]: {
+            [pair_id]: {
+              value: value,
+              change_count: change_count,
+              accept: accept,
+            }
           }
         })
       : dictator_results,

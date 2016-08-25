@@ -57,7 +57,7 @@ defmodule Ultimatum.Actions do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    host_action = get_action("push results", %{id: id, target_id: target_id, result: result})
+    host_action = get_action("push results", %{id: id, target_id: target_id, pair_id: pair_id, result: result})
     target_action = get_action("response ok", get_in(result, ["value"]))
     format(data, host_action, dispatch_to(target_id, target_action)) 
   end
@@ -69,7 +69,7 @@ defmodule Ultimatum.Actions do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    host_action = get_action("push results", %{id: id, target_id: target_id, result: result })
+    host_action = get_action("push results", %{id: id, target_id: target_id, pair_id: pair_id, result: result })
     target_action = get_action("response ng", nil)
     format(data, host_action, dispatch_to(target_id, target_action))
   end

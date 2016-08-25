@@ -48,9 +48,9 @@ class ExperimentSetting extends Component {
   handleOpen = () => {
     const { game_mode, game_round } = this.props
     this.setState({
-      open: true,
       game_mode_temp: game_mode,
       game_round_tempn: game_round,
+      open: true,
     });
   };
 
