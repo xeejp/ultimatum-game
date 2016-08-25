@@ -6,14 +6,23 @@ import FlatButton from 'material-ui/FlatButton';
 
 import { changeChartRound } from 'host/actions.js'
 
-const mapStateToProps = ({ chart_round }) => ({
+const mapStateToProps = ({ chart_round, ultimatum_results, dictator_results }) => ({
   chart_round,
+  ultimatum_results,
+  dictator_results,
+  max_chart_round: getMaxRound(ultimatum_results, dictator_results)
 })
 
 const styles = {
   roundButton: {
     margin: 12,
   },
+}
+
+function getMaxRound(ultimatum_results, dictator_results) {
+  const ultimatum_results_rounds = Object.keys(ultimatum_results).length
+  const dictator_results_rounds = Object.keys(dictator_results).length
+  return Math.max(ultimatum_results_rounds, dictator_results_rounds)
 }
 
 class ChartSetting extends Component {
@@ -34,7 +43,7 @@ class ChartSetting extends Component {
   }
 
   render() {
-    const { chart_round } = this.props
+    const { chart_round, max_chart_round } = this.props
     return (
       <div>
           <p>表示ラウンド: {chart_round}</p>
@@ -50,11 +59,18 @@ class ChartSetting extends Component {
               style={styles.roundButton}
             />
           }
-          <RaisedButton
-            label="+"
-            style={styles.roundButton}
-            onClick={this.handleInc}
-          />
+          { chart_round < max_chart_round?
+            <RaisedButton
+              label="+"
+              style={styles.roundButton}
+              onClick={this.handleInc}
+            />
+            :
+            <FlatButton
+              label="+"
+              style={styles.roundButton}
+            />
+          }
       </div>
     )
   }
