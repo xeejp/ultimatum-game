@@ -8,10 +8,6 @@ import { match } from './actions'
 const mapStateToProps = ({}) => ({
 })
 
-const styles = {
-  float: "right",
-}
-
 class MatchingButton extends Component {
   handleClick() {
     const { dispatch } = this.props
@@ -22,7 +18,7 @@ class MatchingButton extends Component {
     return (
       <RaisedButton
         label="再マッチング"
-        style={styles}
+        style={{marginRight: "12px"}}
         onClick={this.handleClick.bind(this)}
       />
     )

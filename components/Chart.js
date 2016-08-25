@@ -20,7 +20,7 @@ const mapStateToProps = ({ultimatum_results, dictator_results}) => ({
          type: "column"
       },
       title: {
-        text: "提案者側に分配されたポイント"
+        text: "分配されたポイント"
       },
       xAxis: {
         categories: categories,
@@ -55,15 +55,15 @@ const mapStateToProps = ({ultimatum_results, dictator_results}) => ({
       },
       series: [
         {
-          name: "最後通牒ゲーム",
+          name: "最後通牒ゲームの提案者",
           data: compData(categories, ultimatum_results),
-          stack: 'graph'
+          stack: 'ultimatum'
         },
         {
-          name: "独裁者ゲーム",
+          name: "独裁者ゲームの独裁者",
           data: compData(categories, dictator_results),
-          stack: 'graph',
-        }
+          stack: 'dictator',
+        },
       ]
     }
 })

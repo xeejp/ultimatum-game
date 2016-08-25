@@ -27,11 +27,11 @@ const UsersList = ({participants}) => (
   </table>
 )
 
-const Pair = ({ id, now_round, state, members }) => (
-  <tr><td>{id}</td><td>{now_round}</td><td>{getStateName(state)}</td></tr>
+const Pair = ({ id, now_round, state, game_round }) => (
+  <tr><td>{id}</td><td>{now_round} / {game_round}</td><td>{getStateName(state)}</td></tr>
 )
 
-const Pairs = ({ pairs, participants }) => (
+const Pairs = ({ pairs, participants, game_round}) => (
   <table>
     <thead><tr><th>ID</th><th>ラウンド</th><th>状況</th></tr></thead>
     <tbody>
@@ -42,6 +42,7 @@ const Pairs = ({ pairs, participants }) => (
             id={id}
             now_round={pairs[id].now_round}
             state={pairs[id].state}
+            game_round={game_round}
           />
         ))
       }
@@ -49,15 +50,15 @@ const Pairs = ({ pairs, participants }) => (
   </table>
 )
 
-const mapStateToProps = ({ pairs, participants }) => ({
-  pairs, participants
+const mapStateToProps = ({ pairs, participants, game_round }) => ({
+  pairs, participants, game_round
 })
 
-const Users = ({ pairs, participants }) => (
+const Users = ({ pairs, participants, game_round }) => (
   <div>
     <Card style={{margin: '16px 16px'}}>
       <CardHeader
-        title={"Users (" + Object.keys(participants).length + "人)"}
+        title={"参加者 (" + Object.keys(participants).length + ")"}
         actAsExpander={true}
         showExpandableButton={true}
       />
@@ -69,7 +70,7 @@ const Users = ({ pairs, participants }) => (
     </Card>
     <Card style={{margin: '16px 16px'}}>
       <CardHeader
-        title={"ペア数 (" + Object.keys(pairs).length + ")"}
+        title={"ペア (" + Object.keys(pairs).length + ")"}
         actAsExpander={true}
         showExpandableButton={true}
       />
@@ -77,6 +78,7 @@ const Users = ({ pairs, participants }) => (
         <Pairs
           pairs={pairs}
           participants={participants}
+          game_round={game_round}
         />
       </CardText>
     </Card>

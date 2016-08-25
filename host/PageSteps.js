@@ -90,7 +90,6 @@ class PageSteps extends React.Component {
       case 0:
         return (
           <div>
-            <ExperimentSetting />
             <p>参加者側に待機画面を表示しています。</p>
           </div>
         );
@@ -111,22 +110,23 @@ class PageSteps extends React.Component {
   renderButtons() {
     const { page } = this.props
     return (
-      <div>
-        <div style={{margin: '16px 18px'}}>
-          <FlatButton
-            label="戻る"
-            disabled={pages[0] == page}
-            onTouchTap={this.handlePrev}
-            style={{marginRight: "12px"}}
-          />
-          <RaisedButton
-            label={pages[3] === page ? 'リセット' : '次へ'}
-            primary={pages[3] === page ? false : true}
-            secondary={pages[3] === page ? true : false}
-            onTouchTap={this.handleNext}
-          />
+      <div style={{margin: '16px 18px'}}>
+        <FlatButton
+          label="戻る"
+          disabled={pages[0] == page}
+          onTouchTap={this.handlePrev}
+          style={{marginRight: "12px"}}
+        />
+        <RaisedButton
+          label={pages[3] === page ? 'リセット' : '次へ'}
+          primary={pages[3] === page ? false : true}
+          secondary={pages[3] === page ? true : false}
+          onTouchTap={this.handleNext}
+        />
+        <span style={{float: "right"}}>
+          <ExperimentSetting />
           <MatchingButton />
-        </div>
+        </span>
       </div>
     );
   }
