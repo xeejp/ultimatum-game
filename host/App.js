@@ -9,7 +9,6 @@ import {
 
 import FlatButton from 'material-ui/FlatButton';
 
-import ExperimentKey from './ExpermentKey.js'
 import PageSteps from './PageSteps.js'
 import Users from './Users.js'
 import Chart from '../components/Chart.js'
@@ -34,7 +33,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        <ExperimentKey />
         <PageSteps />
         <Users />
         <Chart />
