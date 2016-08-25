@@ -37,21 +37,16 @@ class ExperimentSetting extends Component {
     this.handleOpen = this.handleOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.handleConfirm = this.handleConfirm.bind(this)
+    this.state = {
+      open: false,
+      game_mode_temp: "ultimatum",
+      game_round_temp: 1,
+    }
   }
 
-  state = {
-    open: false,
-    game_mode_temp: "ultimatum",
-    game_round_temp: 1,
-  };
 
   handleOpen = () => {
-    const { game_mode, game_round } = this.props
-    this.setState({
-      game_mode_temp: game_mode,
-      game_round_tempn: game_round,
-      open: true,
-    });
+    this.setState({open: true})
   };
 
   handleClose = () => {
@@ -156,7 +151,5 @@ class ExperimentSetting extends Component {
     );
   }
 }
-
-
 
 export default connect(mapStateToProps)(ExperimentSetting)

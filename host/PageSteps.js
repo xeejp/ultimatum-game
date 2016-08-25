@@ -36,7 +36,7 @@ class PageSteps extends React.Component {
   Async = (cb) => {
     const { dispatch } = this.props
     dispatch(intoLoading())
-    this.asyncTimer = setTimeout(cb, 400)
+    this.asyncTimer = setTimeout(cb, 100)
   }
 
   handleChangePage = (page) => {
@@ -64,7 +64,10 @@ class PageSteps extends React.Component {
         dispatch(exitLoading())
       })
     }
-    if(pages[3] == page) dispatch(reset())
+    if(pages[3] == page) {
+      dispatch(reset())
+      sendData('RESET')
+    }
   };
 
   handlePrev = () => {
@@ -149,7 +152,7 @@ class PageSteps extends React.Component {
         {buttons}
       </Stepper>
       {this.renderButtons()}
-      <ExpandTransition loading={loading} open={true} transitionDuration={100}>
+      <ExpandTransition loading={loading} open={true} transitionDuration={300}>
         <div style={{margin: '8px 20px'}}>{this.getStepContent(pages.indexOf(page))}</div>
       </ExpandTransition>
       </div>

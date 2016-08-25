@@ -6,6 +6,8 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import Highcharts from 'react-highcharts'
 import ChartSetting from './ChartSetting.js'
 
+import { fallChartButton } from 'host/actions.js'
+
 function compDataAccept(categories, results, round) {
   const values = results[round]? Object.keys(results[round]).filter(id =>
     results[round][id].accept).map(id =>
@@ -22,10 +24,11 @@ function compDataRefuse(categories, results, round) {
 
 const categories = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
 
-const mapStateToProps = ({ultimatum_results, dictator_results, chart_round}) => ({
+const mapStateToProps = ({ultimatum_results, dictator_results, chart_round, chart_button }) => ({
   ultimatum_results,
   dictator_results,
   chart_round,
+  chart_button,
   config: {
       chart: {
          type: "column"
@@ -86,11 +89,22 @@ const mapStateToProps = ({ultimatum_results, dictator_results, chart_round}) => 
 
 class Chart extends Component {
   constructor(props) {
-    super(props);
+    super(props)
+    this.handleCallback = this.handleCallback.bind(this)
     this.state = {
       expanded: true,
       round: 1,
     }
+  }
+
+  handleCallback = () => {
+    const { dispatch, chart_button } = this.props
+    if(chart_button){
+      window.setTimeout(() => {
+        location.href="#chart"
+      }, 1 )
+    }
+    dispatch(fallChartButton())
   }
 
   handleExpandChange = (expanded) => {
@@ -100,7 +114,7 @@ class Chart extends Component {
   render() {
     const { ultimatum_results, dictator_results, config } = this.props
     return (
-    <div>
+    <div id="chart">
       <Card
         style={{margin: '16px 16px'}}
         expanded={this.state.expanded}
@@ -112,7 +126,7 @@ class Chart extends Component {
           showExpandableButton={true}
         />
         <CardText expandable={true}>
-          <Highcharts config={config} ref="chart"></Highcharts>
+          <Highcharts config={config} callback={this.handleCallback}></Highcharts>
           <ChartSetting />
         </CardText>
       </Card>

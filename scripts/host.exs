@@ -8,6 +8,10 @@ defmodule Ultimatum.Host do
     |> Actions.update_host_contents()
   end
 
+  def reset(data) do
+    %{data | pairs: %{}, ultimatum_results: %{}, dictator_results: %{}}
+  end
+
   def sync_game_progress(data, game_progress) do
     Actions.sync_game_progress(data, game_progress)
   end

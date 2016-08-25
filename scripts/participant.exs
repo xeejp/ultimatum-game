@@ -1,5 +1,6 @@
 defmodule Ultimatum.Participant do
   alias Ultimatum.Actions
+  require Logger
 
   # Actions
   def fetch_contents(data, id) do
@@ -20,10 +21,15 @@ defmodule Ultimatum.Participant do
 
   def response_ok(data, id, result) do
     value = get_in(result, ["value"])
+    change_count = get_in(result, ["change_count"])
     pair_id = get_in(data, [:participants, id, :pair_id])
     now_round = get_in(data, [:pairs, pair_id, :now_round])
     game_round = get_in(data, [:game_round])
     game_mode = get_in(data, [:game_mode])
+    results = case game_mode do
+      "ultimatum" -> :ultimatum_results
+      "dictator" -> :dictator_results
+    end
     members = get_in(data, [:pairs, pair_id, :members])
     target_id = case members do
       [^id, target_id] -> target_id
@@ -84,15 +90,29 @@ defmodule Ultimatum.Participant do
       false -> now_round
     end
     )
+    |> put_in([results], %{
+      Integer.to_string(now_round) => %{
+        pair_id => %{
+         value: value,
+         change_count: change_count,
+         accept: true
+        }
+      }
+    })
     |> Actions.response_ok(id, result)
   end
 
   def response_ng(data, id, result) do
     value = get_in(result, ["value"])
+    change_count = get_in(result, ["change_count"])
     pair_id = get_in(data, [:participants, id, :pair_id])
     now_round = get_in(data, [:pairs, pair_id, :now_round])
     game_round = get_in(data, [:game_round])
     game_mode = get_in(data, [:game_mode])
+    results = case game_mode do
+      "ultimatum" -> :ultimatum_results
+      "dictator" -> :dictator_results
+    end
     members = get_in(data, [:pairs, pair_id, :members])
     target_id = case members do
       [^id, target_id] -> target_id
@@ -148,13 +168,21 @@ defmodule Ultimatum.Participant do
      end
     )
     |> put_in([:pairs, pair_id, :now_round],
-    case now_round < game_round do
-      true -> now_round + 1
-      false -> now_round
-    end
-  )
-  |> Actions.response_ng(id, result)
-
+      case now_round < game_round do
+        true -> now_round + 1
+        false -> now_round
+      end
+    )
+    |> put_in([results], %{
+      Integer.to_string(now_round) => %{
+        pair_id => %{
+         value: value,
+         change_count: change_count,
+         accept: false
+        }
+      }
+    })
+    |> Actions.response_ng(id, result)
   end
   def format_participant(participant), do: participant
 

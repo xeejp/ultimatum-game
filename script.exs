@@ -56,6 +56,7 @@ defmodule UltimatumGame do
       {"SYNC_PARTICIPANTS_LENGTH", participants_length} -> Host.sync_participants_length(data, participants_length)
       {"SHOW_RESULTS", results} -> Host.show_results(data, results)
       {"MATCH", _} -> Host.match(data)
+      {"RESET", _} -> Host.reset(data)
       {"CHANGE_PAGE", page} -> Host.change_page(data, page)
       {"CHANGE_GAME_ROUND", game_round} -> Host.change_game_round(data, game_round)
       {"CHANGE_GAME_MODE", game_mode} -> Host.change_game_mode(data, game_mode)

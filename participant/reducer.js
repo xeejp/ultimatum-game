@@ -10,6 +10,7 @@ import {
 
 import {
   changeChartRound,
+  fallChartButton,
   submitAlloTemp,
   finishAllocating,
   finishJudging,
@@ -24,6 +25,7 @@ const initialState = {
   role: "visitor",
   pair_id: null,
   chart_round: 1,
+  chart_button: false,
   now_round: 1,
   allo_temp: 100 * Math.round(10 * Math.random()),
   change_count: 0,
@@ -117,7 +119,8 @@ const reducer = concatenateReducers([
     [fallSnackBarFlags2]: ({}) => ({
       changeRole: false,
     }),
-    [changeChartRound]: (_, { payload }) => ({ chart_round: payload }),
+    [changeChartRound]: (_, { payload }) => ({ chart_round: payload, chart_button: true }),
+    [fallChartButton]: () => ({ chart_button: false}),
     'change page': (_, { payload }) => ({ page: payload }),
     'change game_round': (_, { payload }) => ({ game_round: payload }),
     'change game_mode': (_, { payload }) => ({ game_mode: payload }),

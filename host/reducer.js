@@ -10,6 +10,7 @@ import {
 
 import {
   changeChartRound,
+  fallChartButton,
   changePage,
   changeGameRound,
   changeGameMode,
@@ -25,6 +26,7 @@ const initialState = {
   ultimatum_results: {},
   dictator_results: {},
   chart_round: 1,
+  chart_button: false,
 }
 
 const reducer = concatenateReducers([
@@ -46,14 +48,19 @@ const reducer = concatenateReducers([
       })
     }),
     [reset]: ({}) => ({
-      game_progress: 0,
-      pairs: {}
+      pairs: {},
+      ultimatum_results: {},
+      dictator_results: {},
     }),
     'matched': (_, { payload: { participants, pairs } }) => ({
       participants, pairs
     }),
-    [changeChartRound]: (_, { payload }) => ({ chart_round: payload }),
-    [changePage]: (_, { payload }) => ({ page: payload }),
+    [changeChartRound]: (_, { payload }) => ({ chart_round: payload, chart_button: true}),
+    [fallChartButton]: () => ({ chart_button: false}),
+    [changePage]: (_, { payload }) => ({
+        page: payload,
+        game_progress: 0,
+    }),
     [changeGameRound]: (_, { payload }) => ({ game_round: payload }),
     [changeGameMode]: (_, { payload }) => ({ game_mode: payload }),
     'push results': ({ game_progress, game_mode, game_round, ultimatum_results, dictator_results, participants, pairs },
