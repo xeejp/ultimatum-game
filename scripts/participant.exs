@@ -78,6 +78,7 @@ defmodule Ultimatum.Participant do
          false -> target_id_point + value
       end
     )
+    |> put_in([:pairs, pair_id, :redo_count], 0)
     |> put_in([:pairs, pair_id, :state],
      case now_round < game_round do
        true -> "allocating"
@@ -103,7 +104,16 @@ defmodule Ultimatum.Participant do
   end
 
   def redo_allocating(data, id) do
-    Actions.redo_allocating(data, id)
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    redo_count = get_in(data, [:pairs, pair_id, :redo_count])
+    members = get_in(data, [:pairs, pair_id, :members])
+    target_id = case members do
+      [^id, target_id] -> target_id
+      [target_id, ^id] -> target_id
+    end
+    put_in(data, [:pairs, pair_id, :redo_count], redo_count + 1)
+    |> put_in([:pairs, pair_id, :state], "allocating")
+    |> Actions.redo_allocating(id)
   end
 
 
@@ -172,6 +182,7 @@ defmodule Ultimatum.Participant do
        false -> "finished"
      end
     )
+    |> put_in([:pairs, pair_id, :redo_count], 0)
     |> put_in([:pairs, pair_id, :now_round],
       case now_round < game_round do
         true -> now_round + 1
@@ -195,6 +206,8 @@ defmodule Ultimatum.Participant do
     %{
       page: data.page,
       game_mode: data.game_mode,
+      game_redo: data.game_redo,
+      inf_redo: data.inf_redo,
       game_round: data.game_round,
       game_progress: data.game_progress,
     }

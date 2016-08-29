@@ -1,20 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card'
 import Slider from 'material-ui/Slider'
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import Toggle from 'material-ui/Toggle';
 
-import { changeGameMode, changeGameRound, changeGameRedo } from './actions.js'
+import { changeGameMode, changeGameRound, changeGameRedo, changeInfRedo } from './actions.js'
 import { getGamemodeName } from 'util/index'
 
-const mapStateToProps = ({ game_mode, game_round, page, game_redo }) => ({
+const mapStateToProps = ({ game_mode, game_round, page, game_redo, inf_redo}) => ({
   game_mode,
   game_round,
   game_redo,
   page,
+  inf_redo,
 })
 
 const styles = {
@@ -40,24 +42,39 @@ class ExperimentSetting extends Component {
     this.handleOpen = this.handleOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.handleConfirm = this.handleConfirm.bind(this)
+    this.handleToggle = this.handleToggle.bind(this)
     this.state = {
       open: false,
       game_mode_temp: "ultimatum",
       game_round_temp: 1,
       game_redo_temp: 0,
+      inf_redo_temp: false,
     }
   }
   componentDidMount() {
-    const { game_mode, game_round, game_redo } = this.props
+    const { game_mode, game_round, game_redo, inf_redo } = this.props
     this.setState({
       game_mode_temp: game_mode,
       game_round_temp: game_round,
       game_redo_temp: game_redo,
+      inf_redo_temp: inf_redo,
     })
+  }
+
+  handleToggle = () => {
+    const { inf_redo_temp } = this.state
+    this.setState({inf_redo_temp: !inf_redo_temp})
   }
 
   handleOpen = () => {
     this.setState({open: true})
+    const { game_mode, game_round, game_redo, inf_redo } = this.props
+    this.setState({
+      game_mode_temp: game_mode,
+      game_round_temp: game_round,
+      game_redo_temp: game_redo,
+      inf_redo_temp: inf_redo,
+    })
   };
 
   handleClose = () => {
@@ -66,10 +83,11 @@ class ExperimentSetting extends Component {
 
   handleConfirm = () => {
     const { dispatch } = this.props
-    const { game_mode_temp, game_round_temp, game_redo_temp } = this.state
+    const { game_mode_temp, game_round_temp, game_redo_temp, inf_redo_temp } = this.state
     dispatch(changeGameMode(game_mode_temp))
     dispatch(changeGameRound(game_round_temp))
     dispatch(changeGameRedo(game_redo_temp))
+    dispatch(changeInfRedo(inf_redo_temp))
     this.setState({open: false});
   }
 
@@ -100,8 +118,8 @@ class ExperimentSetting extends Component {
   }
 
   render() {
-    const { page } = this.props
-    const { game_mode_temp, game_round_temp, game_redo_temp } = this.state
+    const { page, inf_redo } = this.props
+    const { game_mode_temp, game_round_temp, game_redo_temp, inf_redo_temp } = this.state
     const actions = [
       <FlatButton
         label="キャンセル"
@@ -153,22 +171,31 @@ class ExperimentSetting extends Component {
             style={styles.game_roundButton}
             onClick={this.handleRoundInc}
           />
-          <p>再提案回数: {game_redo_temp}回</p>
+          <p>再提案回数: {inf_redo_temp? "∞" : game_redo_temp}回</p>
+          <Toggle
+            label="無制限"
+            toggled={inf_redo_temp}
+            style={{margin: 4, maxWidth: 200}}
+            onToggle={this.handleToggle}
+          />
           { game_redo_temp != 0?
             <RaisedButton
               label="-"
               style={styles.game_roundButton}
               onClick={this.handleRedoDec}
+              disabled={inf_redo_temp}
             />
             :
             <FlatButton
               label="-"
               style={styles.game_roundButton}
+              disabled={inf_redo_temp}
             />
           }
           <RaisedButton
             label="+"
             style={styles.game_roundButton}
+            disabled={inf_redo_temp}
             onClick={this.handleRedoInc}
           />
           <p>ゲームモード: {getGamemodeName(game_mode_temp)}</p>

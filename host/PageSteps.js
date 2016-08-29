@@ -95,7 +95,7 @@ class PageSteps extends React.Component {
         return (
           <div>
             <p>参加者側に実験画面を表示しています。</p>
-            <p>現在の進捗: {Math.round(100 * game_progress / game_round * Object.keys(pairs).length)} %</p>
+            <p>現在の進捗: {game_progress} %</p>
           </div>
         )
       case 3:

@@ -143,6 +143,7 @@ const reducer = concatenateReducers([
     [changeChartRound]: (_, { payload }) => ({ chart_round: payload, chart_button: true }),
     [fallChartButton]: () => ({ chart_button: false}),
     'change page': (_, { payload }) => ({ page: payload }),
+    'change inf_redo': (_, { payload }) => ({ inf_redo: payload }),
     'change game_redo': (_, { payload }) => ({ game_redo: payload }),
     'change game_round': (_, { payload }) => ({ game_round: payload }),
     'change game_redo': (_, { payload }) => ({ game_redo: payload }),

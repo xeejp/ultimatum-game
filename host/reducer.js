@@ -14,6 +14,7 @@ import {
   changePage,
   changeGameRound,
   changeGameRedo,
+  changeInfRedo,
   changeGameMode,
   reset,
   intoLoading,
@@ -32,6 +33,7 @@ const initialState = {
 
 const reducer = concatenateReducers([
   handleActions({
+    'sync game progress': ({}, { payload }) => ({ game_progress: payload }),
     [intoLoading]: ({}) => ({ loading: true }),
     [exitLoading]: ({}) => ({ loading: false }),
     'update contents': (_, { payload }) => payload,
@@ -70,6 +72,7 @@ const reducer = concatenateReducers([
         game_progress: 0,
     }),
     [changeGameRound]: (_, { payload }) => ({ game_round: payload }),
+    [changeInfRedo]: (_, { payload }) => ({ inf_redo: payload }),
     [changeGameRedo]: (_, { payload }) => ({ game_redo: payload }),
     [changeGameMode]: (_, { payload }) => ({ game_mode: payload }),
     'push results': ({ game_progress, game_mode, game_round, ultimatum_results, dictator_results, participants, pairs },

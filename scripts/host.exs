@@ -16,6 +16,7 @@ defmodule Ultimatum.Host do
       game_mode: "ultimatum",
       game_round: 1,
       game_redo: 0,
+      inf_redo: false,
     }
     |> Actions.reseted()
   end
@@ -51,6 +52,11 @@ defmodule Ultimatum.Host do
     if game_round < 0 do game_round = 1 end
     %{data | game_round: game_round}
     |> Actions.change_game_round(game_round)
+  end
+
+  def change_inf_redo(data, inf_redo) do
+    %{data | inf_redo: inf_redo }
+    |> Actions.change_inf_redo(inf_redo)
   end
 
   def change_game_redo(data, game_redo) do

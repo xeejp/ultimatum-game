@@ -24,9 +24,10 @@ function compDataRefuse(categories, results, round) {
 
 const categories = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
 
-const mapStateToProps = ({ultimatum_results, dictator_results, chart_round, chart_button }) => ({
+const mapStateToProps = ({ultimatum_results, dictator_results, chart_round, chart_button, role}) => ({
   ultimatum_results,
   dictator_results,
+  role,
   chart_round,
   chart_button,
   config: {
@@ -94,9 +95,10 @@ const mapStateToProps = ({ultimatum_results, dictator_results, chart_round, char
 class Chart extends Component {
   constructor(props) {
     super(props)
+    const { role } = this.props
     this.handleCallback = this.handleCallback.bind(this)
     this.state = {
-      expanded: true,
+      expanded: Boolean(role),
       round: 1,
     }
   }

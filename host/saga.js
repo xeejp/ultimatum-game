@@ -10,6 +10,7 @@ import {
   changeGameRound,
   changeGameMode,
   changeGameRedo,
+  changeInfRedo,
 } from './actions.js'
 
 import {
@@ -28,10 +29,10 @@ function* syncGameProgressSaga() {
     yield delay(2000)
     const page = yield select(({ page }) => page )
     if(page == "experiment"){
-      const game_progress = yield select(({game_progress}) => game_progress)
-      const game_round = yield select(({game_round}) => game_round)
       const pairs = yield select(({pairs}) => pairs)
-      sendData('SYNC_GAME_PROGRESS', 100 * game_progress / game_round*Object.keys(pairs).length)
+      const pairs_length = Object.keys(pairs).length
+      const finished_pairs = Object.keys(pairs).filter(pair_id => pairs[pair_id].state == "finished").length
+      sendData('SYNC_GAME_PROGRESS', Math.round(100 * finished_pairs / pairs_length))
     }
   }
 }
@@ -92,6 +93,13 @@ function* changeGameRedoSaga() {
   }
 }
 
+function* changeInfRedoSaga() {
+  while(true) {
+    const { payload } = yield take(`${changeInfRedo}`)
+    sendData('CHANGE_INF_REDO', payload)
+  }
+}
+
 function* changeGameModeSaga() {
   while(true) {
     const { payload } = yield take(`${changeGameMode}`)
@@ -106,6 +114,7 @@ function* saga() {
   yield fork(syncGameProgressSaga)
   yield fork(showResultsSaga)
   yield fork(changePageSaga)
+  yield fork(changeInfRedoSaga)
   yield fork(changeGameRedoSaga)
   yield fork(changeGameRoundSaga)
   yield fork(changeGameModeSaga)

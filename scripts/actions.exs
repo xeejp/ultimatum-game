@@ -13,8 +13,9 @@ defmodule Ultimatum.Actions do
   end
 
   def sync_game_progress(data, game_progress) do
-    action = get_action("sync game progress", game_progress)
-    format(data, nil, dispatch_to_all(data, action))
+    participant = get_action("sync game progress", game_progress)
+    host = get_action("sync game progress", game_progress)
+    format(data, host, dispatch_to_all(data, participant))
   end
 
   def sync_participants_length(data, participants_length) do
@@ -24,6 +25,11 @@ defmodule Ultimatum.Actions do
 
   def change_game_round(data, game_round) do
     action = get_action("change game_round", game_round)
+    format(data, nil, dispatch_to_all(data, action))
+  end
+
+  def change_inf_redo(data, inf_redo) do
+    action = get_action("change inf_redo", inf_redo)
     format(data, nil, dispatch_to_all(data, action))
   end
 

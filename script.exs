@@ -25,6 +25,7 @@ defmodule UltimatumGame do
         game_mode: "ultimatum",
         game_round: 1,
         game_redo: 0,
+        inf_redo: false,
         game_progress: 0,
         participants: %{},
         pairs: %{},
@@ -60,6 +61,7 @@ defmodule UltimatumGame do
       {"RESET", _} -> Host.reset(data)
       {"CHANGE_PAGE", page} -> Host.change_page(data, page)
       {"CHANGE_GAME_ROUND", game_round} -> Host.change_game_round(data, game_round)
+      {"CHANGE_INF_REDO", inf_redo} -> Host.change_inf_redo(data, inf_redo)
       {"CHANGE_GAME_REDO", game_redo} -> Host.change_game_redo(data, game_redo)
       {"CHANGE_GAME_MODE", game_mode} -> Host.change_game_mode(data, game_mode)
       _ -> {:ok, %{"data" => data}}
