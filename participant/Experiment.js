@@ -26,7 +26,7 @@ const mapStateToProps = ({
   responsedNG, responseNG,
   changeRole, redo_flag,
   game_redo, redo_count,
-  inf_redo,
+  inf_redo, game_mode,
 }) => ({
   state, role, allo_result,
   game_round, now_round,
@@ -35,7 +35,7 @@ const mapStateToProps = ({
   responsedNG, responseNG,
   changeRole, redo_flag,
   game_redo, redo_count,
-  inf_redo,
+  inf_redo, game_mode,
 })
 
 const styles = {
@@ -97,6 +97,7 @@ class Respond extends Component {
       changeRole, redo_flag,
       game_redo, redo_count,
       state, inf_redo,
+      game_mode,
     } = this.props
     return (
       role != "visitor"?
@@ -105,15 +106,20 @@ class Respond extends Component {
             <span>
               <Chip style={styles.chip1}>ラウンド: {now_round} / {game_round}</Chip>
               <Chip style={styles.chip1}>{(game_round - now_round) == 0? "最後のラウンド": "残り役割交代: " + (game_round - now_round) + "回"}</Chip>
-              { inf_redo?
+              { inf_redo && game_mode == "ultimatum"?
                 <Chip style={styles.chip1}>再提案回数: ∞</Chip>
               : <span />
               }
               { (game_redo == 0)? <span />
               :
                 <span>
-                  <Chip style={styles.chip1}>再提案回数: {redo_count} / {game_redo}</Chip>
-                  <Chip style={styles.chip1}>{(game_redo - redo_count) == 0? "最後の提案": "残り再提案可能回数: " + (game_redo - redo_count) + "回"}</Chip>
+                { game_mode == "ultimatum"?
+                  <span>
+                    <Chip style={styles.chip1}>再提案回数: {redo_count} / {game_redo}</Chip>
+                    <Chip style={styles.chip1}>{(game_redo - redo_count) == 0? "最後の提案": "残り再提案可能回数: " + (game_redo - redo_count) + "回"}</Chip>
+                  </span>
+                : <span />
+                }
                 </span>
               }
             </span>
