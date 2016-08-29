@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+
 import {
   Step,
   Stepper,
@@ -11,14 +12,10 @@ import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import TextField from 'material-ui/TextField';
 
-import ExperimentSetting from './ExpermentSetting.js'
-import MatchingButton from './MatchingButton.js'
-
 import { getPageName, pages } from 'util/index'
 
 import {
   changePage,
-  reset,
   intoLoading,
   exitLoading,
 } from './actions'
@@ -63,10 +60,6 @@ class PageSteps extends React.Component {
       this.Async(() => {
         dispatch(exitLoading())
       })
-    }
-    if(pages[3] == page) {
-      dispatch(reset())
-      sendData('RESET')
     }
   };
 
@@ -120,15 +113,12 @@ class PageSteps extends React.Component {
           onTouchTap={this.handlePrev}
           style={{marginRight: "12px"}}
         />
-        <RaisedButton
-          label={pages[3] === page ? 'リセット' : '次へ'}
-          primary={pages[3] === page ? false : true}
-          secondary={pages[3] === page ? true : false}
-          onTouchTap={this.handleNext}
-        />
         <span style={{float: "right"}}>
-          <ExperimentSetting />
-          <MatchingButton />
+          <RaisedButton
+            label={pages[3] === page ? '実験を続ける' : '次へ'}
+            primary={true}
+            onTouchTap={this.handleNext}
+          />
         </span>
       </div>
     );

@@ -9,6 +9,7 @@ import {
   changePage,
   changeGameRound,
   changeGameMode,
+  changeGameRedo,
 } from './actions.js'
 
 import {
@@ -84,6 +85,13 @@ function* changeGameRoundSaga() {
   }
 }
 
+function* changeGameRedoSaga() {
+  while(true) {
+    const { payload } = yield take(`${changeGameRedo}`)
+    sendData('CHANGE_GAME_REDO', payload)
+  }
+}
+
 function* changeGameModeSaga() {
   while(true) {
     const { payload } = yield take(`${changeGameMode}`)
@@ -98,6 +106,7 @@ function* saga() {
   yield fork(syncGameProgressSaga)
   yield fork(showResultsSaga)
   yield fork(changePageSaga)
+  yield fork(changeGameRedoSaga)
   yield fork(changeGameRoundSaga)
   yield fork(changeGameModeSaga)
 }

@@ -33,6 +33,10 @@ const mapStateToProps = ({ultimatum_results, dictator_results, chart_round, char
       chart: {
          type: "column"
       },
+      credits: {
+        text: 'xee.jp',
+        href: 'https://xee.jp/'
+      },
       title: {
         text: "提案者に分配されたポイント"
       },

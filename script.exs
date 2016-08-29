@@ -24,6 +24,7 @@ defmodule UltimatumGame do
         page: "waiting",
         game_mode: "ultimatum",
         game_round: 1,
+        game_redo: 0,
         game_progress: 0,
         participants: %{},
         pairs: %{},
@@ -59,6 +60,7 @@ defmodule UltimatumGame do
       {"RESET", _} -> Host.reset(data)
       {"CHANGE_PAGE", page} -> Host.change_page(data, page)
       {"CHANGE_GAME_ROUND", game_round} -> Host.change_game_round(data, game_round)
+      {"CHANGE_GAME_REDO", game_redo} -> Host.change_game_redo(data, game_redo)
       {"CHANGE_GAME_MODE", game_mode} -> Host.change_game_mode(data, game_mode)
       _ -> {:ok, %{"data" => data}}
     end
@@ -73,6 +75,7 @@ defmodule UltimatumGame do
       {"FINISH_ALLOCATING", allo_temp} -> Participant.finish_allocating(data, id, allo_temp)
       {"CHANGE_ALLO_TEMP", allo_temp} -> Participant.change_allo_temp(data, id, allo_temp)
       {"RESPONSE_OK", result} -> Participant.response_ok(data, id, result)
+      {"REDO_ALLOCATING", _} -> Participant.redo_allocating(data, id)
       {"RESPONSE_NG", result} -> Participant.response_ng(data, id, result)
       _ -> {:ok, %{"data" => data}}
     end

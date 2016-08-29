@@ -102,6 +102,11 @@ defmodule Ultimatum.Participant do
     |> Actions.response_ok(id, result)
   end
 
+  def redo_allocating(data, id) do
+    Actions.redo_allocating(data, id)
+  end
+
+
   def response_ng(data, id, result) do
     value = get_in(result, ["value"])
     change_count = get_in(result, ["change_count"])
@@ -199,6 +204,7 @@ defmodule Ultimatum.Participant do
     %{
       members: pair.members,
       now_round: pair.now_round,
+      redo_count: pair.redo_count,
       allo_temp: pair.allo_temp,
       state: pair.state,
     }

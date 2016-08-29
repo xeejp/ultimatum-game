@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import Chip from 'material-ui/chip'
 
 import { changeChartRound } from 'host/actions.js'
 
@@ -46,7 +47,7 @@ class ChartSetting extends Component {
     const { chart_round, max_chart_round } = this.props
     return (
       <div>
-          <p>表示ラウンド: {chart_round}</p>
+          <Chip style={{margin: 4}}>表示ラウンド: {chart_round}</Chip>
           { chart_round != 1?
             <RaisedButton
               label="-"

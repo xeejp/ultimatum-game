@@ -7,12 +7,13 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 
-import { changeGameMode, changeGameRound } from './actions.js'
+import { changeGameMode, changeGameRound, changeGameRedo } from './actions.js'
 import { getGamemodeName } from 'util/index'
 
-const mapStateToProps = ({ game_mode, game_round, page }) => ({
+const mapStateToProps = ({ game_mode, game_round, page, game_redo }) => ({
   game_mode,
   game_round,
+  game_redo,
   page,
 })
 
@@ -33,6 +34,8 @@ class ExperimentSetting extends Component {
     super()
     this.handleRoundInc = this.handleRoundInc.bind(this)
     this.handleRoundDec = this.handleRoundDec.bind(this)
+    this.handleRedoInc = this.handleRedoInc.bind(this)
+    this.handleRedoDec = this.handleRedoDec.bind(this)
     this.handleGameMode = this.handleGameMode.bind(this)
     this.handleOpen = this.handleOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
@@ -41,9 +44,17 @@ class ExperimentSetting extends Component {
       open: false,
       game_mode_temp: "ultimatum",
       game_round_temp: 1,
+      game_redo_temp: 0,
     }
   }
-
+  componentDidMount() {
+    const { game_mode, game_round, game_redo } = this.props
+    this.setState({
+      game_mode_temp: game_mode,
+      game_round_temp: game_round,
+      game_redo_temp: game_redo,
+    })
+  }
 
   handleOpen = () => {
     this.setState({open: true})
@@ -55,14 +66,14 @@ class ExperimentSetting extends Component {
 
   handleConfirm = () => {
     const { dispatch } = this.props
-    const { game_mode_temp, game_round_temp } = this.state
+    const { game_mode_temp, game_round_temp, game_redo_temp } = this.state
     dispatch(changeGameMode(game_mode_temp))
     dispatch(changeGameRound(game_round_temp))
+    dispatch(changeGameRedo(game_redo_temp))
     this.setState({open: false});
   }
 
-  handleNothing = (event) => {
-  }
+  handleNothing = (event) => {}
 
   handleRoundInc = (event) => {
     const { game_round_temp } = this.state
@@ -74,6 +85,15 @@ class ExperimentSetting extends Component {
     this.setState({game_round_temp: game_round_temp - 1})
   }
 
+  handleRedoInc = (event) => {
+    const { game_redo_temp } = this.state
+    this.setState({game_redo_temp: game_redo_temp + 1})
+  }
+
+  handleRedoDec = (event) => {
+    const { game_redo_temp } = this.state
+    this.setState({game_redo_temp: game_redo_temp - 1})
+  }
   handleGameMode = (event) => {
     const { game_mode_temp } = this.state
     this.setState({game_mode_temp: game_mode_temp == "ultimatum"? "dictator" : "ultimatum"})
@@ -81,7 +101,7 @@ class ExperimentSetting extends Component {
 
   render() {
     const { page } = this.props
-    const { game_mode_temp, game_round_temp } = this.state
+    const { game_mode_temp, game_round_temp, game_redo_temp } = this.state
     const actions = [
       <FlatButton
         label="キャンセル"
@@ -132,6 +152,24 @@ class ExperimentSetting extends Component {
             label="+"
             style={styles.game_roundButton}
             onClick={this.handleRoundInc}
+          />
+          <p>再提案回数: {game_redo_temp}回</p>
+          { game_redo_temp != 0?
+            <RaisedButton
+              label="-"
+              style={styles.game_roundButton}
+              onClick={this.handleRedoDec}
+            />
+            :
+            <FlatButton
+              label="-"
+              style={styles.game_roundButton}
+            />
+          }
+          <RaisedButton
+            label="+"
+            style={styles.game_roundButton}
+            onClick={this.handleRedoInc}
           />
           <p>ゲームモード: {getGamemodeName(game_mode_temp)}</p>
           <RaisedButton

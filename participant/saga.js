@@ -7,6 +7,7 @@ import {
   submitAlloTemp,
   changeAlloTemp,
   responseOK,
+  redoAllcating,
   responseNG,
 } from './actions.js'
 
@@ -31,6 +32,13 @@ function* responseOKSaga() {
   }
 }
 
+function* redoAllcatingSaga() {
+  while(true) {
+    yield take(`${redoAllcating}`)
+    sendData('REDO_ALLOCATING')
+  }
+}
+
 function* responseNGSaga() {
   while(true) {
     const { payload } = yield take(`${responseNG}`)
@@ -50,6 +58,7 @@ function* saga() {
   yield fork(finishAllocatingSaga)
   yield fork(changeAlloTempSaga)
   yield fork(responseOKSaga)
+  yield fork(redoAllcatingSaga)
   yield fork(responseNGSaga)
 }
 

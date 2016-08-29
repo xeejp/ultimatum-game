@@ -13,6 +13,7 @@ import {
   fallChartButton,
   changePage,
   changeGameRound,
+  changeGameRedo,
   changeGameMode,
   reset,
   intoLoading,
@@ -48,6 +49,13 @@ const reducer = concatenateReducers([
       })
     }),
     [reset]: ({}) => ({
+      page: "waiting",
+      game_mode: "ultimatum",
+      game_round: 1,
+      game_redo: 0,
+      game_mode_temp: "ultimatum",
+      game_round_temp: 1,
+      game_redo_temp: 0,
       pairs: {},
       ultimatum_results: {},
       dictator_results: {},
@@ -62,6 +70,7 @@ const reducer = concatenateReducers([
         game_progress: 0,
     }),
     [changeGameRound]: (_, { payload }) => ({ game_round: payload }),
+    [changeGameRedo]: (_, { payload }) => ({ game_redo: payload }),
     [changeGameMode]: (_, { payload }) => ({ game_mode: payload }),
     'push results': ({ game_progress, game_mode, game_round, ultimatum_results, dictator_results, participants, pairs },
     { payload: {id, target_id, pair_id, result: {value, change_count, accept, now_round}} }) => ({

@@ -10,10 +10,11 @@ import { getRoleName } from 'util/index'
 import {
   submitAlloTemp,
   finishAllocating,
+  redoAllcating,
 } from '../actions.js'
 
-const mapStateToProps = ({ allo_temp, change_count, role, game_mode, now_round }) => ({
-  allo_temp, change_count, role, game_mode, now_round,
+const mapStateToProps = ({ allo_temp, change_count, role, game_mode, now_round, redo_count, game_redo }) => ({
+  allo_temp, change_count, role, game_mode, now_round, redo_count, game_redo
 })
 
 import {
@@ -30,6 +31,7 @@ class Allocating extends Component {
 
   handleOK = () => {
     const { dispatch, allo_temp, change_count, now_round } = this.props
+
     const result = {
       value: allo_temp,
       change_count: change_count,
@@ -40,14 +42,18 @@ class Allocating extends Component {
   }
 
   handleNG = () => {
-    const { dispatch, change_count, now_round } = this.props
-    const result = {
-      value: 0,
-      change_count: change_count,
-      accept: false,
-      now_round: now_round,
+    const { dispatch, change_count, now_round, redo_count, game_redo } = this.props
+    if( redo_count < game_redo) {
+      dispatch(redoAllcating())
+    } else {
+      const result = {
+        value: 0,
+        change_count: change_count,
+        accept: false,
+        now_round: now_round,
+      }
+      dispatch(responseNG(result))
     }
-    dispatch(responseNG(result))
   }
 
   render() {

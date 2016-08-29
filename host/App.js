@@ -12,6 +12,11 @@ import FlatButton from 'material-ui/FlatButton';
 import PageSteps from './PageSteps.js'
 import Users from './Users.js'
 import Chart from '../components/Chart.js'
+import Settings from './Settings.js'
+
+import throttle from 'react-throttle-render'
+
+const ThrottledChart = throttle(Chart, 100)
 
 const mapStateToProps = ({ dispatch }) => ({
   dispatch,
@@ -35,7 +40,8 @@ class App extends Component {
       <div>
         <PageSteps />
         <Users />
-        <Chart />
+        <ThrottledChart />
+        <Settings />
       </div>
     )
   }

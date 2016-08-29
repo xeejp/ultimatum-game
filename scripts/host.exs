@@ -9,7 +9,15 @@ defmodule Ultimatum.Host do
   end
 
   def reset(data) do
-    %{data | pairs: %{}, ultimatum_results: %{}, dictator_results: %{}}
+    %{data |
+      pairs: %{},
+      ultimatum_results: %{},
+      dictator_results: %{},
+      game_mode: "ultimatum",
+      game_round: 1,
+      game_redo: 0,
+    }
+    |> Actions.reseted()
   end
 
   def sync_game_progress(data, game_progress) do
@@ -38,10 +46,17 @@ defmodule Ultimatum.Host do
       data
     end
   end
+
   def change_game_round(data, game_round) do
-    if game_round < 0 do game_round = 0 end
+    if game_round < 0 do game_round = 1 end
     %{data | game_round: game_round}
     |> Actions.change_game_round(game_round)
+  end
+
+  def change_game_redo(data, game_redo) do
+    if game_redo < -1 do game_redo = 0 end
+    %{data | game_redo: game_redo }
+    |> Actions.change_game_redo(game_redo)
   end
 
   def change_game_mode(data, game_mode) do
@@ -57,7 +72,7 @@ defmodule Ultimatum.Host do
               |> Enum.map(&elem(&1, 0)) # [id...]
               |> Enum.shuffle
               |> Enum.chunk(group_size)
-              |> Enum.map_reduce(0, fn(p, acc) -> {{Integer.to_string(acc), p}, acc + 1} end) |> elem(0) # [{0, p0}, ..., {n-1, pn-1}]
+              |> Enum.map_reduce(1, fn(p, acc) -> {{Integer.to_string(acc), p}, acc + 1} end) |> elem(0) # [{0, p0}, ..., {n-1, pn-1}]
               |> Enum.into(%{})
 
     updater = fn participant, pair_id, role ->

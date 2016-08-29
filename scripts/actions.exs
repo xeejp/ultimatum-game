@@ -2,6 +2,11 @@ defmodule Ultimatum.Actions do
   alias Ultimatum.Participant
   alias Ultimatum.Host
 
+  def reseted(data) do
+    action = get_action("reseted", nil)
+    format(data, nil, dispatch_to_all(data, action))
+  end
+
   def change_page(data, page) do
     action = get_action("change page", page)
     format(data, nil, dispatch_to_all(data, action))
@@ -19,6 +24,11 @@ defmodule Ultimatum.Actions do
 
   def change_game_round(data, game_round) do
     action = get_action("change game_round", game_round)
+    format(data, nil, dispatch_to_all(data, action))
+  end
+
+  def change_game_redo(data, game_redo) do
+    action = get_action("change game_redo", game_redo)
     format(data, nil, dispatch_to_all(data, action))
   end
 
@@ -60,6 +70,17 @@ defmodule Ultimatum.Actions do
     host_action = get_action("push results", %{id: id, target_id: target_id, pair_id: pair_id, result: result})
     target_action = get_action("response ok", get_in(result, ["value"]))
     format(data, host_action, dispatch_to(target_id, target_action)) 
+  end
+
+  def redo_allocating(data, id) do
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    members = get_in(data, [:pairs, pair_id, :members])
+    target_id = case members do
+      [^id, target_id] -> target_id
+      [target_id, ^id] -> target_id
+    end
+    target_action = get_action("redo allocating", nil)
+    format(data, nil, dispatch_to(target_id, target_action))
   end
 
   def response_ng(data, id, result) do

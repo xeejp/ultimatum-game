@@ -15,9 +15,11 @@ import {
   finishAllocating,
   finishJudging,
   responseOK,
+  redoAllcating,
   responseNG,
   fallSnackBarFlags,
   fallSnackBarFlags2,
+  fallSnackBarFlags3,
 } from './actions.js'
 
 const initialState = {
@@ -27,6 +29,7 @@ const initialState = {
   chart_round: 1,
   chart_button: false,
   now_round: 1,
+  redo_count: 0,
   allo_temp: 100 * Math.round(10 * Math.random()),
   change_count: 0,
   ultimatum_results: {},
@@ -37,6 +40,7 @@ const initialState = {
   responsedNG: false,
   responseNG: false,
   changeRole: false,
+  redo_flag: false,
   participants_length: 0,
 }
 
@@ -45,6 +49,12 @@ const reducer = concatenateReducers([
     'update contents': (_, { payload }) => payload,
     'sync game progress': (_, { payload }) => ({
       game_progress: payload
+    }),
+    'reseted': () => ({
+      page: "waiting",
+      game_mode: "ultimatum",
+      game_round: 1,
+      game_redo: 0,
     }),
     'sync participants length': (_, { payload }) => ({
       participants_length: payload
@@ -93,15 +103,27 @@ const reducer = concatenateReducers([
       responsedOK: true,
       change_count: 0,
     }),
-    [responseNG]: ({state, now_round, game_round, role, game_mode}, {}) => ({
-      state: (now_round < game_round)? "allocating" : "finished",
-      now_round: (now_round < game_round)? now_round+1 : now_round,
-      role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
-      allo_temp: 100 * Math.round(10* Math.random()),
-      responseNG: true,
-      change_count: 0,
+    [responseNG]: ({state, now_round, game_round, role, game_mode, game_redo, redo_count}, {}) => ({
+        state: (now_round < game_round)? "allocating" : "finished",
+        now_round: (now_round < game_round)? now_round+1 : now_round,
+        role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
+        allo_temp: 100 * Math.round(10* Math.random()),
+        responseNG: true,
+        change_count: 0,
+        redo_count: 0,
+    }),
+    [redoAllcating]: ({redo_count}, {}) => ({
+      state: "allocating",
+      redo_count: redo_count + 1,
+      redo_flag: true,
+    }),
+    'redo allocating': ({redo_count}, {}) => ({
+      state: "allocating",
+      redo_count: redo_count + 1,
+      redo_flag: true,
     }),
     'response ng': ({state, now_round, game_round, role, game_mode}, {}) => ({
+      redo_count: 0,
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
       role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
@@ -116,13 +138,14 @@ const reducer = concatenateReducers([
       responseNG: false,
       changeRole: state == "allocating",
     }),
-    [fallSnackBarFlags2]: ({}) => ({
-      changeRole: false,
-    }),
+    [fallSnackBarFlags2]: ({}) => ({changeRole: false}),
+    [fallSnackBarFlags3]: ({}) => ({redo_flag: false}),
     [changeChartRound]: (_, { payload }) => ({ chart_round: payload, chart_button: true }),
     [fallChartButton]: () => ({ chart_button: false}),
     'change page': (_, { payload }) => ({ page: payload }),
+    'change game_redo': (_, { payload }) => ({ game_redo: payload }),
     'change game_round': (_, { payload }) => ({ game_round: payload }),
+    'change game_redo': (_, { payload }) => ({ game_redo: payload }),
     'change game_mode': (_, { payload }) => ({ game_mode: payload }),
   }, initialState),
   handleAction('update contents', () => ({ loading: false }), { loading: true })

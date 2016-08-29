@@ -29,6 +29,7 @@ defmodule Ultimatum.Main do
     %{
       members: members,
       now_round: 1,
+      redo_count: 0,
       allo_temp: Enum.random(0..10) * 100,
       state: "allocating",
     }
