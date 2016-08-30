@@ -1,10 +1,11 @@
-defmodule Ultimatum.Actions do
-  alias Ultimatum.Participant
-  alias Ultimatum.Host
+defmodule UltimatumAndDictaorGames.Actions do
+  alias UltimatumAndDictaorGames.Participant
+  alias UltimatumAndDictaorGames.Host
 
   def reseted(data) do
+    host_action = get_action("reseted", %{participants: data.participants})
     action = get_action("reseted", nil)
-    format(data, nil, dispatch_to_all(data, action))
+    format(data, host_action, dispatch_to_all(data, action))
   end
 
   def change_page(data, page) do
@@ -73,7 +74,12 @@ defmodule Ultimatum.Actions do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    host_action = get_action("push results", %{id: id, target_id: target_id, pair_id: pair_id, result: result})
+    ultimatum_results = get_in(data, [:ultimatum_results])
+    dictator_results = get_in(data, [:dictator_results])
+    host_action = get_action("push results", %{
+      id: id, target_id: target_id, pair_id: pair_id, result: result,
+      ultimatum_results: ultimatum_results, dictator_results: dictator_results
+    })
     target_action = get_action("response ok", get_in(result, ["value"]))
     format(data, host_action, dispatch_to(target_id, target_action)) 
   end
@@ -85,8 +91,9 @@ defmodule Ultimatum.Actions do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
+    host_action = get_action("redo allocating", pair_id)
     target_action = get_action("redo allocating", nil)
-    format(data, nil, dispatch_to(target_id, target_action))
+    format(data, host_action, dispatch_to(target_id, target_action))
   end
 
   def response_ng(data, id, result) do
@@ -96,7 +103,12 @@ defmodule Ultimatum.Actions do
       [^id, target_id] -> target_id
       [target_id, ^id] -> target_id
     end
-    host_action = get_action("push results", %{id: id, target_id: target_id, pair_id: pair_id, result: result })
+    ultimatum_results = get_in(data, [:ultimatum_results])
+    dictator_results = get_in(data, [:dictator_results])
+    host_action = get_action("push results", %{
+      id: id, target_id: target_id, pair_id: pair_id, result: result,
+      ultimatum_results: ultimatum_results, dictator_results: dictator_results
+    })
     target_action = get_action("response ng", nil)
     format(data, host_action, dispatch_to(target_id, target_action))
   end
@@ -116,6 +128,8 @@ defmodule Ultimatum.Actions do
     participant = Enum.map(participants, fn {id, p} ->
       unless p.pair_id == nil do
         payload = Map.merge(Participant.format_participant(p), Participant.format_pair(Map.get(pairs, p.pair_id)))
+      else
+        payload = Participant.format_participant(p)
       end
       {id, %{action: get_action("matched", payload)}}
     end) |> Enum.into(%{})

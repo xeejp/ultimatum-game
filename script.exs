@@ -1,4 +1,4 @@
-defmodule UltimatumGame do
+defmodule UltimatumAndDictaorGames do
   use Xee.ThemeScript
   require Logger
 
@@ -7,10 +7,10 @@ defmodule UltimatumGame do
   require_file "scripts/participant.exs"
   require_file "scripts/actions.exs"
 
-  alias Ultimatum.Host
-  alias Ultimatum.Participant
-  alias Ultimatum.Main
-  alias Ultimatum.Actions
+  alias UltimatumAndDictaorGames.Host
+  alias UltimatumAndDictaorGames.Participant
+  alias UltimatumAndDictaorGames.Main
+  alias UltimatumAndDictaorGames.Actions
 
   # Callbacks
   def script_type do

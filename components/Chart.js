@@ -10,14 +10,14 @@ import { fallChartButton } from 'host/actions.js'
 
 function compDataAccept(categories, results, round) {
   const values = results[round]? Object.keys(results[round]).filter(id =>
-    results[round][id].accept).map(id =>
+    results[round][id]? results[round][id].accept : false).map(id =>
       results[round][id].value) : []
   return Array.from(categories).map(x => values.filter(y => x == y).length)
 }
 
 function compDataRefuse(categories, results, round) {
   const values = results[round]? Object.keys(results[round]).filter(id =>
-    !results[round][id].accept).map(id =>
+    results[round][id]? !results[round][id].accept : false).map(id =>
       results[round][id].value) : []
   return Array.from(categories).map(x => values.filter(y => x == y).length)
 }

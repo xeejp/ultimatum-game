@@ -50,17 +50,15 @@ const reducer = concatenateReducers([
         [id]: participant
       })
     }),
+    'reseted': (_, { payload: { participants }}) => ({participants: participants}),
     [reset]: ({}) => ({
       page: "waiting",
-      game_mode: "ultimatum",
-      game_round: 1,
-      game_redo: 0,
-      game_mode_temp: "ultimatum",
-      game_round_temp: 1,
-      game_redo_temp: 0,
+      game_mode: "ultimatum", game_mode_temp: "ultimatum",
+      game_round: 1, game_round_temp: 1,
+      game_redo: 0, game_redo_temp: 0,
+      inf_redo: false, inf_redo_temp: false,
       pairs: {},
-      ultimatum_results: {},
-      dictator_results: {},
+      ultimatum_results: {}, dictator_results: {},
     }),
     'matched': (_, { payload: { participants, pairs } }) => ({
       participants, pairs
@@ -75,43 +73,27 @@ const reducer = concatenateReducers([
     [changeInfRedo]: (_, { payload }) => ({ inf_redo: payload }),
     [changeGameRedo]: (_, { payload }) => ({ game_redo: payload }),
     [changeGameMode]: (_, { payload }) => ({ game_mode: payload }),
-    'push results': ({ game_progress, game_mode, game_round, ultimatum_results, dictator_results, participants, pairs },
-    { payload: {id, target_id, pair_id, result: {value, change_count, accept, now_round}} }) => ({
-      game_progress: game_progress + 1,
-      ultimatum_results: (game_mode == "ultimatum")?
-        Object.assign({}, ultimatum_results, {
-          [now_round]: {
-            [pair_id]: {
-              value: value,
-              change_count: change_count,
-              accept: accept,
-            }
-          }
-        })
-      : ultimatum_results,
-      dictator_results: (game_mode == "dictator")?
-        Object.assign({}, dictator_results, {
-          [now_round]: {
-            [pair_id]: {
-              value: value,
-              change_count: change_count,
-              accept: accept,
-            }
-          }
-        })
-      : dictator_results,
+    'push results': ({ game_mode, game_round, participants, pairs },
+    { payload: { ultimatum_results, dictator_results, id, target_id, pair_id, result: {value}}}) => ({
+      ultimatum_results: ultimatum_results,
+      dictator_results: dictator_results,
       participants: Object.assign({}, participants, {
         [id]: Object.assign({}, participants[id], {
           point: participants[id].point + value,
+          role: (pairs[participants[id].pair_id].now_round < game_round)?
+          participants[target_id].role : participants[id].role
         }),
         [target_id]: Object.assign({}, participants[target_id], {
           point: participants[target_id].point + (1000 - value),
+          role: (pairs[participants[id].pair_id].now_round < game_round)?
+          participants[id].role : participants[target_id].role
         })
       }),
       pairs: Object.assign({}, pairs, {
         [participants[id].pair_id]: Object.assign({}, pairs[participants[id].pair_id], {
           state: (pairs[participants[id].pair_id].now_round < game_round)? "allocating" : "finished",
-          now_round: (pairs[participants[id].pair_id].now_round < game_round)? pairs[participants[id].pair_id].now_round + 1 : pairs[participants[id].pair_id].now_round,
+          now_round: (pairs[participants[id].pair_id].now_round < game_round)?
+          pairs[participants[id].pair_id].now_round + 1 : pairs[participants[id].pair_id].now_round,
         })
       })
     }),

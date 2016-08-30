@@ -55,6 +55,9 @@ const reducer = concatenateReducers([
       game_mode: "ultimatum",
       game_round: 1,
       game_redo: 0,
+      role: "visitor",
+      point: 0,
+      pair_id: null,
     }),
     'sync participants length': (_, { payload }) => ({
       participants_length: payload

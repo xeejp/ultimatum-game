@@ -1,5 +1,5 @@
 {
-  "name": "ultimatum_game",
+  "name": "ultimatum-and-dictator-games",
   "version": "1.0.0",
   "dependencies": {
     "babel-polyfill": "^6.8.0",
@@ -32,12 +32,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xeejp/ultimatum_game.git"
+    "url": "git+https://github.com/xeejp/ultimatum-and-dictator-games.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xeejp/ultimatum_game/issues"
+    "url": "https://github.com/xeejp/ultimatum-and-dictator-games/issues"
   },
-  "homepage": "https://github.com/xeejp/ultimatum_game#readme",
+  "homepage": "https://github.com/xeejp/ultimatum-and-dictator-games#readme",
   "description": ""
 }

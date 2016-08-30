@@ -1,6 +1,6 @@
-defmodule Ultimatum.Host do
-  alias Ultimatum.Main
-  alias Ultimatum.Actions
+defmodule UltimatumAndDictaorGames.Host do
+  alias UltimatumAndDictaorGames.Main
+  alias UltimatumAndDictaorGames.Actions
 
   # Actions
   def fetch_contents(data) do
@@ -10,6 +10,15 @@ defmodule Ultimatum.Host do
 
   def reset(data) do
     %{data |
+      participants: data.participants
+                    |> Enum.map(fn({id, state}) ->
+                      {id, %{
+                        role: "visitor",
+                        point: 0,
+                        pair_id: nil,
+                      }}
+                    end)
+                    |> Enum.into(%{}),
       pairs: %{},
       ultimatum_results: %{},
       dictator_results: %{},
@@ -73,6 +82,15 @@ defmodule Ultimatum.Host do
   def match(data) do
     %{game_mode: game_mode} = data
     %{participants: participants} = data
+    participants = participants
+                    |> Enum.map(fn({id, state}) ->
+                      {id, %{
+                        role: "visitor",
+                        point: 0,
+                        pair_id: nil,
+                      }}
+                    end)
+                    |> Enum.into(%{})
     group_size = 2
     groups = participants
               |> Enum.map(&elem(&1, 0)) # [id...]

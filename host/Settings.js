@@ -14,6 +14,11 @@ const mapStateToProps = ({ game_mode, game_round, game_redo, inf_redo }) => ({
   game_mode, game_round, game_redo, inf_redo,
 })
 
+const styles = {
+  chip: {margin: 4, float: "left"},
+  button: {margin: 12, clear: "both"}
+}
+
 class Settings extends Component {
   render() {
     const { game_mode, game_round, game_redo, inf_redo} = this.props
@@ -26,12 +31,14 @@ class Settings extends Component {
             showExpandableButton={true}
           />
           <CardText expandable={true}>
-            <Chip style={{margin: 4}}>ゲームモード: {getGamemodeName(game_mode)}</Chip>
-            <Chip style={{margin: 4}}>ラウンド: {game_round}</Chip>
-            <Chip style={{margin: 4}}>再提案可能回数: {inf_redo? "∞" :game_redo}</Chip>
-            <ExperimentSetting />
-            <MatchingButton />
-            <ResetButton />
+            <Chip style={styles.chip}>ゲームモード: {getGamemodeName(game_mode)}</Chip>
+            <Chip style={styles.chip}>ラウンド: {game_round}</Chip>
+            <Chip style={styles.chip}>再提案可能回数: {inf_redo? "∞" :game_redo}</Chip>
+            <div style={styles.button}>
+              <ExperimentSetting />
+              <MatchingButton />
+              <ResetButton />
+            </div>
           </CardText>
         </Card>
       </div>
