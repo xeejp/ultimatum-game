@@ -21,7 +21,6 @@ defmodule UltimatumGame.Host do
                     |> Enum.into(%{}),
       pairs: %{},
       ultimatum_results: %{},
-      dictator_results: %{},
       game_round: 1,
       game_redo: 0,
       inf_redo: false,

@@ -112,7 +112,7 @@ class Chart extends Component {
   }
 
   render() {
-    const { ultimatum_results, dictator_results, config } = this.props
+    const { config } = this.props
     return (
     <div id="chart">
       <Card

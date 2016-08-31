@@ -55,7 +55,7 @@ const reducer = concatenateReducers([
       game_redo: 0, game_redo_temp: 0,
       inf_redo: false, inf_redo_temp: false,
       pairs: {},
-      ultimatum_results: {}, dictator_results: {},
+      ultimatum_results: {},
     }),
     'matched': (_, { payload: { participants, pairs } }) => ({
       participants, pairs

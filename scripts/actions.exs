@@ -70,10 +70,9 @@ defmodule UltimatumGame.Actions do
       [target_id, ^id] -> target_id
     end
     ultimatum_results = get_in(data, [:ultimatum_results])
-    dictator_results = get_in(data, [:dictator_results])
     host_action = get_action("push results", %{
       id: id, target_id: target_id, pair_id: pair_id, result: result,
-      ultimatum_results: ultimatum_results, dictator_results: dictator_results
+      ultimatum_results: ultimatum_results
     })
     target_action = get_action("response ok", get_in(result, ["value"]))
     format(data, host_action, dispatch_to(target_id, target_action)) 

@@ -7,21 +7,17 @@ import Chip from 'material-ui/chip'
 
 import { changeChartRound } from 'host/actions.js'
 
-const mapStateToProps = ({ chart_round, ultimatum_results, dictator_results }) => ({
+const mapStateToProps = ({ chart_round, ultimatum_results }) => ({
   chart_round,
   ultimatum_results,
-  dictator_results,
-  max_chart_round: getMaxRound(ultimatum_results, dictator_results)
+  max_chart_round: Object.keys(ultimatum_results).length
+
 })
 
 const styles = {
   roundButton: {
     margin: 12,
   },
-}
-
-function getMaxRound(ultimatum_results, dictator_results) {
-  return Object.keys(ultimatum_results).length
 }
 
 class ChartSetting extends Component {
