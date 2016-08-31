@@ -1,6 +1,5 @@
-defmodule UltimatumAndDictaorGames.Main do
+defmodule UltimatumGame.Main do
 
-  @game_modes ["ultimatum", "dictator"]
   @pages ["waiting", "description", "experiment", "result"]
   @roles ["visitor", "proposer", "responder"]
   @states ["allocating", "judging", "finished"]

@@ -24,9 +24,8 @@ function compDataRefuse(categories, results, round) {
 
 const categories = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
 
-const mapStateToProps = ({ultimatum_results, dictator_results, chart_round, chart_button, role}) => ({
+const mapStateToProps = ({ultimatum_results, chart_round, chart_button, role}) => ({
   ultimatum_results,
-  dictator_results,
   role,
   chart_round,
   chart_button,
@@ -74,19 +73,14 @@ const mapStateToProps = ({ultimatum_results, dictator_results, chart_round, char
       },
       series: [
         {
-          name: "最後通牒・承認",
+          name: "承認",
           data: compDataAccept(categories, ultimatum_results, chart_round),
           stack: 'ultimatum'
         },
         {
-          name: "最後通牒・拒否",
+          name: "拒否",
           data: compDataRefuse(categories, ultimatum_results, chart_round),
           stack: 'ultimatum'
-        },
-        {
-          name: "独裁者・承認",
-          data: compDataAccept(categories, dictator_results, chart_round),
-          stack: 'dictator',
         },
       ]
     }

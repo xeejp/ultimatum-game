@@ -15,7 +15,6 @@ import {
   changeGameRound,
   changeGameRedo,
   changeInfRedo,
-  changeGameMode,
   reset,
   intoLoading,
   exitLoading,
@@ -26,7 +25,6 @@ const initialState = {
   pairs: {},
   loading: true,
   ultimatum_results: {},
-  dictator_results: {},
   chart_round: 1,
   chart_button: false,
 }
@@ -53,7 +51,6 @@ const reducer = concatenateReducers([
     'reseted': (_, { payload: { participants }}) => ({participants: participants}),
     [reset]: ({}) => ({
       page: "waiting",
-      game_mode: "ultimatum", game_mode_temp: "ultimatum",
       game_round: 1, game_round_temp: 1,
       game_redo: 0, game_redo_temp: 0,
       inf_redo: false, inf_redo_temp: false,
@@ -72,11 +69,9 @@ const reducer = concatenateReducers([
     [changeGameRound]: (_, { payload }) => ({ game_round: payload }),
     [changeInfRedo]: (_, { payload }) => ({ inf_redo: payload }),
     [changeGameRedo]: (_, { payload }) => ({ game_redo: payload }),
-    [changeGameMode]: (_, { payload }) => ({ game_mode: payload }),
     'push results': ({ game_mode, game_round, participants, pairs },
-    { payload: { ultimatum_results, dictator_results, id, target_id, pair_id, result: {value}}}) => ({
+    { payload: { ultimatum_results, id, target_id, pair_id, result: {value}}}) => ({
       ultimatum_results: ultimatum_results,
-      dictator_results: dictator_results,
       participants: Object.assign({}, participants, {
         [id]: Object.assign({}, participants[id], {
           point: participants[id].point + value,

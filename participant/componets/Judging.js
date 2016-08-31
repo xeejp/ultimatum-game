@@ -13,8 +13,8 @@ import {
   redoAllcating,
 } from '../actions.js'
 
-const mapStateToProps = ({ allo_temp, change_count, role, game_mode, now_round, redo_count, game_redo, inf_redo }) => ({
-  allo_temp, change_count, role, game_mode, now_round, redo_count, game_redo, inf_redo,
+const mapStateToProps = ({ allo_temp, change_count, role, now_round, redo_count, game_redo, inf_redo }) => ({
+  allo_temp, change_count, role, now_round, redo_count, game_redo, inf_redo,
 })
 
 import {
@@ -57,11 +57,11 @@ class Allocating extends Component {
   }
 
   render() {
-    const { allo_temp, role, game_mode} = this.props
+    const { allo_temp, role } = this.props
     const style = {
       margin: 12,
     }
-    const enemy = (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder"
+    const enemy = (role == "responder")? "proposer" : "responder"
     return (
       <div>
         <Card>
@@ -85,7 +85,6 @@ class Allocating extends Component {
                 <RaisedButton
                   label="拒否"
                   secondary={true}
-                  disabled={game_mode=="dictator"}
                   onClick={this.handleNG}
                 />
               </div>

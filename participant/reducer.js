@@ -33,7 +33,6 @@ const initialState = {
   allo_temp: 100 * Math.round(10 * Math.random()),
   change_count: 0,
   ultimatum_results: {},
-  dictator_results: {},
   state: "allocating",
   responsedOK: false,
   responseOK: false,
@@ -52,7 +51,6 @@ const reducer = concatenateReducers([
     }),
     'reseted': () => ({
       page: "waiting",
-      game_mode: "ultimatum",
       game_round: 1,
       game_redo: 0,
       role: "visitor",
@@ -62,9 +60,8 @@ const reducer = concatenateReducers([
     'sync participants length': (_, { payload }) => ({
       participants_length: payload
     }),
-    'show results': (_ , { payload: {ultimatum_results, dictator_results} }) => ({
+    'show results': (_ , { payload: { ultimatum_results } }) => ({
       ultimatum_results: ultimatum_results,
-      dictator_results: dictator_results
     }),
     'join': ({ participants }, { payload: { id, participant } }) => ({
       participants: Object.assign({}, participants, {
@@ -82,34 +79,32 @@ const reducer = concatenateReducers([
     'change allo_temp': ({ change_count }, { payload })=> ({ allo_temp: payload, change_count: change_count + 1}), 
     [finishAllocating]: (_, { payload }) => ({ state: "judging", allo_temp: payload}),
     'finish allocating': (_, { payload }) => ({ state: "judging", allo_temp: payload}),
-    [responseOK]: ( {now_round, game_mode,
-      game_round, state, point,
-      role, allo_temp }, { payload: { value: value } }) => ({
+    [responseOK]: ( {now_round, game_round, state, point, role, allo_temp },
+    { payload: { value: value } }) => ({
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
-      role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
+      role: (role == "responder")? "proposer" : "responder",
       point: point + 1000 - value,
       allo_result: allo_temp,
       allo_temp: 100 * Math.round(10* Math.random()),
       responseOK: true,
       change_count: 0,
     }),
-    'response ok': ({now_round, game_mode,
-      game_round, state, point,
-      role, allo_temp}, { payload }) => ({
+    'response ok': ({now_round, game_round, state, point, role, allo_temp},
+      { payload }) => ({
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
-      role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
+      role: (role == "responder")? "proposer" : "responder",
       point: point + payload,
       allo_result: allo_temp,
       allo_temp: 100 * Math.round(10* Math.random()),
       responsedOK: true,
       change_count: 0,
     }),
-    [responseNG]: ({state, now_round, game_round, role, game_mode, game_redo, redo_count}, {}) => ({
+    [responseNG]: ({state, now_round, game_round, role, game_redo, redo_count}, {}) => ({
         state: (now_round < game_round)? "allocating" : "finished",
         now_round: (now_round < game_round)? now_round+1 : now_round,
-        role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
+        role: (role == "responder")? "proposer" : "responder",
         allo_temp: 100 * Math.round(10* Math.random()),
         responseNG: true,
         change_count: 0,
@@ -125,11 +120,11 @@ const reducer = concatenateReducers([
       redo_count: redo_count + 1,
       redo_flag: true,
     }),
-    'response ng': ({state, now_round, game_round, role, game_mode}, {}) => ({
+    'response ng': ({state, now_round, game_round, role }, {}) => ({
       redo_count: 0,
       state: (now_round < game_round)? "allocating" : "finished",
       now_round: (now_round < game_round)? now_round+1 : now_round,
-      role: (role == "responder")? ((game_mode == "ultimatum")? "proposer": "dictator") : "responder",
+      role: (role == "responder")? "proposer" : "responder",
       allo_temp: 100 * Math.round(10* Math.random()),
       responsedNG: true,
       change_count: 0,
@@ -150,7 +145,6 @@ const reducer = concatenateReducers([
     'change game_redo': (_, { payload }) => ({ game_redo: payload }),
     'change game_round': (_, { payload }) => ({ game_round: payload }),
     'change game_redo': (_, { payload }) => ({ game_redo: payload }),
-    'change game_mode': (_, { payload }) => ({ game_mode: payload }),
   }, initialState),
   handleAction('update contents', () => ({ loading: false }), { loading: true })
 ])

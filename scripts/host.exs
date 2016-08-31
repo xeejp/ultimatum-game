@@ -1,6 +1,6 @@
-defmodule UltimatumAndDictaorGames.Host do
-  alias UltimatumAndDictaorGames.Main
-  alias UltimatumAndDictaorGames.Actions
+defmodule UltimatumGame.Host do
+  alias UltimatumGame.Main
+  alias UltimatumGame.Actions
 
   # Actions
   def fetch_contents(data) do
@@ -22,7 +22,6 @@ defmodule UltimatumAndDictaorGames.Host do
       pairs: %{},
       ultimatum_results: %{},
       dictator_results: %{},
-      game_mode: "ultimatum",
       game_round: 1,
       game_redo: 0,
       inf_redo: false,
@@ -41,9 +40,6 @@ defmodule UltimatumAndDictaorGames.Host do
   def show_results(data, results) do
     put_in(data, [:ultimatum_results],
       get_in(results, ["ultimatum_results"])
-    )
-    |> put_in([:dictator_results],
-      get_in(results, ["dictator_results"])
     )
     |> Actions.show_results(results)
   end
@@ -74,13 +70,7 @@ defmodule UltimatumAndDictaorGames.Host do
     |> Actions.change_game_redo(game_redo)
   end
 
-  def change_game_mode(data, game_mode) do
-    %{data | game_mode: game_mode }
-    |> Actions.change_game_mode(game_mode)
-  end
-
   def match(data) do
-    %{game_mode: game_mode} = data
     %{participants: participants} = data
     participants = participants
                     |> Enum.map(fn({id, state}) ->
@@ -108,12 +98,8 @@ defmodule UltimatumAndDictaorGames.Host do
     end
     reducer = fn {group, ids}, {participants, pairs} ->
       [id1, id2] = ids
-      proposer = case game_mode do
-        "ultimatum" -> "proposer"
-        "dictator" -> "dictator"
-      end
       participants = participants
-                      |> Map.update!(id1, &updater.(&1, group, proposer))
+                      |> Map.update!(id1, &updater.(&1, group, "proposer"))
                       |> Map.update!(id2, &updater.(&1, group, "responder"))
 
       pairs = Map.put(pairs, group, Main.new_pair(ids))

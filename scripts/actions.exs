@@ -1,6 +1,6 @@
-defmodule UltimatumAndDictaorGames.Actions do
-  alias UltimatumAndDictaorGames.Participant
-  alias UltimatumAndDictaorGames.Host
+defmodule UltimatumGame.Actions do
+  alias UltimatumGame.Participant
+  alias UltimatumGame.Host
 
   def reseted(data) do
     host_action = get_action("reseted", %{participants: data.participants})
@@ -36,11 +36,6 @@ defmodule UltimatumAndDictaorGames.Actions do
 
   def change_game_redo(data, game_redo) do
     action = get_action("change game_redo", game_redo)
-    format(data, nil, dispatch_to_all(data, action))
-  end
-
-  def change_game_mode(data, game_mode) do
-    action = get_action("change game_mode", game_mode)
     format(data, nil, dispatch_to_all(data, action))
   end
 

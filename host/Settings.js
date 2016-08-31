@@ -10,8 +10,8 @@ import Chip from 'material-ui/chip'
 
 import { getGamemodeName } from 'util/index'
 
-const mapStateToProps = ({ game_mode, game_round, game_redo, inf_redo }) => ({
-  game_mode, game_round, game_redo, inf_redo,
+const mapStateToProps = ({ game_round, game_redo, inf_redo }) => ({
+  game_round, game_redo, inf_redo,
 })
 
 const styles = {
@@ -21,7 +21,7 @@ const styles = {
 
 class Settings extends Component {
   render() {
-    const { game_mode, game_round, game_redo, inf_redo} = this.props
+    const { game_round, game_redo, inf_redo} = this.props
     return (
       <div>
         <Card style={{margin: '16px 16px'}}>
@@ -31,7 +31,6 @@ class Settings extends Component {
             showExpandableButton={true}
           />
           <CardText expandable={true}>
-            <Chip style={styles.chip}>ゲームモード: {getGamemodeName(game_mode)}</Chip>
             <Chip style={styles.chip}>ラウンド: {game_round}</Chip>
             <Chip style={styles.chip}>再提案可能回数: {inf_redo? "∞" :game_redo}</Chip>
             <div style={styles.button}>

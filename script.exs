@@ -1,4 +1,4 @@
-defmodule UltimatumAndDictaorGames do
+defmodule UltimatumGame do
   use Xee.ThemeScript
   require Logger
 
@@ -7,10 +7,10 @@ defmodule UltimatumAndDictaorGames do
   require_file "scripts/participant.exs"
   require_file "scripts/actions.exs"
 
-  alias UltimatumAndDictaorGames.Host
-  alias UltimatumAndDictaorGames.Participant
-  alias UltimatumAndDictaorGames.Main
-  alias UltimatumAndDictaorGames.Actions
+  alias UltimatumGame.Host
+  alias UltimatumGame.Participant
+  alias UltimatumGame.Main
+  alias UltimatumGame.Actions
 
   # Callbacks
   def script_type do
@@ -22,7 +22,6 @@ defmodule UltimatumAndDictaorGames do
   def init do
     {:ok, %{"data" => %{
         page: "waiting",
-        game_mode: "ultimatum",
         game_round: 1,
         game_redo: 0,
         inf_redo: false,
@@ -63,7 +62,6 @@ defmodule UltimatumAndDictaorGames do
       {"CHANGE_GAME_ROUND", game_round} -> Host.change_game_round(data, game_round)
       {"CHANGE_INF_REDO", inf_redo} -> Host.change_inf_redo(data, inf_redo)
       {"CHANGE_GAME_REDO", game_redo} -> Host.change_game_redo(data, game_redo)
-      {"CHANGE_GAME_MODE", game_mode} -> Host.change_game_mode(data, game_mode)
       _ -> {:ok, %{"data" => data}}
     end
     wrap_result(result)

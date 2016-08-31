@@ -21,9 +21,7 @@ const styles = {
 }
 
 function getMaxRound(ultimatum_results, dictator_results) {
-  const ultimatum_results_rounds = Object.keys(ultimatum_results).length
-  const dictator_results_rounds = Object.keys(dictator_results).length
-  return Math.max(ultimatum_results_rounds, dictator_results_rounds)
+  return Object.keys(ultimatum_results).length
 }
 
 class ChartSetting extends Component {

@@ -1,5 +1,5 @@
-defmodule UltimatumAndDictaorGames.Participant do
-  alias UltimatumAndDictaorGames.Actions
+defmodule UltimatumGame.Participant do
+  alias UltimatumGame.Actions
 
   # Actions
   def fetch_contents(data, id) do
@@ -18,12 +18,9 @@ defmodule UltimatumAndDictaorGames.Participant do
     |> Actions.finish_allocating(id, allo_temp)
   end
 
-  def get_next_role(role, game_mode) do
+  def get_next_role(role) do
     case role == "responder" do
-      true -> case game_mode == "ultimatum" do
-        true -> "proposer"
-        false -> "dictator"
-      end
+      true -> "proposer"
       false -> "responder"
     end
   end
@@ -35,10 +32,6 @@ defmodule UltimatumAndDictaorGames.Participant do
     pair_id = get_in(data, [:participants, id, :pair_id])
     game_round = get_in(data, [:game_round])
     game_mode = get_in(data, [:game_mode])
-    results = case game_mode do
-      "ultimatum" -> :ultimatum_results
-      "dictator" -> :dictator_results
-    end
     members = get_in(data, [:pairs, pair_id, :members])
     target_id = case members do
       [^id, target_id] -> target_id
@@ -48,8 +41,8 @@ defmodule UltimatumAndDictaorGames.Participant do
     target_id_role = get_in(data, [:participants, target_id, :role])
     id_point = get_in(data, [:participants, id, :point])
     target_id_point = get_in(data, [:participants, target_id, :point])
-    put_in(data, [:participants, id, :role], get_next_role(id_role, game_mode))
-    |> put_in([:participants, target_id, :role], get_next_role(target_id_role, game_mode))
+    put_in(data, [:participants, id, :role], get_next_role(id_role))
+    |> put_in([:participants, target_id, :role], get_next_role(target_id_role))
     |> put_in([:participants, id, :point],
       case id_role == "responder" do
          true -> id_point + (1000 - value)
@@ -75,14 +68,9 @@ defmodule UltimatumAndDictaorGames.Participant do
       false -> now_round
     end
     )
-    |> put_in([results], Map.merge( case game_mode do
-        "ultimatum" -> get_in(data, [:ultimatum_results])
-        "dictator"  -> get_in(data, [:dictator_results])
-      end, %{
-      Integer.to_string(now_round) => Map.merge( case game_mode do
-        "ultimatum" -> get_in(data, [:ultimatum_results, Integer.to_string(now_round)]) || %{}
-        "dictator"  -> get_in(data, [:dictator_results, Integer.to_string(now_round)]) || %{}
-      end, %{
+    |> put_in([:ultimatum_results], Map.merge(get_in(data, [:ultimatum_results]), %{
+      Integer.to_string(now_round) => Map.merge(get_in(data, [:ultimatum_results, 
+         Integer.to_string(now_round)]) || %{}, %{
         pair_id => %{
             value: value,
             change_count: change_count,
@@ -120,7 +108,6 @@ defmodule UltimatumAndDictaorGames.Participant do
   def format_data(data) do
     %{
       page: data.page,
-      game_mode: data.game_mode,
       game_redo: data.game_redo,
       inf_redo: data.inf_redo,
       game_round: data.game_round,
