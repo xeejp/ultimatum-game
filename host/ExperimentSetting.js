@@ -5,7 +5,10 @@ import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Ca
 import Slider from 'material-ui/Slider'
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ActionSettings from 'material-ui/svg-icons/action/settings'
 import Dialog from 'material-ui/Dialog';
+import Chip from 'material-ui/chip'
 import Toggle from 'material-ui/Toggle';
 
 import { changeGameRound, changeGameRedo, changeInfRedo } from './actions.js'
@@ -108,34 +111,27 @@ class ExperimentSetting extends Component {
   }
 
   render() {
-    const { page, inf_redo } = this.props
+    const { page, inf_redo, game_round, game_redo } = this.props
     const { game_round_temp, game_redo_temp, inf_redo_temp } = this.state
     const actions = [
-      <FlatButton
-        label="キャンセル"
-        secondary={true}
-        onTouchTap={this.handleClose}
-      />,
-      <FlatButton
+      <RaisedButton
         label="適用"
         primary={true}
         onTouchTap={this.handleConfirm}
+      />,
+      <RaisedButton
+        label="キャンセル"
+        onTouchTap={this.handleClose}
       />,
     ];
 
     return (
       <span>
-        { page == "waiting"?
-          <RaisedButton label="実験設定"
-            onTouchTap={this.handleOpen}
-            style={{marginRight: "12px"}}
-          />
-        :
-          <FlatButton label="実験設定"
-            style={{marginRight: "12px"}}
-            disabled={true}
-          />
-        }
+        <FloatingActionButton
+          onTouchTap={this.handleOpen}
+          style={{marginRight: "12px"}}
+          disabled={page != "waiting"}
+        ><ActionSettings /></FloatingActionButton>
         <Dialog
           title="実験設定"
           actions={actions}
@@ -143,6 +139,8 @@ class ExperimentSetting extends Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
+          <Chip style={styles.chip}>ラウンド: {game_round}</Chip>
+          <Chip style={styles.chip}>再提案可能回数: {inf_redo? "∞" :game_redo}</Chip>
           <p>ゲームのラウンド数: {game_round_temp}回 (役割交換回数: {game_round_temp-1}回)</p>
           { game_round_temp != 1?
             <RaisedButton
