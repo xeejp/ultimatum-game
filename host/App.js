@@ -13,7 +13,8 @@ import PageSteps from './PageSteps.js'
 import Users from './Users.js'
 import Chart from '../components/Chart.js'
 import ExperimentSetting from './ExperimentSetting.js'
-import MatchingButton from './MatchingButton.js'
+import EditQuestion from './EditQuestion.js'
+import DownloadButton from './DownloadButton.js'
 
 import throttle from 'react-throttle-render'
 
@@ -43,7 +44,14 @@ class App extends Component {
         <Users />
         <ThrottledChart />
         <ExperimentSetting />
-        <MatchingButton />
+        <EditQuestion style={{marginRight: "2%"}} />
+        <DownloadButton
+          fileName={"ultimatum_game.csv"}
+          list={[
+            ["最後通牒ゲーム"],
+            ["実験日", new Date()],
+          ]}
+        />
       </div>
     )
   }

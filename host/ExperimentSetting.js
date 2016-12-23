@@ -45,7 +45,7 @@ class ExperimentSetting extends Component {
     this.handleConfirm = this.handleConfirm.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
     this.state = {
-      open: false,
+      open: true,
       game_round_temp: 1,
       game_redo_temp: 0,
       inf_redo_temp: false,
@@ -129,7 +129,7 @@ class ExperimentSetting extends Component {
       <span>
         <FloatingActionButton
           onTouchTap={this.handleOpen}
-          style={{marginRight: "12px"}}
+          style={{marginRight: "2%"}}
           disabled={page != "waiting"}
         ><ActionSettings /></FloatingActionButton>
         <Dialog
