@@ -12,9 +12,9 @@ class EditQuestion extends Component {
   }
 
   render(){
-    const { style } = this.props
+    const { style, disabled } = this.props
     return (<span>
-      <FloatingActionButton onClick={null} style={style} disabled={false}>
+      <FloatingActionButton onClick={null} style={style} disabled={disabled}>
          <ImageEdit />
       </FloatingActionButton>
     </span>)

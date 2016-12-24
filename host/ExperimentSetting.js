@@ -45,7 +45,7 @@ class ExperimentSetting extends Component {
     this.handleConfirm = this.handleConfirm.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
     this.state = {
-      open: true,
+      open: false,
       game_round_temp: 1,
       game_redo_temp: 0,
       inf_redo_temp: false,

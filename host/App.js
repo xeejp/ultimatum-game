@@ -20,8 +20,8 @@ import throttle from 'react-throttle-render'
 
 const ThrottledChart = throttle(Chart, 100)
 
-const mapStateToProps = ({ dispatch }) => ({
-  dispatch,
+const mapStateToProps = ({ dispatch, page }) => ({
+  dispatch, page,
 })
 
 class App extends Component {
@@ -38,19 +38,21 @@ class App extends Component {
   }
 
   render() {
+    const { page } = this.props
     return (
       <div>
         <PageSteps />
         <Users />
         <ThrottledChart />
         <ExperimentSetting />
-        <EditQuestion style={{marginRight: "2%"}} />
+        <EditQuestion style={{marginRight: "2%"}} disabled={page != "waiting"} />
         <DownloadButton
           fileName={"ultimatum_game.csv"}
           list={[
             ["最後通牒ゲーム"],
             ["実験日", new Date()],
           ]}
+          disabled={page != "result"}
         />
       </div>
     )
