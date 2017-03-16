@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import Slider from 'material-ui/Slider'
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { getRoleName } from 'util/index'

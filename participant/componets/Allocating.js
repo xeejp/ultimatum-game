@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-import Slider from 'material-ui/Slider'
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { getRoleName } from '../../util/index.js'
+import { Slider } from 'xee-components'
 
 import {
   submitAlloTemp,
@@ -49,14 +49,15 @@ class Allocating extends Component {
           />
           <CardText>
             <p>あなたへの配分: {role == "responder"? 1000 - allo_temp : allo_temp}  {getRoleName(enemy)}への配分: {role == "responder"? allo_temp : 1000 - allo_temp}</p>
-            <Slider
-              min={0}
-              max={1000}
-              step={100}
-              value={ role == "responder"? 1000 - allo_temp : allo_temp }
-              onChange={this.handleThinking}
-              disabled={role == "responder"}
-            />
+            {role == "proposer" ? (
+              <Slider
+                min={0}
+                max={1000}
+                divisor={10}
+                value={ allo_temp }
+                onChange={this.handleThinking}
+              />
+            ) : null}
             <RaisedButton
               label="送信"
               primary={true}
