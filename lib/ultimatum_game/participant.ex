@@ -1,6 +1,31 @@
 defmodule UltimatumGame.Participant do
   alias UltimatumGame.Actions
 
+  def filter_data(data, id) do
+    pair_id = get_in(data, [:participants, id, :pair_id])
+    rule = %{
+      page: true,
+      game_progress: true,
+      game_redo: true,
+      inf_redo: true,
+      game_round: true,
+      game_progress: true,
+      participants: %{id => true},
+      pairs: %{pair_id => %{
+        members: true,
+        now_round: true,
+        redo_count: true,
+        allo_temp: true,
+        state: true,
+      }},
+      ultimatum_results: data.page == "result",
+      _spread: [[:participants, id], [:pairs, pair_id]]
+    }
+    data
+    |> Transmap.transform(rule)
+    |> Map.put(:participants_length, Map.size(data.participants))
+  end
+
   # Actions
   def fetch_contents(data, id) do
     Actions.update_participant_contents(data, id)
@@ -9,13 +34,12 @@ defmodule UltimatumGame.Participant do
   def change_allo_temp(data, id, allo_temp) do
     pair_id = get_in(data, [:participants, id, :pair_id])
     "allocating" = get_in(data, [:pairs, pair_id, :state])
-    Actions.change_allo_temp(data, id, allo_temp)
+    put_in(data, [:pairs, pair_id, :allo_temp], allo_temp)
   end
 
   def finish_allocating(data, id, allo_temp) do
     pair_id = get_in(data, [:participants, id, :pair_id])
     put_in(data, [:pairs, pair_id, :state], "judging")
-    |> Actions.finish_allocating(id, allo_temp)
   end
 
   def get_next_role(role) do
@@ -78,16 +102,21 @@ defmodule UltimatumGame.Participant do
           }
        })
     }))
+    |> compute_progress
+  end
+
+  defp compute_progress(data) do
+    pairs_length = Map.size(data.pairs)
+    finished = Enum.count(data.pairs, fn {_id, %{state: state}} -> state == "finished" end)
+    %{data | game_progress: round(100 * finished / pairs_length)}
   end
 
   def response_ok(data, id, result) do
     response(data, id, result, true)
-    |> Actions.response_ok(id, result)
   end
 
   def response_ng(data, id, result) do
     response(data, id, result, false)
-    |> Actions.response_ng(id, result)
   end
 
   def redo_allocating(data, id) do
@@ -100,43 +129,5 @@ defmodule UltimatumGame.Participant do
     end
     put_in(data, [:pairs, pair_id, :redo_count], redo_count + 1)
     |> put_in([:pairs, pair_id, :state], "allocating")
-    |> Actions.redo_allocating(id)
-  end
-
-  def format_participant(participant), do: participant
-
-  def format_data(data) do
-    %{
-      page: data.page,
-      game_redo: data.game_redo,
-      inf_redo: data.inf_redo,
-      game_round: data.game_round,
-      game_progress: data.game_progress,
-    }
-  end
-
-  def format_pair(pair) do
-    %{
-      members: pair.members,
-      now_round: pair.now_round,
-      redo_count: pair.redo_count,
-      allo_temp: pair.allo_temp,
-      state: pair.state,
-    }
-  end
-
-  def format_contents(data, id) do
-    %{participants: participants} = data
-    participant = Map.get(participants, id)
-    pair_id = get_in(data, [:participants, id, :pair_id])
-    unless is_nil(pair_id) do
-      pair = get_in(data, [:pairs, pair_id])
-      format_participant(participant)
-      |> Map.merge(format_data(data))
-      |> Map.merge(format_pair(pair))
-    else
-      format_participant(participant)
-      |> Map.merge(format_data(data))
-    end
   end
 end

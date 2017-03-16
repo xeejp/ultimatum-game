@@ -40,6 +40,7 @@ const initialState = {
   responseNG: false,
   changeRole: false,
   redo_flag: false,
+  ultimatum_results: {},
   participants_length: 0,
 }
 

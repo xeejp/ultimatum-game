@@ -2,6 +2,10 @@ defmodule UltimatumGame.Host do
   alias UltimatumGame.Main
   alias UltimatumGame.Actions
 
+  def filter_data(data) do
+    data
+  end
+
   # Actions
   def fetch_contents(data) do
     data
@@ -25,28 +29,11 @@ defmodule UltimatumGame.Host do
       game_redo: 0,
       inf_redo: false,
     }
-    |> Actions.reseted()
-  end
-
-  def sync_game_progress(data, game_progress) do
-    Actions.sync_game_progress(data, game_progress)
-  end
-
-  def sync_participants_length(data, participants_length) do
-    Actions.sync_participants_length(data, participants_length)
-  end
-
-  def show_results(data, results) do
-    put_in(data, [:ultimatum_results],
-      get_in(results, ["ultimatum_results"])
-    )
-    |> Actions.show_results(results)
   end
 
   def change_page(data, page) do
     if page in Main.pages do
       %{data | page: page}
-      |> Actions.change_page(page)
     else
       data
     end
@@ -55,18 +42,15 @@ defmodule UltimatumGame.Host do
   def change_game_round(data, game_round) do
     if game_round < 0 do game_round = 1 end
     %{data | game_round: game_round}
-    |> Actions.change_game_round(game_round)
   end
 
   def change_inf_redo(data, inf_redo) do
     %{data | inf_redo: inf_redo }
-    |> Actions.change_inf_redo(inf_redo)
   end
 
   def change_game_redo(data, game_redo) do
     if game_redo < -1 do game_redo = 0 end
     %{data | game_redo: game_redo }
-    |> Actions.change_game_redo(game_redo)
   end
 
   def match(data) do
@@ -108,10 +92,5 @@ defmodule UltimatumGame.Host do
     {participants, groups} = Enum.reduce(groups, acc, reducer)
 
     %{data | participants: participants, pairs: groups}
-    |> Actions.matched()
-  end
-  
-  def format_contents(data) do
-    data
   end
 end
