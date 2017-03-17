@@ -46,16 +46,21 @@ class ExperimentSetting extends Component {
     this.handleToggle = this.handleToggle.bind(this)
     this.state = {
       open: false,
-      game_round_temp: 1,
+      game_round_temp: 0,
       game_redo_temp: 0,
       inf_redo_temp: false,
     }
   }
-  componentDidMount() {
-    const { game_round, game_redo, inf_redo } = this.props
+
+  componentWillReceiveProps(props) {
+    const { game_round, game_rate, inf_redo } = props
+    const open = this.state.game_round_temp !== game_round
+      || this.state.game_rate_temp !== game_rate
+      || this.state.inf_redo_temp !== inf_redo
     this.setState({
+      open,
       game_round_temp: game_round,
-      game_redo_temp: game_redo,
+      game_rate_temp: game_rate,
       inf_redo_temp: inf_redo,
     })
   }
