@@ -13,6 +13,7 @@ defmodule UltimatumGame.Participant do
       game_progress: true,
       participants: %{id => true},
       pairs: %{pair_id => %{
+        pair_results: true,
         members: true,
         now_round: true,
         redo_count: true,
@@ -25,6 +26,7 @@ defmodule UltimatumGame.Participant do
     data
     |> Transmap.transform(rule)
     |> Map.put(:participants_length, Map.size(data.participants))
+    |> Map.put(:id, id)
   end
 
   # Actions
@@ -93,6 +95,9 @@ defmodule UltimatumGame.Participant do
       false -> now_round
     end
     )
+    |> update_in([:pairs, pair_id, :pair_results], fn list ->
+      [%{proposer: target_id, value: value} | list]
+    end)
     |> put_in([:ultimatum_results], Map.merge(get_in(data, [:ultimatum_results]), %{
       Integer.to_string(now_round) => Map.merge(get_in(data, [:ultimatum_results, 
          Integer.to_string(now_round)]) || %{}, %{

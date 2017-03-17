@@ -31,6 +31,7 @@ defmodule UltimatumGame.Main do
       redo_count: 0,
       allo_temp: Enum.random(0..10) * 100,
       state: "allocating",
+      pair_results: []
     }
   end
 end
