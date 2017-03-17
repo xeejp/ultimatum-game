@@ -10,6 +10,7 @@ import {
   changeGameRound,
   changeGameRedo,
   changeInfRedo,
+  changeDescription
 } from './actions.js'
 
 import {
@@ -64,6 +65,13 @@ function* changeInfRedoSaga() {
   }
 }
 
+function* changeDescriptionSaga() {
+  while(true) {
+    const { payload } = yield take(`${changeDescription}`)
+    sendData('CHANGE_DESCRIPTION', payload)
+  }
+}
+
 function* saga() {
   yield fork(fetchContentsSaga)
   yield fork(matchSaga)
@@ -71,6 +79,7 @@ function* saga() {
   yield fork(changeInfRedoSaga)
   yield fork(changeGameRedoSaga)
   yield fork(changeGameRoundSaga)
+  yield fork(changeDescriptionSaga)
 }
 
 export default saga

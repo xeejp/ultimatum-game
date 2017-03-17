@@ -15,6 +15,8 @@ export const changeGameRound = createAction('CHANGE_GAME_ROUND', game_round => g
 export const changeGameRedo = createAction('CHANGE_GAME_REDO', game_redo => game_redo)
 export const changeInfRedo = createAction('CHANGE_INF_REDO', inf_redo => inf_redo)
 
+export const changeDescription = createAction('CHANGE_QUESTION', text => text)
+
 export const intoLoading = createAction('INTO_LOADING')
 export const exitLoading = createAction('EXIT_LOADING')
 

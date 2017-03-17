@@ -4,29 +4,19 @@ import { connect } from 'react-redux'
 import {Card, CardText, CardTitle } from 'material-ui/Card'
 import {List, ListItem} from 'material-ui/List'
 
-const mapStateToProps = ({ game_round }) => ({
-  game_round
+const mapStateToProps = ({ game_round, description }) => ({
+  game_round, description
 })
 
 class Description extends Component {
   render() {
-    const { game_round } = this.props
+    const { description, game_round } = this.props
+    const text = description
+      .replace('{round}', game_round-1)
     return (
       <Card>
-        <CardTitle title="最後通牒ゲーム" subtitle="ルールの説明" />
         <CardText>
-          <p>あなたは誰かとペアになって実験を行います。<br/>参加者には2つの役割があり、今回は{game_round-1}回の役割交代があります。</p>
-          <List>
-            <ListItem
-              primaryText="提案者"
-              secondaryText="提案者はポイントを自分と受け手の間でどう分けるか提案できます"
-            />
-            <ListItem
-              primaryText="受け手"
-              secondaryText="受け手は提案者の提案を承認するか拒否するか選択できます。"
-            />
-          </List> 
-          <p>受け手が拒否した場合、そのラウンドに提案者に配られたポイントは没収されます。</p>
+          <div dangerouslySetInnerHTML={{__html: text}} />
         </CardText>
       </Card>
     )

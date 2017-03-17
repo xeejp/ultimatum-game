@@ -7,6 +7,17 @@ defmodule UltimatumGame do
   alias UltimatumGame.Main
   alias UltimatumGame.Actions
 
+  @description """
+  <h2>最後通牒ゲーム</h2>
+  <h3>ルールの説明</h3>
+  <p>あなたは誰かとペアになって実験を行います。<br/>参加者には2つの役割があり、今回は{round}回の役割交代があります。</p>
+  <h4>提案者</h4>
+  <p>提案者はポイントを自分と受け手の間でどう分けるか提案できます。</p>
+  <h4>受け手</h4>
+  <p>受け手は提案者の提案を承認するか拒否するか選択できます。</p>
+  <p>受け手が拒否した場合、そのラウンドに提案者に配られたポイントは没収されます。</p>
+  """
+
   # Callbacks
   def script_type do
     :message
@@ -16,16 +27,17 @@ defmodule UltimatumGame do
 
   def init do
     {:ok, %{data: %{
-        page: "waiting",
-        game_progress: 0,
-        game_round: 1,
-        game_redo: 0,
-        inf_redo: false,
-        game_progress: 0,
-        participants: %{},
-        pairs: %{},
-        ultimatum_results: %{},
-        dictator_results: %{},
+      description: @description,
+      page: "waiting",
+      game_progress: 0,
+      game_round: 1,
+      game_redo: 0,
+      inf_redo: false,
+      game_progress: 0,
+      participants: %{},
+      pairs: %{},
+      ultimatum_results: %{},
+      dictator_results: %{},
       }
     }}
   end
@@ -47,6 +59,7 @@ defmodule UltimatumGame do
       {"FETCH_CONTENTS", _} -> Host.fetch_contents(data)
       {"MATCH", _} -> Host.match(data)
       {"RESET", _} -> Host.reset(data)
+      {"CHANGE_DESCRIPTION", text} -> Host.change_description(data, text)
       {"CHANGE_PAGE", page} -> Host.change_page(data, page)
       {"CHANGE_GAME_ROUND", game_round} -> Host.change_game_round(data, game_round)
       {"CHANGE_INF_REDO", inf_redo} -> Host.change_inf_redo(data, inf_redo)
