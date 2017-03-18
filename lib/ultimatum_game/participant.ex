@@ -70,18 +70,26 @@ defmodule UltimatumGame.Participant do
     target_id_point = get_in(data, [:participants, target_id, :point])
     put_in(data, [:participants, id, :role], get_next_role(id_role))
     |> put_in([:participants, target_id, :role], get_next_role(target_id_role))
-    |> put_in([:participants, id, :point],
-      case id_role == "responder" do
-         true -> id_point + (1000 - value)
-         false -> id_point + value
+    |> update_in([:participants, id, :point], fn point ->
+      if accept do
+        case id_role == "responder" do
+          true -> point + (1000 - value)
+          false -> point + value
+        end
+      else
+        point
       end
-    )
-    |> put_in([:participants, target_id, :point],
-      case target_id_role == "responder" do
-         true -> target_id_point + (1000 - value)
-         false -> target_id_point + value
+    end)
+    |> update_in([:participants, target_id, :point], fn point ->
+      if accept do
+        case target_id_role == "responder" do
+          true -> point + (1000 - value)
+          false -> point + value
+        end
+      else
+        point
       end
-    )
+    end)
     |> put_in([:pairs, pair_id, :redo_count], 0)
     |> put_in([:pairs, pair_id, :state],
      case now_round < game_round do
