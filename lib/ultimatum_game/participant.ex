@@ -96,7 +96,7 @@ defmodule UltimatumGame.Participant do
     end
     )
     |> update_in([:pairs, pair_id, :pair_results], fn list ->
-      [%{proposer: target_id, value: value} | list]
+      [%{proposer: target_id, value: value, accepted: accept} | list]
     end)
     |> put_in([:ultimatum_results], Map.merge(get_in(data, [:ultimatum_results]), %{
       Integer.to_string(now_round) => Map.merge(get_in(data, [:ultimatum_results, 
