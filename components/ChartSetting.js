@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/chip'
 
 import { changeChartRound } from 'host/actions.js'
+import { ReadJSON, InsertVariable } from '../util/ReadJSON';
 
 const mapStateToProps = ({ chart_round, ultimatum_results }) => ({
   chart_round,
@@ -41,7 +42,7 @@ class ChartSetting extends Component {
     const { chart_round, max_chart_round } = this.props
     return (
       <div>
-          <Chip style={{margin: 4}}>表示ラウンド: {chart_round}</Chip>
+          <Chip style={{margin: 4}}>{InsertVariable(ReadJSON().static_text["chart"]["round"], { round: chart_round })}</Chip>
           { chart_round != 1?
             <RaisedButton
               label="-"

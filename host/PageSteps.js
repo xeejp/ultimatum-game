@@ -20,6 +20,7 @@ import {
   exitLoading,
 } from './actions'
 
+import { ReadJSON } from '../util/ReadJSON'
 
 const mapStateToProps = ({ page, game_round, game_progress, pairs, loading }) => ({
   page,
@@ -85,14 +86,14 @@ class PageSteps extends React.Component {
     return (
       <div style={{margin: '16px 18px'}}>
         <FlatButton
-          label="戻る"
+          label={ReadJSON().static_text["back"]}
           disabled={pages[0] == page}
           onTouchTap={this.handlePrev}
           style={{marginRight: "12px"}}
         />
         <span style={{marginLeft: "3%"}}>
           <RaisedButton
-            label={pages[3] === page ? '実験を続ける' : '次へ'}
+            label={pages[3] === page ? ReadJSON().static_text["continue"] : ReadJSON().static_text["next"]}
             primary={true}
             onTouchTap={this.handleNext}
           />

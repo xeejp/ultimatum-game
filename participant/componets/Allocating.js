@@ -12,6 +12,8 @@ import {
   finishAllocating,
 } from '../actions.js'
 
+import { ReadJSON, InsertVariable } from '../../util/ReadJSON';
+
 const mapStateToProps = ({ allo_temp, role }) => ({
   allo_temp,
   role,
@@ -44,11 +46,11 @@ class Allocating extends Component {
       <div>
         <Card>
           <CardHeader
-            title={"あなたは" + getRoleName(role) + "側です"}
-            subtitle={role == "responder"? getRoleName(enemy) + "が配分中。しばらくお待ちください。" : "配分してください。"}
+            title={InsertVariable(ReadJSON().static_text["user_role"], { role: getRoleName(role) })}
+            subtitle={role == "responder"? InsertVariable(ReadJSON().static_text["enemy_allo"], { enemy: getRoleName(enemy) }) : ReadJSON().static_text["user_allo"]}
           />
           <CardText>
-            <p>あなたへの配分: {role == "responder"? 1000 - allo_temp : allo_temp}  {getRoleName(enemy)}への配分: {role == "responder"? allo_temp : 1000 - allo_temp}</p>
+            <p>{InsertVariable(ReadJSON().static_text["allo"], { user_allo: role == "responder"? 1000 - allo_temp : allo_temp, enemy: getRoleName(enemy), enemy_allo: role == "responder"? allo_temp : 1000 - allo_temp})}</p>
             {role == "proposer" ? (
               <Slider
                 min={0}
@@ -59,7 +61,7 @@ class Allocating extends Component {
               />
             ) : null}
             <RaisedButton
-              label="送信"
+              label={ReadJSON().static_text["send"]}
               primary={true}
               style={style}
               onClick={this.handleConfirm}

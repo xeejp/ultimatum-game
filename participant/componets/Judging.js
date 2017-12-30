@@ -21,6 +21,8 @@ import {
   responseNG,
 } from '../actions.js'
 
+import { ReadJSON, InsertVariable } from '../../util/ReadJSON'
+
 class Allocating extends Component {
   constructor() {
     super()
@@ -65,24 +67,24 @@ class Allocating extends Component {
       <div>
         <Card>
           <CardHeader
-            title={getRoleName(role) + "側"}
-            subtitle={role == "responder"? "回答してください。" :"回答待ちです。しばらくお待ちください。"}
+            title={InsertVariable(ReadJSON().static_text["user_role_"], { role: getRoleName(role) })}
+            subtitle={role == "responder"? ReadJSON().static_text["answer"] : ReadJSON().static_text["wait_answer"]}
           />
           <CardText>
-            <p>あなたへの配分: {role == "responder"? 1000 - allo_temp : allo_temp}  {getRoleName(enemy)}への配分: {role == "responder"? allo_temp : 1000 - allo_temp}</p>
+            <p>{InsertVariable(ReadJSON().static_text["allo"], {user_allo: role == "responder"? 1000 - allo_temp : allo_temp, enemy: getRoleName(enemy), enemy_allo: role == "responder"? allo_temp : 1000 - allo_temp})}</p>
             { role != "responder"?
-              <p>送信しました。受け手の回答をお待ち下さい。</p>
+              <p>{ReadJSON().static_text["send_wait"]}</p>
             :
               <div>
-                <p>{getRoleName(enemy) + "が上記のように提案してきました。回答してください"}</p>
+                <p>{InsertVariable(ReadJSON().static_text["suggestion"], { enemy: getRoleName(enemy) })}</p>
                 <RaisedButton
-                  label="承認"
+                  label={ReadJSON().static_text["accept"]}
                   primary={true}
                   onClick={this.handleOK}
                   style={{marginRight: "16px"}}
                 />
                 <RaisedButton
-                  label="拒否"
+                  label={ReadJSON().static_text["reject"]}
                   secondary={true}
                   onClick={this.handleNG}
                 />

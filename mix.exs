@@ -27,7 +27,7 @@ defmodule UltimatumGame.Mixfile do
   #
   # Or git/path repositories:
   #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
+  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.3.0"}
   #
   # To depend on another app inside the umbrella:
   #
@@ -35,8 +35,8 @@ defmodule UltimatumGame.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:xeethemescript, "~> 0.1.0"},
-     {:json_diff_ex, github: "ryo33/json_diff_ex", branch: "fix-master"},
+    [{:xeethemescript, "~> 0.3.0"},
+     {:json_diff_ex, "~> 0.5.2"},
      {:transmap, "~> 0.2.0"}]
   end
 end

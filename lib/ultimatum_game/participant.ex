@@ -4,7 +4,7 @@ defmodule UltimatumGame.Participant do
   def filter_data(data, id) do
     pair_id = get_in(data, [:participants, id, :pair_id])
     rule = %{
-      description: true,
+      dynamic_text: true,
       page: true,
       game_progress: true,
       game_redo: true,

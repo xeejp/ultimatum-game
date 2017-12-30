@@ -31,8 +31,8 @@ defmodule UltimatumGame.Host do
     }
   end
 
-  def change_description(data, text) do
-    %{data | description: text}
+  def change_description(data, dynamic_text) do
+    %{data | dynamic_text: dynamic_text}
   end
 
   def change_page(data, page) do

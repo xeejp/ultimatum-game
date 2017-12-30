@@ -14,6 +14,8 @@ import Toggle from 'material-ui/Toggle';
 import { changeGameRound, changeGameRedo, changeInfRedo } from './actions.js'
 import { getGamemodeName } from 'util/index'
 
+import { ReadJSON, InsertVariable } from '../util/ReadJSON'
+
 const mapStateToProps = ({ game_round, page, game_redo, inf_redo}) => ({
   game_round,
   game_redo,
@@ -120,12 +122,12 @@ class ExperimentSetting extends Component {
     const { game_round_temp, game_redo_temp, inf_redo_temp } = this.state
     const actions = [
       <RaisedButton
-        label="適用"
+        label={ReadJSON().static_text["apply"]}
         primary={true}
         onTouchTap={this.handleConfirm}
       />,
       <RaisedButton
-        label="キャンセル"
+        label={ReadJSON().static_text["cancel"]}
         onTouchTap={this.handleClose}
       />,
     ];
@@ -138,15 +140,15 @@ class ExperimentSetting extends Component {
           disabled={page != "waiting"}
         ><ActionSettings /></FloatingActionButton>
         <Dialog
-          title="実験設定"
+          title={ReadJSON().static_text["ex_config"]}
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          <Chip style={styles.chip}>ラウンド: {game_round}</Chip>
-          <Chip style={styles.chip}>再提案可能回数: {inf_redo? "∞" :game_redo}</Chip>
-          <p>ゲームのラウンド数: {game_round_temp}回 (役割交換回数: {game_round_temp-1}回)</p>
+          <Chip style={styles.chip}>{InsertVariable(ReadJSON().static_text["round_num"], { round: game_round })}</Chip>
+          <Chip style={styles.chip}>{InsertVariable(ReadJSON().static_text["redo"], { redo: inf_redo? "∞" :game_redo })}</Chip>
+          <p>{InsertVariable(ReadJSON().static_text["game_round"], { round: game_round_temp, change: game_round_temp-1 })}</p>
           { game_round_temp != 1?
             <RaisedButton
               label="-"
@@ -164,9 +166,9 @@ class ExperimentSetting extends Component {
             style={styles.game_roundButton}
             onClick={this.handleRoundInc}
           />
-          <p>再提案回数: {inf_redo_temp? "∞" : game_redo_temp}回</p>
+          <p>{InsertVariable(ReadJSON().static_text["redo_"], { redo: inf_redo? "∞" :game_redo })}</p>
           <Toggle
-            label="無制限"
+            label={ReadJSON().static_text["inf"]}
             toggled={inf_redo_temp}
             style={{margin: 4, maxWidth: 200}}
             onToggle={this.handleToggle}

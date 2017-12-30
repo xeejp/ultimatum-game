@@ -1,23 +1,24 @@
 import React from 'react'
+import { ReadJSON, InsertVariable } from '../util/ReadJSON';
 
 const RoundResult = ({ id, proposer, value, accepted }) => {
-  const acceptText = accepted ? '承認しました。' : '拒否しました。'
+  
   if (id == proposer) {
     return (
       <div>
-        <p>手もとに残るポイント</p>
+        <p>{ReadJSON().static_text["result"]["remain_point"]}</p>
         <p>{value}</p>
-        <p>相手に渡すポイント</p>
-        <p>{1000 - value}ポイント</p>
-        <p>相手は{acceptText}</p>
+        <p>{ReadJSON().static_text["result"]["pass_point"]}</p>
+        <p>{InsertVariable(ReadJSON().static_text["result"]["point"], { point: 1000 - value })}</p>
+        <p>{accepted ? ReadJSON().static_text["result"]["enemy_accepted"] : ReadJSON().static_text["result"]["enemy_rejected"]}</p>
       </div>
     )
   } else {
     return (
       <div>
-        <p>相手から受け取るポイント</p>
-        <p>{1000 - value}ポイント</p>
-        <p>あなたは{acceptText}</p>
+        <p>{ReadJSON().static_text["result"]["return_point"]}</p>
+        <p>{InsertVariable(ReadJSON().static_text["result"]["point"], { point: 1000 - value })}</p>
+        <p>{accepted ? ReadJSON().static_text["result"]["user_accepted"] : ReadJSON().static_text["result"]["user_rejected"]}</p>
       </div>
     )
   }

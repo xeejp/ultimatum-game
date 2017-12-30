@@ -1,25 +1,27 @@
+import { ReadJSON } from './ReadJSON'
+
 export function getPageName(page) {
   switch(page) {
-    case 'waiting'    : return "待機"
-    case 'description': return "説明"
-    case 'experiment' : return "実験"
-    case 'result'     : return "結果"
+    case 'waiting'    : return ReadJSON().static_text["pages"][0]
+    case 'description': return ReadJSON().static_text["pages"][1]
+    case 'experiment' : return ReadJSON().static_text["pages"][2]
+    case 'result'     : return ReadJSON().static_text["pages"][3]
   }
 }
 
 export function getRoleName(role) {
   switch(role) {
-    case "visitor"  : return "見学者"
-    case "proposer" : return "提案者"
-    case "responder": return "受け手"
+    case "visitor"  : return ReadJSON().static_text["roles"][0]
+    case "proposer" : return ReadJSON().static_text["roles"][1]
+    case "responder": return ReadJSON().static_text["roles"][2]
   }
 }
 
 export function getStateName(state) {
   switch(state) {
-    case "allocating": return "配分中"
-    case "judging"   : return "判定中"
-    case "finished"  : return "終了"
+    case "allocating": return ReadJSON().static_text["stasus"][0]
+    case "judging"   : return ReadJSON().static_text["stasus"][1]
+    case "finished"  : return ReadJSON().static_text["stasus"][2]
   }
 }
 

@@ -9,6 +9,8 @@ import ChartSetting from './ChartSetting.js'
 
 import { fallChartButton } from 'host/actions.js'
 
+import { ReadJSON, InsertVariable } from '../util/ReadJSON'
+
 function compDataAccept(categories, results, round) {
   const values = results[round]? Object.keys(results[round]).filter(id =>
     results[round][id]? results[round][id].accept : false).map(id =>
@@ -39,13 +41,13 @@ const mapStateToProps = ({ultimatum_results, chart_round, chart_button, role}) =
         href: 'https://xee.jp/'
       },
       title: {
-        text: "提案者に分配されたポイント"
+        text: ReadJSON().static_text["chart"]["allo_point"]
       },
       xAxis: {
         categories: categories,
         crosshair: true,
         title: {
-          text: "ポイント"
+          text: ReadJSON().static_text["point"]
         },
         labels: {
           step: 1
@@ -55,7 +57,7 @@ const mapStateToProps = ({ultimatum_results, chart_round, chart_button, role}) =
         allowDecimals: false,
         min: 0,
         title: {
-          text: "回数"
+          text: ReadJSON().static_text["chart"]["count"]
         },
         labels: {
           step: 1,
@@ -63,7 +65,7 @@ const mapStateToProps = ({ultimatum_results, chart_round, chart_button, role}) =
       },
       tooltip: {
         formatter: function () {
-          return '<b>' + this.x + 'ポイント</b><br/>' +
+          return '<b>' + InsertVariable(ReadJSON().static_text["result"]["point"], { point: this.x }) + '</b><br/>' +
             this.series.name + ': ' + this.y
         }
       },
@@ -74,12 +76,12 @@ const mapStateToProps = ({ultimatum_results, chart_round, chart_button, role}) =
       },
       series: [
         {
-          name: "承認",
+          name: ReadJSON().static_text["accept"],
           data: compDataAccept(categories, ultimatum_results, chart_round),
           stack: 'ultimatum'
         },
         {
-          name: "拒否",
+          name: ReadJSON().static_text["reject"],
           data: compDataRefuse(categories, ultimatum_results, chart_round),
           stack: 'ultimatum'
         },
@@ -122,7 +124,7 @@ class Chart extends Component {
         onExpandChange={this.handleExpandChange}
       >
         <CardHeader
-          title="グラフ"
+          title={ReadJSON().static_text["result"]["graph"]}
           actAsExpander={true}
           showExpandableButton={true}
         />

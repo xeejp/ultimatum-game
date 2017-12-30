@@ -1,0 +1,116 @@
+{
+  "dynamic_text": {
+    "description": [
+      "ルール説明",
+      "あなたは誰かとペアになって実験を行います。\n参加者には2つの役割があり、今回は<round>回の役割交代があります。",
+      "提案者",
+      "提案者はポイントを自分と受け手の間でどう分けるか提案できます。",
+      "受け手",
+      "受け手は提案者の提案を承認するか拒否するか選択できます。",
+      "受け手が拒否した場合、そのラウンドに提案者に配られたポイントは没収されます。"
+    ]
+  },
+  "static_text": {
+    "title": "最後通牒ゲーム",
+    "waiting": [
+      "待機画面",
+      "参加者の登録を待っています。",
+      "この画面のまましばらくお待ち下さい。",
+      "現在<num>人が参加しています。"
+    ],
+    "ex_date": "実験日",
+    "apply": "適用",
+    "cancel": "キャンセル",
+    "end": "終了",
+    "send": "送信",
+    "question_edit": "問題文編集",
+    "ex_config": "実験設定",
+    "round_num": "ラウンド: <round>",
+    "redo": "再提案可能回数: <redo>",
+    "redo_": "再提案可能回数: <redo>回",
+    "game_round": "ゲームのラウンド数: <round>回 (役割交換回数: <change>回)",
+    "inf": "無制限",
+    "back": "戻る",
+    "next": "次へ",
+    "continue": "実験を続ける",
+    "reset": "リセット",
+    "id": "ID",
+    "role": "役割",
+    "point": "ポイント",
+    "pair_id": "所属ペアID",
+    "round": "ラウンド",
+    "state": "状況",
+    "participant_num": "登録者 <num>人",
+
+    "user_role": "あたなは<role>側です",
+    "user_allo": "配分してください。",
+    "enemy_allo": "<enemy>が配分中。しばらくお待ちください。",
+    "allo": "あなたへの配分: <user_allo>　<enemy>への配分: <enemy_allo>",
+    "user_role_": "<role>側",
+    "wait_end": "終了待ち",
+    "finished": "このペアの実験は終了しました。ほかのペアが終了するまでお待ちください。",
+    "answer": "回答してください。",
+    "wait_answer": "回答待ちです。しばらくお待ちください。",
+    "send_wait": "送信しました。受け手の回答をお待ちください。",
+    "suggestion": "<enemy>が上記のように提案してきました。回答してください。",
+    "accept": "承認",
+    "reject": "拒否",
+
+    "round_": "ラウンド: <now> / <round>",
+    "remain_round": "残り役割交代: <round>回",
+    "final_round": "最後のラウンド",
+    "inf_redo": "再提案回数: ∞",
+    "redo__": "再提案回数: <now> / <redo>",
+    "final_suggestion": "最後の提案",
+    "remain_suggestion": "残り再提案可能回数: <redo>回",
+    "progress": "参加者全体の進捗: <progress> %",
+    "point_": "ポイント: <point>",
+    "reject_": "拒否しました。相手が再提案しています。",
+    "rejected_": "拒否されました。再提案してください。",
+    "role_change": "役割交換によりあなたは<role>になりました。",
+    "accepted": "さきほどの提案は承認されました。<point>ポイント獲得しました。",
+    "rejected": "さきほどの提案は拒否されました。ポイントは獲得できませんでした。",
+    "accept_": "提案を承認しました。<point>ポイント獲得しました。",
+    "reject__": "提案を拒否しました。ポイントは獲得できませんでした。",
+    "cant_join": "参加できませんでした。終了をお待ち下さい。",
+
+    "result": {
+      "graph": "グラフ",
+      "round_result": "各ラウンドの結果",
+      "round": "<round>ラウンド目",
+      "user_accepted": "あなたは承認しました。",
+      "user_rejected": "あなたは拒否しました。",
+      "enemy_accepted": "相手は承認しました。",
+      "enemy_rejected": "相手は拒否しました。",
+      "remain_point": "手もとに残るポイント",
+      "pass_point": "相手に渡すポイント",
+      "point": "<point>ポイント",
+      "return_point": "相手から受け取るポイント"
+    },
+
+    "chart": {
+      "allo_point": "提案者に分配されたポイント",
+      "count": "回数",
+      "round": "表示ラウンド: <round>"
+    },
+
+    "pages": [
+      "待機",
+      "説明",
+      "実験",
+      "結果"
+    ],
+
+    "roles": [
+      "見学者",
+      "提案者",
+      "受け手"
+    ],
+
+    "status": [
+      "配分中",
+      "判定中",
+      "終了"
+    ]
+  }
+}

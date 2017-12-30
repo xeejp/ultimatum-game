@@ -8,28 +8,37 @@ import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 
 import Description from '../participant/Description'
-import { changeDescription } from './actions.js'
+import { changeDescription, fetchContents } from './actions.js'
 
-const mapStateToProps = ({ description }) => ({description})
+import { ReadJSON } from '../util/ReadJSON'
+
+const mapStateToProps = ({ dynamic_text }) => ({ dynamic_text })
 
 class EditQuestion extends Component {
   constructor(props){
     super(props)
     this.handleOpen = this.handleOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
-    this.handleChange = this.handleChange.bind(this)
     this.handleConfirm = this.handleConfirm.bind(this)
+    const { dynamic_text } = this.props
+    var default_text = dynamic_text
+    if(!dynamic_text) {
+      default_text = ReadJSON().dynamic_text
+      const { dispatch } = this.props
+      dispatch(changeDescription(default_text))
+    }
     this.state = {
       open: false,
-      text: ''
+      dynamic_text: default_text,
     }
   }
 
   handleOpen() {
-    const { description } = this.props
+    const { dispatch } = this.props
+    dispatch(fetchContents())
     this.setState({
       open: true,
-      text: description
+      dynamic_text: this.props.dynamic_text
     })
   }
 
@@ -37,29 +46,35 @@ class EditQuestion extends Component {
     this.setState({open: false})
   }
 
-  handleChange(event) {
-    this.setState({text: event.target.value})
+  handleChangeDynamicText(value, event){
+    var dynamic_text = Object.assign({}, this.state.dynamic_text)
+    var temp = dynamic_text
+    for(var i = 0; i < value.length - 1; i++){
+      temp = temp[value[i]]
+    }
+    temp[value[value.length - 1]] = event.target.value
+    this.setState({ dynamic_text: dynamic_text })
   }
 
   handleConfirm() {
     const { dispatch } = this.props
-    const { text } = this.state
-    dispatch(changeDescription(text))
+    const { dynamic_text } = this.state
+    dispatch(changeDescription(dynamic_text))
     this.handleClose()
   }
 
   render(){
     const { style, disabled } = this.props
-    const { text } = this.state
+    const { dynamic_text } = this.state
     const actions = [
       <RaisedButton
-        label="適用"
+        label={ReadJSON().static_text["apply"]}
         primary={true}
         onTouchTap={this.handleConfirm}
         style={{marginRight: "10px",}}
       />,
       <RaisedButton
-        label="終了"
+        label={ReadJSON().static_text["end"]}
         onTouchTap={this.handleClose}
       />,
     ]
@@ -70,7 +85,7 @@ class EditQuestion extends Component {
           <ImageEdit />
         </FloatingActionButton>
         <Dialog
-          title="問題文編集"
+          title={ReadJSON().static_text["question_edit"]}
           actions={actions}
           modal={true}
           open={this.state.open}
@@ -78,14 +93,41 @@ class EditQuestion extends Component {
           autoScrollBodyContent={true}
         >
           <TextField
-            id="description"
-            value={text}
-            onChange={this.handleChange}
+            hintText={ReadJSON().dynamic_text["description"][1]}
+            defaultValue={dynamic_text["description"][1]}
+            onBlur={this.handleChangeDynamicText.bind(this, ["description", 1])}
             multiLine={true}
             fullWidth={true}
           />
-          <h3>プレビュー</h3>
-          <Description />
+          <TextField
+            hintText={ReadJSON().dynamic_text["description"][2]}
+            defaultValue={dynamic_text["description"][2]}
+            onBlur={this.handleChangeDynamicText.bind(this, ["description", 2])}
+          />
+          <TextField
+            hintText={ReadJSON().dynamic_text["description"][3]}
+            defaultValue={dynamic_text["description"][3]}
+            onBlur={this.handleChangeDynamicText.bind(this, ["description", 3])}
+            fullWidth={true}
+          />
+          <TextField
+            hintText={ReadJSON().dynamic_text["description"][4]}
+            defaultValue={dynamic_text["description"][4]}
+            onBlur={this.handleChangeDynamicText.bind(this, ["description", 4])}
+          />
+          <TextField
+            hintText={ReadJSON().dynamic_text["description"][5]}
+            defaultValue={dynamic_text["description"][5]}
+            onBlur={this.handleChangeDynamicText.bind(this, ["description", 5])}
+            fullWidth={true}
+          />
+          <TextField
+            hintText={ReadJSON().dynamic_text["description"][6]}
+            defaultValue={dynamic_text["description"][6]}
+            onBlur={this.handleChangeDynamicText.bind(this, ["description", 6])}
+            multiLine={true}
+            fullWidth={true}
+          />
         </Dialog>
       </span>
     )

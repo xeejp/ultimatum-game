@@ -7,6 +7,8 @@ import {
   exitLoading,
 } from './actions.js'
 
+import { ReadJSON } from '../util/ReadJSON'
+
 import FlatButton from 'material-ui/FlatButton';
 
 import PageSteps from './PageSteps.js'
@@ -16,12 +18,14 @@ import ExperimentSetting from './ExperimentSetting.js'
 import EditQuestion from './EditQuestion.js'
 import DownloadButton from './DownloadButton.js'
 
+import { changePage } from './actions'
+
 import throttle from 'react-throttle-render'
 
 const ThrottledChart = throttle(Chart, 100)
 
-const mapStateToProps = ({ dispatch, page }) => ({
-  dispatch, page,
+const mapStateToProps = ({ dispatch, page, pairs }) => ({
+  dispatch, page, pairs,
 })
 
 class App extends Component {
@@ -37,6 +41,16 @@ class App extends Component {
     dispatch(exitLoading())
   }
 
+  componentWillReceiveProps({ pairs, page }) {
+    if(page == "experiment") {
+      for(var key in pairs) {
+        if(pairs[key].state != "finished") return
+      }
+      const { dispatch } = this.props
+      dispatch(changePage("result"))
+    }
+  }
+
   render() {
     const { page } = this.props
     return (
@@ -49,8 +63,8 @@ class App extends Component {
         <DownloadButton
           fileName={"ultimatum_game.csv"}
           list={[
-            ["最後通牒ゲーム"],
-            ["実験日", new Date()],
+            [ReadJSON().static_text["title"]],
+            [ReadJSON().static_text["ex_date"], new Date()],
           ]}
           disabled={page != "result"}
         />
