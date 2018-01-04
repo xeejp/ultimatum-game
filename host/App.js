@@ -24,8 +24,8 @@ import throttle from 'react-throttle-render'
 
 const ThrottledChart = throttle(Chart, 100)
 
-const mapStateToProps = ({ dispatch, page, pairs }) => ({
-  dispatch, page, pairs,
+const mapStateToProps = ({ dispatch, page, pairs, ultimatum_results }) => ({
+  dispatch, page, pairs, ultimatum_results
 })
 
 class App extends Component {
@@ -52,7 +52,14 @@ class App extends Component {
   }
 
   render() {
-    const { page } = this.props
+    const { page, ultimatum_results } = this.props
+    var result_tmp = {}
+    for(var i in ultimatum_results) {
+      for(var j in ultimatum_results[i]) {
+        if(!result_tmp[j]) result_tmp[j] = {}
+        result_tmp[j][i] = ultimatum_results[i][j]
+      }
+    }
     return (
       <div>
         <PageSteps />
@@ -64,8 +71,15 @@ class App extends Component {
           fileName={"ultimatum_game.csv"}
           list={[
             [ReadJSON().static_text["title"]],
-            [ReadJSON().static_text["ex_date"], new Date()],
-          ]}
+            [ReadJSON().static_text["file"][0], new Date()],
+            [ReadJSON().static_text["file"][1], ReadJSON().static_text["file"][2], ReadJSON().static_text["file"][3], ReadJSON().static_text["file"][4], ReadJSON().static_text["file"][5]]
+          ].concat(
+            Object.keys(result_tmp).map(i =>
+              Object.keys(result_tmp[i]).map(j =>
+                [i, result_tmp[i][j].value, 1000 - result_tmp[i][j].value, result_tmp[i][j].accept? ReadJSON().static_text["accept"] : ReadJSON().static_text["reject"], result_tmp[i][j].change_count]
+              )
+            ).reduce((a, c) => a.concat(c), [])
+          )}
           disabled={page != "result"}
         />
       </div>
