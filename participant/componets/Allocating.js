@@ -52,13 +52,20 @@ class Allocating extends Component {
           <CardText>
             <p>{InsertVariable(ReadJSON().static_text["allo"], { user_allo: role == "responder"? 1000 - allo_temp : allo_temp, enemy: getRoleName(enemy), enemy_allo: role == "responder"? allo_temp : 1000 - allo_temp})}</p>
             {role == "proposer" ? (
-              <Slider
-                min={0}
-                max={1000}
-                divisor={10}
-                value={ allo_temp }
-                onChange={this.handleThinking}
-              />
+              <span style={{margin: 4}}>
+                <div style={{ position: "relative", marginBottom: "5%"}}>
+                  <h4 style={{ position: "absolute",  left: "1%", backgroundColor: "rgba(255,255,255,0.5)", pointerEvents: "none" }}>{InsertVariable(ReadJSON().static_text["user_allo_v"], { allo: role == "responder"? 1000 - allo_temp : allo_temp })}</h4>
+                  <h4 style={{ position: "absolute", right: "1%", backgroundColor: "rgba(255,255,255,0.5)", pointerEvents: "none" }}>{InsertVariable(ReadJSON().static_text["enemy_allo_v"], { enemy: getRoleName(enemy), allo: role == "responder"? allo_temp : 1000 - allo_temp })}</h4>
+                  <div style={{ clear: "both" }}></div>
+                  <Slider
+                    min={0}
+                    max={1000}
+                    divisor={10}
+                    value={ allo_temp }
+                    onChange={this.handleThinking}
+                  />
+                </div>
+              </span>
             ) : null}
             <RaisedButton
               label={ReadJSON().static_text["send"]}
