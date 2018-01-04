@@ -14,6 +14,8 @@ import {
   fallSnackBarFlags3,
 } from './actions.js'
 
+import Notice from './Notice'
+
 import {
   getRoleName,
 } from 'util/index'
@@ -59,6 +61,11 @@ class Respond extends Component {
     this.handleRequestClose = this.handleRequestClose.bind(this)
     this.handleRequestClose2 = this.handleRequestClose2.bind(this)
     this.handleRequestClose3 = this.handleRequestClose3.bind(this)
+    this.handleRequestClose4 = this.handleRequestClose4.bind(this)
+
+    this.state = {
+      allo_flag: false
+    }
   }
 
   handleRequestClose = () => {
@@ -76,6 +83,12 @@ class Respond extends Component {
     dispatch(fallSnackBarFlags3())
   }
 
+  handleRequestClose4 = () => {
+    this.setState({
+      allo_flag: false
+    })
+  }
+
   renderContents () {
     const { state } = this.props
     switch(state) {
@@ -85,6 +98,14 @@ class Respond extends Component {
         return <Judging />
       case "finished":
         return  <Finished />
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if(props.role == "responder" && props.state == "judging" && this.props.state == "allocating") {
+      this.setState({
+        allo_flag: true,
+      })
     }
   }
 
@@ -161,6 +182,11 @@ class Respond extends Component {
             message={ReadJSON().static_text["reject__"]}
             autoHideDuration={4000}
             onRequestClose={this.handleRequestClose}
+          />
+          <Notice
+            open={this.state.allo_flag}
+            message={"提案者から提案されました。回答を選択してください。"}
+            onRequestClose={this.handleRequestClose4}
           />
         </div>
       :

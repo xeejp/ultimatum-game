@@ -74,6 +74,11 @@
     "reject__": "提案を拒否しました。ポイントは獲得できませんでした。",
     "cant_join": "参加できませんでした。終了をお待ち下さい。",
 
+    "user_allo_v": "あなたへの配分: <allo>",
+    "enemy_allo_v": "<enemy>への配分: <allo>",
+
+    "close": "閉じる",
+
     "result": {
       "graph": "グラフ",
       "round_result": "各ラウンドの結果",
