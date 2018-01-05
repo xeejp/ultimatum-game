@@ -11,6 +11,7 @@ const DownloadButton = ({fileName, list, style, disabled }) => (
     style={style}
     disabled={disabled}
     onClick={() => {
+      console.log(list)
       var content = list.map(line => line.join(',')).join("\n")
       var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
       var blob = new Blob([bom,content], {type: 'text/csv'});
