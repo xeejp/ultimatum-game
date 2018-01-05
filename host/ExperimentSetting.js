@@ -12,7 +12,7 @@ import Chip from 'material-ui/chip'
 import Toggle from 'material-ui/Toggle';
 
 import { changeGameRound, changeGameRedo, changeInfRedo } from './actions.js'
-import { getGamemodeName } from 'util/index'
+import { getGamemodeName } from '../util/index'
 
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 

@@ -18,7 +18,7 @@ import Notice from './Notice'
 
 import {
   getRoleName,
-} from 'util/index'
+} from '../util/index'
 import { ReadJSON, InsertVariable } from '../util/ReadJSON';
 
 const mapStateToProps = ({

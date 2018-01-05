@@ -6,7 +6,7 @@ import {
   pages,
   roles,
   states,
-} from 'util/index'
+} from '../util/index'
 
 import {
   changeChartRound,

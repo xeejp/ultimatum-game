@@ -7,7 +7,7 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import Highcharts from 'react-highcharts'
 import ChartSetting from './ChartSetting.js'
 
-import { fallChartButton } from 'host/actions.js'
+import { fallChartButton } from '../host/actions.js'
 
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 
