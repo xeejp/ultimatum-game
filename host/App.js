@@ -60,7 +60,6 @@ class App extends Component {
         result_tmp[j][i] = ultimatum_results[i][j]
       }
     }
-    console.log(Object.keys(ultimatum_results).map(key => Object.keys(ultimatum_results[key]).map(i => ultimatum_results[key][i].value)))
     return (
       <div>
         <PageSteps />
