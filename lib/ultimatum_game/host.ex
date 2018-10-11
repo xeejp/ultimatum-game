@@ -7,9 +7,8 @@ defmodule UltimatumGame.Host do
   end
 
   # Actions
-  def fetch_contents(data) do
-    data
-    |> Actions.update_host_contents()
+  def visit(data) do
+    Map.put(data, :is_first_visit, false)
   end
 
   def reset(data) do

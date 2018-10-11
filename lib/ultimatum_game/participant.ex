@@ -30,10 +30,6 @@ defmodule UltimatumGame.Participant do
   end
 
   # Actions
-  def fetch_contents(data, id) do
-    Actions.update_participant_contents(data, id)
-  end
-
   def change_allo_temp(data, id, allo_temp) do
     pair_id = get_in(data, [:participants, id, :pair_id])
     "allocating" = get_in(data, [:pairs, pair_id, :state])

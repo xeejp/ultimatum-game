@@ -6,6 +6,7 @@ export const showResults = createAction('SHOW_RESULTS')
 
 export const match = createAction('MATCH')
 export const reset = createAction('RESET')
+export const visit = createAction('VISIT')
 
 export const changeChartRound = createAction('CHANGE_CHART_ROUND', chart_round => chart_round)
 export const fallChartButton = createAction('FALL_CHART_BUTTON')
@@ -16,8 +17,5 @@ export const changeGameRedo = createAction('CHANGE_GAME_REDO', game_redo => game
 export const changeInfRedo = createAction('CHANGE_INF_REDO', inf_redo => inf_redo)
 
 export const changeDescription = createAction('CHANGE_QUESTION', text => text)
-
-export const intoLoading = createAction('INTO_LOADING')
-export const exitLoading = createAction('EXIT_LOADING')
 
 export const openParticipantPage = createAction('open participant page')

@@ -11,16 +11,17 @@ import Dialog from 'material-ui/Dialog';
 import Chip from 'material-ui/chip'
 import Toggle from 'material-ui/Toggle';
 
-import { changeGameRound, changeGameRedo, changeInfRedo } from './actions.js'
+import { changeGameRound, changeGameRedo, changeInfRedo, visit } from './actions.js'
 import { getGamemodeName } from '../util/index'
 
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 
-const mapStateToProps = ({ game_round, page, game_redo, inf_redo}) => ({
+const mapStateToProps = ({ game_round, page, game_redo, inf_redo, is_first_visit}) => ({
   game_round,
   game_redo,
   page,
   inf_redo,
+  is_first_visit
 })
 
 const styles = {
@@ -33,11 +34,14 @@ const styles = {
   game_modeButton: {
     margin: 0,
   },
+  chip: {
+    marginBottom: "5px"
+  }
 };
 
 class ExperimentSetting extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.handleRoundInc = this.handleRoundInc.bind(this)
     this.handleRoundDec = this.handleRoundDec.bind(this)
     this.handleRedoInc = this.handleRedoInc.bind(this)
@@ -46,8 +50,16 @@ class ExperimentSetting extends Component {
     this.handleClose = this.handleClose.bind(this)
     this.handleConfirm = this.handleConfirm.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
+
+    const { is_first_visit } = props
+    const isFirst = is_first_visit?true:false
+    if (is_first_visit) {
+      const { dispatch } = props
+      dispatch(visit())
+    }
+
     this.state = {
-      open: false,
+      open: isFirst,
       game_round_temp: 0,
       game_redo_temp: 0,
       inf_redo_temp: false,
@@ -55,24 +67,20 @@ class ExperimentSetting extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { game_round, game_rate, inf_redo } = props
-    const open = this.state.game_round_temp !== game_round
-      || this.state.game_rate_temp !== game_rate
-      || this.state.inf_redo_temp !== inf_redo
+    const { game_round, game_rate, inf_redo, is_first_visit } = props
     this.setState({
-      open,
       game_round_temp: game_round,
       game_rate_temp: game_rate,
       inf_redo_temp: inf_redo,
     })
   }
 
-  handleToggle = () => {
+  handleToggle ()  {
     const { inf_redo_temp } = this.state
     this.setState({inf_redo_temp: !inf_redo_temp})
   }
 
-  handleOpen = () => {
+  handleOpen ()  {
     this.setState({open: true})
     const { game_round, game_redo, inf_redo } = this.props
     this.setState({
@@ -82,11 +90,11 @@ class ExperimentSetting extends Component {
     })
   };
 
-  handleClose = () => {
+  handleClose ()  {
     this.setState({open: false});
   };
 
-  handleConfirm = () => {
+  handleConfirm ()  {
     const { dispatch } = this.props
     const { game_round_temp, game_redo_temp, inf_redo_temp } = this.state
     dispatch(changeGameRound(game_round_temp))
@@ -95,24 +103,24 @@ class ExperimentSetting extends Component {
     this.setState({open: false});
   }
 
-  handleNothing = (event) => {}
+  handleNothing(event){}
 
-  handleRoundInc = (event) => {
+  handleRoundInc(event) {
     const { game_round_temp } = this.state
     this.setState({game_round_temp: game_round_temp + 1})
   }
 
-  handleRoundDec = (event) => {
+  handleRoundDec(event) {
     const { game_round_temp } = this.state
     this.setState({game_round_temp: game_round_temp - 1})
   }
 
-  handleRedoInc = (event) => {
+  handleRedoInc(event) {
     const { game_redo_temp } = this.state
     this.setState({game_redo_temp: game_redo_temp + 1})
   }
 
-  handleRedoDec = (event) => {
+  handleRedoDec(event) {
     const { game_redo_temp } = this.state
     this.setState({game_redo_temp: game_redo_temp - 1})
   }
@@ -124,18 +132,18 @@ class ExperimentSetting extends Component {
       <RaisedButton
         label={ReadJSON().static_text["apply"]}
         primary={true}
-        onTouchTap={this.handleConfirm}
+        onClick={this.handleConfirm}
       />,
       <RaisedButton
         label={ReadJSON().static_text["cancel"]}
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
     ];
 
     return (
       <span>
         <FloatingActionButton
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           style={{marginRight: "2%"}}
           disabled={page != "waiting"}
         ><ActionSettings /></FloatingActionButton>
@@ -166,7 +174,7 @@ class ExperimentSetting extends Component {
             style={styles.game_roundButton}
             onClick={this.handleRoundInc}
           />
-          <p>{InsertVariable(ReadJSON().static_text["redo_"], { redo: inf_redo? "∞" :game_redo })}</p>
+          <p>{InsertVariable(ReadJSON().static_text["redo_"], { redo: inf_redo_temp? "∞" :game_redo_temp })}</p>
           <Toggle
             label={ReadJSON().static_text["inf"]}
             toggled={inf_redo_temp}

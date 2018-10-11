@@ -7,8 +7,6 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import Highcharts from 'react-highcharts'
 import ChartSetting from './ChartSetting.js'
 
-import { fallChartButton } from '../host/actions.js'
-
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 
 function compDataAccept(categories, results, round) {
@@ -27,53 +25,90 @@ function compDataRefuse(categories, results, round) {
 
 const categories = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
 
-const mapStateToProps = ({ultimatum_results, chart_round, chart_button, role}) => ({
+const mapStateToProps = ({ultimatum_results}) => ({
   ultimatum_results,
-  role,
-  chart_round,
-  chart_button,
-  config: {
-      chart: {
-         type: "column"
-      },
-      credits: {
-        text: 'xee.jp',
-        href: 'https://xee.jp/'
-      },
-      title: {
-        text: ReadJSON().static_text["chart"]["allo_point"]
-      },
-      xAxis: {
-        categories: categories,
-        crosshair: true,
-        title: {
-          text: ReadJSON().static_text["point"]
-        },
-        labels: {
-          step: 1
-        }
-      },
-      yAxis: {
-        allowDecimals: false,
-        min: 0,
-        title: {
-          text: ReadJSON().static_text["chart"]["count"]
-        },
-        labels: {
-          step: 1,
-        },
-      },
-      tooltip: {
-        formatter: function () {
-          return '<b>' + InsertVariable(ReadJSON().static_text["result"]["point"], { point: this.x }) + '</b><br/>' +
-            this.series.name + ': ' + this.y
-        }
-      },
-      plotOptions: {
-        column: {
-          stacking: 'normal'
-        }
-      },
+})
+
+const otherConfig = {
+  chart: {
+    type: "column"
+ },
+ credits: {
+   text: 'xee.jp',
+   href: 'https://xee.jp/'
+ },
+ title: {
+   text: ReadJSON().static_text["chart"]["allo_point"]
+ },
+ xAxis: {
+   categories: categories,
+   crosshair: true,
+   title: {
+     text: ReadJSON().static_text["point"]
+   },
+   labels: {
+     step: 1
+   }
+ },
+ yAxis: {
+   allowDecimals: false,
+   min: 0,
+   title: {
+     text: ReadJSON().static_text["chart"]["count"]
+   },
+   labels: {
+     step: 1,
+   },
+ },
+ tooltip: {
+   formatter: function () {
+     return '<b>' + InsertVariable(ReadJSON().static_text["result"]["point"], { point: this.x }) + '</b><br/>' +
+       this.series.name + ': ' + this.y
+   }
+ },
+ plotOptions: {
+   column: {
+     stacking: 'normal'
+   }
+ }
+}
+
+class Chart extends Component {
+  constructor(props) {
+    super(props)
+    const { role } = this.props
+    this.state = {
+      expanded: Boolean(role),
+      chart_round: 1,
+      round: 1,
+    }
+  }
+
+  handleExpandChange(expanded) {
+    this.setState({expanded: expanded});
+  }
+
+  handleInc() {
+    const { ultimatum_results } = this.props
+    const { chart_round } = this.state
+    console.log(this)
+    if(chart_round < Object.keys(ultimatum_results).length) this.setState({
+      chart_round: chart_round+1
+    })
+  }
+  
+  handleDec() {
+    const { chart_round } = this.state
+    console.log(this)
+    if(chart_round > 1) this.setState({
+      chart_round: chart_round-1
+    })
+  }
+
+  render() {
+    const { ultimatum_results } = this.props
+    const { chart_round } = this.state
+    const config = Object.assign({}, otherConfig, {
       series: [
         {
           name: ReadJSON().static_text["accept"],
@@ -84,44 +119,16 @@ const mapStateToProps = ({ultimatum_results, chart_round, chart_button, role}) =
           name: ReadJSON().static_text["reject"],
           data: compDataRefuse(categories, ultimatum_results, chart_round),
           stack: 'ultimatum'
-        },
+        }
       ]
-    }
-})
+    })
 
-class Chart extends Component {
-  constructor(props) {
-    super(props)
-    const { role } = this.props
-    this.handleCallback = this.handleCallback.bind(this)
-    this.state = {
-      expanded: Boolean(role),
-      round: 1,
-    }
-  }
-
-  handleCallback = () => {
-    const { dispatch, chart_button } = this.props
-    if(chart_button){
-      window.setTimeout(() => {
-        location.href="#chart"
-      }, 1 )
-    }
-    dispatch(fallChartButton())
-  }
-
-  handleExpandChange = (expanded) => {
-    this.setState({expanded: expanded});
-  }
-
-  render() {
-    const { config } = this.props
     return (
     <div id="chart">
       <Card
         style={{margin: '16px 16px'}}
         expanded={this.state.expanded}
-        onExpandChange={this.handleExpandChange}
+        onExpandChange={this.handleExpandChange.bind(this)}
       >
         <CardHeader
           title={ReadJSON().static_text["result"]["graph"]}
@@ -129,8 +136,13 @@ class Chart extends Component {
           showExpandableButton={true}
         />
         <CardText expandable={true}>
-          <Highcharts config={config} callback={this.handleCallback}></Highcharts>
-          <ChartSetting />
+          <Highcharts config={config}></Highcharts>
+          <ChartSetting
+            chart_round={chart_round}
+            max_chart_round={Object.keys(ultimatum_results).length}
+            handleInc={this.handleInc.bind(this)}
+            handleDec={this.handleDec.bind(this)}  
+          />
         </CardText>
       </Card>
     </div>

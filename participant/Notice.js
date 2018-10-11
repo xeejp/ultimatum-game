@@ -11,7 +11,7 @@ const Notice = ({ open, message, onRequestClose }) => (
       <RaisedButton
         label={ReadJSON().static_text["close"]}
         primary={true}
-        onTouchTap={onRequestClose}
+        onClick={onRequestClose}
       />
     )]}
     modal={true}

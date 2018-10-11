@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import Pages from './Pages.js'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+
 import {
   fetchContents,
 } from './actions.js'
@@ -23,8 +27,8 @@ class App extends Component {
 
   render() {
     return <div>
-      <Pages />
-    </div>
+        <Pages />
+      </div>
   }
 }
 

@@ -14,41 +14,25 @@ import Divider from 'material-ui/Divider'
 
 import { getPageName, pages } from '../util/index'
 
-import {
-  changePage,
-  intoLoading,
-  exitLoading,
-} from './actions'
+import { changePage } from './actions'
 
 import { ReadJSON } from '../util/ReadJSON'
 
-const mapStateToProps = ({ page, game_round, game_progress, pairs, loading }) => ({
+const mapStateToProps = ({ page, game_round, game_progress, pairs }) => ({
   page,
   game_round,
   game_progress,
   pairs,
-  loading,
 })
 
 class PageSteps extends React.Component {
-  Async = (cb) => {
+  handleChangePage(page) {
     const { dispatch } = this.props
-    dispatch(intoLoading())
-    this.asyncTimer = setTimeout(cb, 100)
-  }
-
-  handleChangePage = (page) => {
-    const { dispatch, loading } = this.props
     dispatch(changePage(page))
-    if (!loading) {
-      this.Async(() => {
-        dispatch(exitLoading())
-      })
-    }
   }
 
-  handleNext = () => {
-    const { dispatch, page, loading } = this.props
+  handleNext ()  {
+    const { dispatch, page } = this.props
     var next = pages[0]
     for(let i = 0; i < pages.length - 1; i++){
       if(page == pages[i]) {
@@ -57,15 +41,10 @@ class PageSteps extends React.Component {
       }
     }
     dispatch(changePage(next))
-    if (!loading) {
-      this.Async(() => {
-        dispatch(exitLoading())
-      })
-    }
   };
 
-  handlePrev = () => {
-    const { dispatch, page, loading} = this.props
+  handlePrev ()  {
+    const { dispatch, page } = this.props
     let prev = pages[0]
     for(let i = 1; i < pages.length; i++){
       if(page == pages[i]) {
@@ -74,11 +53,6 @@ class PageSteps extends React.Component {
       }
     }
     dispatch(changePage(prev))
-    if (!loading) {
-      this.Async(() => {
-        dispatch(exitLoading())
-      })
-    }
   }
 
   renderButtons() {
@@ -88,14 +62,14 @@ class PageSteps extends React.Component {
         <FlatButton
           label={ReadJSON().static_text["back"]}
           disabled={pages[0] == page}
-          onTouchTap={this.handlePrev}
+          onClick={this.handlePrev.bind(this)}
           style={{marginRight: "12px"}}
         />
         <span style={{marginLeft: "3%"}}>
           <RaisedButton
             label={pages[3] === page ? ReadJSON().static_text["continue"] : ReadJSON().static_text["next"]}
             primary={true}
-            onTouchTap={this.handleNext}
+            onClick={this.handleNext.bind(this)}
           />
         </span>
       </div>
@@ -103,7 +77,7 @@ class PageSteps extends React.Component {
   }
 
   render() {
-    const { page, loading } = this.props
+    const { page } = this.props
     const buttons = []
     for (let i = 0; i < pages.length; i ++) {
       buttons[i] = (

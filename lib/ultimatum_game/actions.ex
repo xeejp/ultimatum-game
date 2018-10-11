@@ -29,13 +29,17 @@ defmodule UltimatumGame.Actions do
     Enum.reduce(participants, %{}, fn {id, _}, acc -> dispatch_to(acc, id, action) end)
   end
 
-  def format(data, host, participants \\ nil) do
+  defp format(data, host, participants \\ nil) do
     result = %{data: data}
-    unless is_nil(host) do
-      result = Map.put(result, :host, %{action: host})
+    result = unless is_nil(host) do
+      Map.put(result, :host, %{action: host})
+    else
+      result
     end
-    unless is_nil(participants) do
-      result = Map.put(result, :participant, participants)
+    result = unless is_nil(participants) do
+      Map.put(result, :participant, participants)
+    else
+      result
     end
     {:ok, result}
   end

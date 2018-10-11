@@ -68,22 +68,22 @@ class Respond extends Component {
     }
   }
 
-  handleRequestClose = () => {
+  handleRequestClose() {
     const { dispatch } = this.props
     dispatch(fallSnackBarFlags())
   }
 
-  handleRequestClose2 = () => {
+  handleRequestClose2() {
     const { dispatch } = this.props
     dispatch(fallSnackBarFlags2())
   }
 
-  handleRequestClose3 = () => {
+  handleRequestClose3() {
     const { dispatch } = this.props
     dispatch(fallSnackBarFlags3())
   }
 
-  handleRequestClose4 = () => {
+  handleRequestClose4() {
     this.setState({
       allo_flag: false
     })

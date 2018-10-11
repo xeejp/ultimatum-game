@@ -30,7 +30,7 @@ class Allocating extends Component {
     this.handleNG = this.handleNG.bind(this)
   }
 
-  handleOK = () => {
+  handleOK ()  {
     const { dispatch, allo_temp, change_count, now_round } = this.props
 
     const result = {
@@ -42,7 +42,7 @@ class Allocating extends Component {
     dispatch(responseOK(result))
   }
 
-  handleNG = () => {
+  handleNG ()  {
     const { dispatch, change_count, now_round, redo_count, game_redo, inf_redo } = this.props
     if(inf_redo || redo_count < game_redo) {
       dispatch(redoAllcating())

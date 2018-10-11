@@ -6,6 +6,7 @@ import {
   fetchContents,
   showResults,
   match,
+  visit,
   changePage,
   changeGameRound,
   changeGameRedo,
@@ -28,6 +29,13 @@ function* matchSaga() {
   while (true) {
     yield take(`${match}`)
     yield call(sendData, 'MATCH')
+  }
+}
+
+function* visitSaga() {
+  while (true) {
+    yield take(`${visit}`)
+    yield call(sendData, 'VISIT')
   }
 }
 
@@ -75,6 +83,7 @@ function* changeDescriptionSaga() {
 function* saga() {
   yield fork(fetchContentsSaga)
   yield fork(matchSaga)
+  yield fork(visitSaga)
   yield fork(changePageSaga)
   yield fork(changeInfRedoSaga)
   yield fork(changeGameRedoSaga)

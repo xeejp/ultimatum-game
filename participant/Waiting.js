@@ -20,7 +20,7 @@ const Waiting = ({ participants_length }) => (
       <p>{InsertVariable(ReadJSON().static_text["waiting"][3], { num: participants_length })}</p>
     </CardText>
     <div style={{textAlign: "center"}}>
-      <CircularProgress size={2}/>
+      <CircularProgress size={140} thickness={5.0}/>
     </div>
   </Card>
 )

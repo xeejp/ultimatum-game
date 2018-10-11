@@ -22,7 +22,7 @@ class EditQuestion extends Component {
     this.handleConfirm = this.handleConfirm.bind(this)
     const { dynamic_text } = this.props
     var default_text = dynamic_text
-    if(!dynamic_text) {
+    if(dynamic_text["description"] == undefined) {
       default_text = ReadJSON().dynamic_text
       const { dispatch } = this.props
       dispatch(changeDescription(default_text))
@@ -63,22 +63,24 @@ class EditQuestion extends Component {
     this.handleClose()
   }
 
-  render(){
+  render() {
     const { style, disabled } = this.props
     const { dynamic_text } = this.state
     const actions = [
       <RaisedButton
         label={ReadJSON().static_text["apply"]}
         primary={true}
-        onTouchTap={this.handleConfirm}
+        onClick={this.handleConfirm}
         style={{marginRight: "10px",}}
       />,
       <RaisedButton
         label={ReadJSON().static_text["end"]}
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
     ]
-    return (
+
+    if (dynamic_text["description"] == undefined) return null
+    else return (
       <span>
         <FloatingActionButton onClick={this.handleOpen}
           style={style} disabled={disabled}>

@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import {
-  fetchContents,
-  intoLoading,
-  exitLoading,
-} from './actions.js'
+import { fetchContents } from './actions.js'
 
-import { ReadJSON, InsertVariable } from '../util/ReadJSON'
-
-import FlatButton from 'material-ui/FlatButton';
+import { ReadJSON, InsertVariable, LineBreak } from '../util/ReadJSON'
+import {Card, CardText, CardTitle } from 'material-ui/Card'
+import CircularProgress from 'material-ui/CircularProgress'
 
 import PageSteps from './PageSteps.js'
 import Users from './Users.js'
@@ -21,8 +17,6 @@ import DownloadButton from './DownloadButton.js'
 import { changePage } from './actions'
 
 import throttle from 'react-throttle-render'
-
-const ThrottledChart = throttle(Chart, 100)
 
 const mapStateToProps = ({ dispatch, page, pairs, ultimatum_results, participants }) => ({
   dispatch, page, pairs, ultimatum_results, participants
@@ -36,9 +30,7 @@ class App extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(intoLoading())
     dispatch(fetchContents())
-    dispatch(exitLoading())
   }
 
   componentWillReceiveProps({ pairs, page }) {
@@ -60,11 +52,22 @@ class App extends Component {
         result_tmp[j][i] = ultimatum_results[i][j]
       }
     }
+    if (!participants) return (
+      <Card style={{padding: '20px'}}>
+        <CardTitle title={ReadJSON().static_text["loading"][0]} style={{padding: '0px', marginTop: '7px', marginBottom: '14px'}}/>
+        <CardText style={{padding: '0px', margin: '0px'}}>
+          <div style={{textAlign: 'center'}}>
+            <CircularProgress style={{margin: '0px', padding: '0px' }} />
+          </div>
+          <p style={{margin: '0px', padding: '0px'}}>{LineBreak(ReadJSON().static_text["loading"][1])}</p>
+        </CardText>
+      </Card>
+    )
     return (
       <div>
         <PageSteps />
         <Users />
-        <ThrottledChart />
+        <Chart />
         <ExperimentSetting />
         <EditQuestion style={{marginRight: "2%"}} disabled={page != "waiting"} />
         <DownloadButton

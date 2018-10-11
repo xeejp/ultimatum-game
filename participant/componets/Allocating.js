@@ -26,12 +26,12 @@ class Allocating extends Component {
     this.handleConfirm = this.handleConfirm.bind(this)
   }
 
-  handleThinking = (event, value) => {
+  handleThinking(event, value) {
     const { dispatch } = this.props
     dispatch(submitAlloTemp(value))
   }
 
-  handleConfirm = (event, value) => {
+  handleConfirm(event, value) {
     const { dispatch, allo_temp } = this.props
     dispatch(finishAllocating(allo_temp))
   }

@@ -27,8 +27,9 @@ defmodule UltimatumGame do
       pairs: %{},
       ultimatum_results: %{},
       dictator_results: %{},
-      }
-    }}
+      is_first_visit: true
+    }
+  }}
   end
 
   def join(data, id) do
@@ -45,9 +46,10 @@ defmodule UltimatumGame do
   def handle_received(data, %{"action" => action, "params" => params}) do
     Logger.debug("[Ultimatum Game] #{action} #{inspect params}")
     result = case {action, params} do
-      {"FETCH_CONTENTS", _} -> Host.fetch_contents(data)
+      {"FETCH_CONTENTS", _} -> Actions.update_host_contents(data)
       {"MATCH", _} -> Host.match(data)
       {"RESET", _} -> Host.reset(data)
+      {"VISIT", _} -> Host.visit(data)
       {"CHANGE_DESCRIPTION", dynamic_text} -> Host.change_description(data, dynamic_text)
       {"CHANGE_PAGE", page} -> Host.change_page(data, page)
       {"CHANGE_GAME_ROUND", game_round} -> Host.change_game_round(data, game_round)
@@ -62,7 +64,7 @@ defmodule UltimatumGame do
   def handle_received(data, %{"action" => action, "params" => params}, id) do
     Logger.debug("[Ultimatum Game] #{action} #{inspect params}")
     result = case {action, params} do
-      {"FETCH_CONTENTS", _} -> Participant.fetch_contents(data, id)
+      {"FETCH_CONTENTS", _} -> Actions.update_participant_contents(data, id)
       {"FINISH_ALLOCATING", allo_temp} -> Participant.finish_allocating(data, id, allo_temp)
       {"CHANGE_ALLO_TEMP", allo_temp} -> Participant.change_allo_temp(data, id, allo_temp)
       {"RESPONSE_OK", result} -> Participant.response_ok(data, id, result)
