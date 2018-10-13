@@ -65,11 +65,6 @@ const otherConfig = {
      return '<b>' + InsertVariable(ReadJSON().static_text["result"]["point"], { point: this.x }) + '</b><br/>' +
        this.series.name + ': ' + this.y
    }
- },
- plotOptions: {
-   column: {
-     stacking: 'normal'
-   }
  }
 }
 
